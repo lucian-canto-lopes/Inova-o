@@ -1,0 +1,59 @@
+.SideBar {
+  background-color: #60961E;
+  color: white;
+  display: flex;
+  height: 100%;
+  overflow: auto;
+  min-width: 300px;
+  width: 300px;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 35px;
+  padding-top: 120px;
+  transition: all 250ms ease-in-out;
+
+  & div {
+    min-width: 100%;
+
+    & * {
+      align-content: center;
+      height: 40px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    & .SB-Title {
+      background-color: #47740F;
+      border-radius: 10px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 300px;
+      padding: 0 10px;
+
+      & h1 {
+        font-size: 30px;
+        font-weight: bold;
+        letter-spacing: 0.02em;
+      }
+    }
+
+    & ul {
+      & li {
+        padding: 5px 10px;
+        border-radius: 10px;
+      }
+
+      & li:hover {
+        background-color: #A3CE6F;
+        color: black;
+      }
+    }
+  }
+}
+
+.sidebar--collapsed {
+  transform: translate(-100%);
+  position: absolute;
+}

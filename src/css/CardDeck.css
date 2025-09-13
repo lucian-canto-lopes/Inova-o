@@ -1,0 +1,23 @@
+.CardDeck {
+  margin-top: 60px;
+
+  & header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    align-items: center;
+    color: var(--dark-green);
+
+    & svg {
+      cursor: pointer;
+    }
+  }
+
+  & > div {
+    display: grid;
+    grid-template-columns: repeat(4, 300px);
+    justify-content: space-between;
+    row-gap: 40px;
+  }
+}
