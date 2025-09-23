@@ -3,7 +3,9 @@
   height: 300px;
   background-color: var(--light-green);
   border-radius: 10px;
-  padding: 20px;
+  padding: 16px;
+  border: var(--light-green) 4px solid;
+  transition: ease-in-out 0.1s;
 
   & img {
     aspect-ratio: 8/5;
@@ -16,4 +18,9 @@
     font-weight: 400;
     margin-top: 20px;
   }
+}
+
+.card-div:hover {
+  cursor: pointer;
+  border: var(--dark-green) 4px solid;
 }
