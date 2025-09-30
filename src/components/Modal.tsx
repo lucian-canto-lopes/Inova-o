@@ -4,235 +4,192 @@ import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import '../css/Modal.css';
 import { TextEditor } from "./TextEditor";
 
-type DisciplinaModal = {
-  id: number,
-  tipo: "Disciplina",
-  nome: string,
-  coordenador: string,
-  semestre: string,
-  codigo: string,
-  alunos_matriculados: string[],
-  alunos_aprovados: string[]
-};
-
-type EventoModal = {
-  id: number,
-  tipo: "Evento",
-  nome: string,
-  descricao: string,
-  data_inicio: string,
-  duracao: string,
-  custo: number,
-  receita: number,
-  publico_participante: string[],
-  qtd_publico: number,
-  equipe: string[],
-  coordenadores: string[],
-  parceiros: string[]
-};
-
-type NegocioModal = {
-  id: number,
-  tipo: "Negócio",
-  nome: string,
-  area_atuacao: string,
-  faturamento_anual: number,
-  ano_criacao: string,
-  fundadores: string[],
-  porte: string
+enum DimensaoEnum {
+  disciplinas = "Disciplinas",
+  eventos = "Eventos",
+  motores = "Motores",
+  negocios = "Negócios"
 }
-
-type MotorModal = {
-  id: number,
-  tipo: "Motor",
-  nome: string,
-  descricao: string,
-  projetos: string[],
-  motor_tipo: string,
-  data_criacao: string,
-  lideres: string[],
-  equipe: string[],
-  qtd_empresas_atendidas: number,
-  faturamento: number
-}
-
-export type modalObj = DisciplinaModal | EventoModal | NegocioModal | MotorModal;
+export type DimensaoTipo = keyof typeof DimensaoEnum;
+const dimensoesTipos = Object.keys(DimensaoEnum) as DimensaoTipo[];
 
 interface Props {
   closeModal?: () => void;
-  modalObj: modalObj;
+  modalType: DimensaoTipo;
+  data: any,
   value: string;
   onChange: (value: string) => void;
 }
 
 export function Modal({
   closeModal,
-  modalObj,
+  modalType,
+  data,
   value,
   onChange,
 }: Props) {
-  const renderSwitch = (modalObj: modalObj) => {
-    switch (modalObj.tipo) {
-      case 'Disciplina':
+  const renderSwitch = (modalType: DimensaoTipo) => {
+    switch (modalType) {
+      case 'disciplinas':
         return (
           <>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
-              <input type="text" id="d-nome" placeholder='Nome da disciplina' defaultValue={modalObj.nome} />
+              <input type="text" id="d-nome" placeholder='Nome da disciplina' defaultValue={data.nome} />
             </div>
             <div className="input-box">
               <label htmlFor="d-coordenador">Coordenador</label>
-              <input type="text" id="d-coordenador" placeholder='Coordenador da Disciplina' defaultValue={modalObj.coordenador} />
+              <input type="text" id="d-coordenador" placeholder='Coordenador da Disciplina' defaultValue={data.coordenador} />
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-semestre">Semestre</label>
-                <input type="text" id="d-semestre" placeholder='2025.1' defaultValue={modalObj.semestre} />
+                <input type="text" id="d-semestre" placeholder='2025.1' defaultValue={data.semestre} />
               </div><div className="input-box">
                 <label htmlFor="d-codigo">Código</label>
-                <input type="text" id="d-codigo" placeholder='Código da disciplina' defaultValue={modalObj.codigo} />
+                <input type="text" id="d-codigo" placeholder='Código da disciplina' defaultValue={data.codigo} />
               </div>
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-a-matriculados">Alunos Matriculados</label>
-                <input type="text" id="d-a-matriculados" defaultValue={modalObj.alunos_matriculados.map(aluno => {
+                <input type="text" id="d-a-matriculados" defaultValue={data.alunos_matriculados?.map((aluno: any) => {
                   return ` ${aluno}`
                 })} />
               </div><div className="input-box">
                 <label htmlFor="d-a-aprovados">Alunos Aprovados</label>
-                <input type="text" id="d-a-aprovados" defaultValue={modalObj.alunos_aprovados.map(aluno => {
+                <input type="text" id="d-a-aprovados" defaultValue={data.alunos_aprovados?.map((aluno: any) => {
                   return ` ${aluno}`
                 })} />
               </div>
             </div>
           </>
         )
-      case "Evento":
+      case "eventos":
         return (
           <>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
-              <input type="text" id="d-nome" placeholder='Nome do evento' defaultValue={modalObj.nome} />
+              <input type="text" id="d-nome" placeholder='Nome do evento' defaultValue={data.nome} />
             </div>
             <div className="input-box">
               <label htmlFor="d-descricao">Descrição</label>
-              <input type="text" id="d-descricao" placeholder='Descrição do evento' defaultValue={modalObj.descricao} />
+              <input type="text" id="d-descricao" placeholder='Descrição do evento' defaultValue={data.descricao} />
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-data_inicio">Data de Início</label>
-                <input type="text" id="d-data_inicio" placeholder='Data de início' defaultValue={modalObj.data_inicio} />
+                <input type="text" id="d-data_inicio" placeholder='Data de início' defaultValue={data.data_inicio} />
               </div><div className="input-box">
                 <label htmlFor="d-duracao">Duração</label>
-                <input type="text" id="d-duracao" placeholder='Duração do evento' defaultValue={modalObj.duracao} />
+                <input type="text" id="d-duracao" placeholder='Duração do evento' defaultValue={data.duracao} />
               </div>
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-custo">Custo</label>
-                <input type="text" id="d-custo" placeholder='Custo do evento' defaultValue={modalObj.custo} />
+                <input type="text" id="d-custo" placeholder='Custo do evento' defaultValue={data.custo} />
               </div><div className="input-box">
                 <label htmlFor="d-receita">Receita</label>
-                <input type="text" id="d-receita" placeholder='Receita do Evento' defaultValue={modalObj.receita} />
+                <input type="text" id="d-receita" placeholder='Receita do Evento' defaultValue={data.receita} />
               </div>
             </div>
             <div className="input-box">
               <label htmlFor="d-publico_participante">Público Participante</label>
-              <input type="text" id="d-publico_participante" placeholder='Pessoas envolvidas no evento' defaultValue={modalObj.publico_participante} />
+              <input type="text" id="d-publico_participante" placeholder='Pessoas envolvidas no evento' defaultValue={data.publico_participante} />
             </div>
             <div className="input-box">
               <label htmlFor="d-qtd_publico">Quandidade de público</label>
-              <input type="text" id="d-qtd_publico" placeholder='Quantidade de público do evento' defaultValue={modalObj.qtd_publico} />
+              <input type="text" id="d-qtd_publico" placeholder='Quantidade de público do evento' defaultValue={data.qtd_publico} />
             </div>
             <div className="input-box">
               <label htmlFor="d-equipe">Equipe de organização</label>
-              <input type="text" id="d-equipe" placeholder='Equipe de organização do evento' defaultValue={modalObj.equipe} />
+              <input type="text" id="d-equipe" placeholder='Equipe de organização do evento' defaultValue={data.equipe} />
             </div>
             <div className="input-box">
               <label htmlFor="d-coordenadores">Coordenadores</label>
-              <input type="text" id="d-coordenadores" placeholder='Coordenadores do evento' defaultValue={modalObj.coordenadores} />
+              <input type="text" id="d-coordenadores" placeholder='Coordenadores do evento' defaultValue={data.coordenadores} />
             </div>
             <div className="input-box">
               <label htmlFor="d-parceiros">Parceiros</label>
-              <input type="text" id="d-parceiros" placeholder='Contribuidores do evento' defaultValue={modalObj.parceiros} />
+              <input type="text" id="d-parceiros" placeholder='Contribuidores do evento' defaultValue={data.parceiros} />
             </div>
           </>
         )
-        case "Negócio":
+        case "negocios":
         return (
           <>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
-              <input type="text" id="d-nome" placeholder='Nome do nogócio' defaultValue={modalObj.nome} />
+              <input type="text" id="d-nome" placeholder='Nome do nogócio' defaultValue={data.nome} />
             </div>
             <div className="input-box">
               <label htmlFor="d-area_atuacao">Área de atuação</label>
-              <input type="text" id="d-area_atuacao" placeholder='Área de atuação do nogócio' defaultValue={modalObj.area_atuacao} />
+              <input type="text" id="d-area_atuacao" placeholder='Área de atuação do nogócio' defaultValue={data.area_atuacao} />
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-faturamento_anual">Faturamento anual</label>
-                <input type="text" id="d-faturamento_anual" placeholder='Faturamento anual do negócio' defaultValue={modalObj.faturamento_anual} />
+                <input type="text" id="d-faturamento_anual" placeholder='Faturamento anual do negócio' defaultValue={data.faturamento_anual} />
               </div><div className="input-box">
                 <label htmlFor="d-ano_criacao">Ano de criação</label>
-                <input type="text" id="d-ano_criacao" placeholder='Ano de criação do nogócio' defaultValue={modalObj.ano_criacao} />
+                <input type="text" id="d-ano_criacao" placeholder='Ano de criação do nogócio' defaultValue={data.ano_criacao} />
               </div>
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-fundadores">Fundadores</label>
-                <input type="text" id="d-fundadores" placeholder='Fundadores do nogócio' defaultValue={modalObj.fundadores.map(fundador => {
+                <input type="text" id="d-fundadores" placeholder='Fundadores do nogócio' defaultValue={data.fundadores?.map((fundador: any) => {
                   return ` ${fundador}`
                 })} />
               </div><div className="input-box">
                 <label htmlFor="d-porte">Porte do nogócio</label>
-                <input type="text" id="d-porte" defaultValue={modalObj.porte} />
+                <input type="text" id="d-porte" defaultValue={data.porte} />
               </div>
             </div>
           </>
         )
-      case "Motor":
+      case "motores":
         return (
           <>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
-              <input type="text" id="d-nome" placeholder='Nome do motor' defaultValue={modalObj.nome} />
+              <input type="text" id="d-nome" placeholder='Nome do motor' defaultValue={data.nome} />
             </div>
             <div className="input-box">
               <label htmlFor="d-descricao">Descrição</label>
-              <input type="text" id="d-descricao" placeholder='Descrição do motor' defaultValue={modalObj.descricao} />
+              <input type="text" id="d-descricao" placeholder='Descrição do motor' defaultValue={data.descricao} />
             </div>
             <div className="input-box">
               <label htmlFor="d-projetos">Projetos Executados</label>
-              <input type="text" id="d-projetos" placeholder='Projetos executados pelo motor' defaultValue={modalObj.projetos} />
+              <input type="text" id="d-projetos" placeholder='Projetos executados pelo motor' defaultValue={data.projetos} />
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-motor_tipo">Tipo</label>
-                <input type="text" id="d-motor_tipo" placeholder='Tipo do Motor' defaultValue={modalObj.motor_tipo} />
+                <input type="text" id="d-motor_tipo" placeholder='Tipo do Motor' defaultValue={data.motor_tipo} />
               </div><div className="input-box">
                 <label htmlFor="d-data_criacao">Data de criação</label>
-                <input type="text" id="d-data_criacao" placeholder='Data de criação do motor' defaultValue={modalObj.data_criacao} />
+                <input type="text" id="d-data_criacao" placeholder='Data de criação do motor' defaultValue={data.data_criacao} />
               </div>
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-lideres">Lideres</label>
-                <input type="text" id="d-lideres" placeholder='Lideres do motor' defaultValue={modalObj.lideres} />
+                <input type="text" id="d-lideres" placeholder='Lideres do motor' defaultValue={data.lideres} />
               </div><div className="input-box">
                 <label htmlFor="d-equipe">Equipe</label>
-                <input type="text" id="d-equipe" placeholder='Equipe participante do motor' defaultValue={modalObj.equipe} />
+                <input type="text" id="d-equipe" placeholder='Equipe participante do motor' defaultValue={data.equipe} />
               </div>
             </div>
             <h3>Financeiro</h3>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-qtd_empresas_atendidas">№ de empresas atendidas</label>
-                <input type="text" id="d-qtd_empresas_atendidas" placeholder='Quantidade de empresas atendidas pelo motor' defaultValue={modalObj.qtd_empresas_atendidas} />
+                <input type="text" id="d-qtd_empresas_atendidas" placeholder='Quantidade de empresas atendidas pelo motor' defaultValue={data.qtd_empresas_atendidas} />
               </div><div className="input-box">
                 <label htmlFor="d-faturamento">Faturamento total</label>
-                <input type="text" id="d-faturamento" placeholder='Faturamento total do motor' defaultValue={modalObj.faturamento} />
+                <input type="text" id="d-faturamento" placeholder='Faturamento total do motor' defaultValue={data.faturamento} />
               </div>
             </div>
           </>
@@ -252,9 +209,9 @@ export function Modal({
         </header>
         <section className="modal-content">
           <div className='left-div'>
-            <h2>{`Modal de ${modalObj.tipo}`}</h2>
+            <h2>{`Modal de ${DimensaoEnum[modalType]}`}</h2>
             <div className='modal-form'>
-              {renderSwitch(modalObj)}
+              {renderSwitch(modalType)}
             </div>
           </div>
           <TextEditor value={value} onChange={onChange} />

@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Disciplina {
+  id                  Int      @id @default(autoincrement())
+  nome                String
+  coordenador         String
+  semestre            String
+  codigo              String   @unique
+  alunos_matriculados String[]
+  alunos_aprovados    String[]
+}
+
+model Evento {
+  id                   Int      @id @default(autoincrement())
+  nome                 String
+  descricao            String
+  data_inicio          DateTime
+  duracao              String
+  custo                Float
+  receita              Float
+  publico_participante String[]
+  qtd_publico          Int
+  equipe               String[]
+  coordenadores        String[]
+  parceiros            String[]
+}
+
+model Motor {
+  id                     Int      @id @default(autoincrement())
+  nome                   String
+  descricao              String
+  projetos               String[]
+  motor_tipo             String
+  data_criacao           String
+  lideres                String[]
+  equipe                 String[]
+  qtd_empresas_atendidas Int
+  faturamento            Float
+}
+
+model Negocio {
+  id                Int      @id @default(autoincrement())
+  nome              String
+  area_atuacao      String
+  faturamento_anual Float
+  ano_criacao       DateTime
+  fundadores        String[]
+  porte             String
+}

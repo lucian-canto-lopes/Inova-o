@@ -24,7 +24,7 @@ export default function DimensoesLayout({
   }
 
   const sBGroups = [
-    { title: "Dimensões", items: ["Disciplina", "Negócios", "Eventos", "Motores"] }
+    { title: "Dimensões", items: ["Disciplinas", "Negócios", "Eventos", "Motores"] }
   ]
 
   return (
