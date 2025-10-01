@@ -14,8 +14,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Dimensao {
+  id                 Int                 @id @default(autoincrement())
+  tipo               String
+  Dimensao_DimensaoA Dimensao_Dimensao[] @relation("DimensaoA")
+  Dimensao_DimensaoB Dimensao_Dimensao[] @relation("DimensaoB")
+  Disciplina         Disciplina?
+  Evento             Evento?
+  Motor              Motor?
+  Negocio            Negocio?
+}
+
+model Dimensao_Dimensao {
+  dimensaoA   Dimensao @relation("DimensaoA", fields: [dimensaoAId], references: [id])
+  dimensaoAId Int
+  dimensaoB   Dimensao @relation("DimensaoB", fields: [dimensaoBId], references: [id])
+  dimensaoBId Int
+
+  @@id([dimensaoAId, dimensaoBId])
+}
+
 model Disciplina {
-  id                  Int      @id @default(autoincrement())
+  dimensao            Dimensao @relation(fields: [dimensaoId], references: [id])
+  dimensaoId          Int      @id @unique
   nome                String
   coordenador         String
   semestre            String
@@ -25,7 +46,8 @@ model Disciplina {
 }
 
 model Evento {
-  id                   Int      @id @default(autoincrement())
+  dimensao             Dimensao @relation(fields: [dimensaoId], references: [id])
+  dimensaoId           Int      @id @unique
   nome                 String
   descricao            String
   data_inicio          DateTime
@@ -40,7 +62,8 @@ model Evento {
 }
 
 model Motor {
-  id                     Int      @id @default(autoincrement())
+  dimensao               Dimensao @relation(fields: [dimensaoId], references: [id])
+  dimensaoId             Int      @id @unique
   nome                   String
   descricao              String
   projetos               String[]
@@ -53,7 +76,8 @@ model Motor {
 }
 
 model Negocio {
-  id                Int      @id @default(autoincrement())
+  dimensao          Dimensao @relation(fields: [dimensaoId], references: [id])
+  dimensaoId        Int      @id @unique
   nome              String
   area_atuacao      String
   faturamento_anual Float

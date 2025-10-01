@@ -3,6 +3,7 @@ import { FaX } from 'react-icons/fa6';
 import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import '../css/Modal.css';
 import { TextEditor } from "./TextEditor";
+import { useRef } from 'react';
 
 enum DimensaoEnum {
   disciplinas = "Disciplinas",
@@ -35,16 +36,16 @@ export function Modal({
           <>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
-              <input type="text" id="d-nome" placeholder='Nome da disciplina' defaultValue={data.nome} />
+              <input type="text" id="d-nome" name='nome' placeholder='Nome da disciplina' defaultValue={data.nome} />
             </div>
             <div className="input-box">
               <label htmlFor="d-coordenador">Coordenador</label>
-              <input type="text" id="d-coordenador" placeholder='Coordenador da Disciplina' defaultValue={data.coordenador} />
+              <input type="text" id="d-coordenador" name='coordenador' placeholder='Coordenador da Disciplina' defaultValue={data.coordenador} />
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-semestre">Semestre</label>
-                <input type="text" id="d-semestre" placeholder='2025.1' defaultValue={data.semestre} />
+                <input type="text" id="d-semestre" name='semestre' placeholder='2025.1' defaultValue={data.semestre} />
               </div><div className="input-box">
                 <label htmlFor="d-codigo">Código</label>
                 <input type="text" id="d-codigo" placeholder='Código da disciplina' defaultValue={data.codigo} />
@@ -53,12 +54,12 @@ export function Modal({
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-a-matriculados">Alunos Matriculados</label>
-                <input type="text" id="d-a-matriculados" defaultValue={data.alunos_matriculados?.map((aluno: any) => {
+                <input type="text" id="d-a-matriculados" name='alunos_matriculados' defaultValue={data.alunos_matriculados?.map((aluno: any) => {
                   return ` ${aluno}`
                 })} />
               </div><div className="input-box">
                 <label htmlFor="d-a-aprovados">Alunos Aprovados</label>
-                <input type="text" id="d-a-aprovados" defaultValue={data.alunos_aprovados?.map((aluno: any) => {
+                <input type="text" id="d-a-aprovados" name='alunos_aprovados' defaultValue={data.alunos_aprovados?.map((aluno: any) => {
                   return ` ${aluno}`
                 })} />
               </div>
@@ -70,49 +71,49 @@ export function Modal({
           <>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
-              <input type="text" id="d-nome" placeholder='Nome do evento' defaultValue={data.nome} />
+              <input type="text" id="d-nome" name='nome' placeholder='Nome do evento' defaultValue={data.nome} />
             </div>
             <div className="input-box">
               <label htmlFor="d-descricao">Descrição</label>
-              <input type="text" id="d-descricao" placeholder='Descrição do evento' defaultValue={data.descricao} />
+              <input type="text" id="d-descricao" name='descricao' placeholder='Descrição do evento' defaultValue={data.descricao} />
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-data_inicio">Data de Início</label>
-                <input type="text" id="d-data_inicio" placeholder='Data de início' defaultValue={data.data_inicio} />
+                <input type="text" id="d-data_inicio" name='data_inicio' placeholder='Data de início' defaultValue={data.data_inicio} />
               </div><div className="input-box">
                 <label htmlFor="d-duracao">Duração</label>
-                <input type="text" id="d-duracao" placeholder='Duração do evento' defaultValue={data.duracao} />
+                <input type="text" id="d-duracao" name='duracao' placeholder='Duração do evento' defaultValue={data.duracao} />
               </div>
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-custo">Custo</label>
-                <input type="text" id="d-custo" placeholder='Custo do evento' defaultValue={data.custo} />
+                <input type="text" id="d-custo" name='custo' placeholder='Custo do evento' defaultValue={data.custo} />
               </div><div className="input-box">
                 <label htmlFor="d-receita">Receita</label>
-                <input type="text" id="d-receita" placeholder='Receita do Evento' defaultValue={data.receita} />
+                <input type="text" id="d-receita" name='receita' placeholder='Receita do Evento' defaultValue={data.receita} />
               </div>
             </div>
             <div className="input-box">
               <label htmlFor="d-publico_participante">Público Participante</label>
-              <input type="text" id="d-publico_participante" placeholder='Pessoas envolvidas no evento' defaultValue={data.publico_participante} />
+              <input type="text" id="d-publico_participante" name='publico_participante' placeholder='Pessoas envolvidas no evento' defaultValue={data.publico_participante?.map((publico: any) => ` ${publico}`)} />
             </div>
             <div className="input-box">
               <label htmlFor="d-qtd_publico">Quandidade de público</label>
-              <input type="text" id="d-qtd_publico" placeholder='Quantidade de público do evento' defaultValue={data.qtd_publico} />
+              <input type="text" id="d-qtd_publico" name='qtd_publico' placeholder='Quantidade de público do evento' defaultValue={data.qtd_publico} />
             </div>
             <div className="input-box">
               <label htmlFor="d-equipe">Equipe de organização</label>
-              <input type="text" id="d-equipe" placeholder='Equipe de organização do evento' defaultValue={data.equipe} />
+              <input type="text" id="d-equipe" name='equipe' placeholder='Equipe de organização do evento' defaultValue={data.equipe?.map((membro: any) => ` ${membro}`)} />
             </div>
             <div className="input-box">
               <label htmlFor="d-coordenadores">Coordenadores</label>
-              <input type="text" id="d-coordenadores" placeholder='Coordenadores do evento' defaultValue={data.coordenadores} />
+              <input type="text" id="d-coordenadores" name='coordenadores' placeholder='Coordenadores do evento' defaultValue={data.coordenadores?.map((coordenador: any) => ` ${coordenador}`)} />
             </div>
             <div className="input-box">
               <label htmlFor="d-parceiros">Parceiros</label>
-              <input type="text" id="d-parceiros" placeholder='Contribuidores do evento' defaultValue={data.parceiros} />
+              <input type="text" id="d-parceiros" name='parceiros' placeholder='Contribuidores do evento' defaultValue={data.parceiros?.map((parceiro: any) => ` ${parceiro}`)} />
             </div>
           </>
         )
@@ -121,30 +122,30 @@ export function Modal({
           <>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
-              <input type="text" id="d-nome" placeholder='Nome do nogócio' defaultValue={data.nome} />
+              <input type="text" id="d-nome" name='nome' placeholder='Nome do nogócio' defaultValue={data.nome} />
             </div>
             <div className="input-box">
               <label htmlFor="d-area_atuacao">Área de atuação</label>
-              <input type="text" id="d-area_atuacao" placeholder='Área de atuação do nogócio' defaultValue={data.area_atuacao} />
+              <input type="text" id="d-area_atuacao" name='area_atuacao' placeholder='Área de atuação do nogócio' defaultValue={data.area_atuacao} />
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-faturamento_anual">Faturamento anual</label>
-                <input type="text" id="d-faturamento_anual" placeholder='Faturamento anual do negócio' defaultValue={data.faturamento_anual} />
+                <input type="text" id="d-faturamento_anual" name='faturamento_anual' placeholder='Faturamento anual do negócio' defaultValue={data.faturamento_anual} />
               </div><div className="input-box">
                 <label htmlFor="d-ano_criacao">Ano de criação</label>
-                <input type="text" id="d-ano_criacao" placeholder='Ano de criação do nogócio' defaultValue={data.ano_criacao} />
+                <input type="text" id="d-ano_criacao" name='ano_criacao' placeholder='Ano de criação do nogócio' defaultValue={data.ano_criacao} />
               </div>
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-fundadores">Fundadores</label>
-                <input type="text" id="d-fundadores" placeholder='Fundadores do nogócio' defaultValue={data.fundadores?.map((fundador: any) => {
+                <input type="text" id="d-fundadores" name='fundadores' placeholder='Fundadores do nogócio' defaultValue={data.fundadores?.map((fundador: any) => {
                   return ` ${fundador}`
                 })} />
               </div><div className="input-box">
                 <label htmlFor="d-porte">Porte do nogócio</label>
-                <input type="text" id="d-porte" defaultValue={data.porte} />
+                <input type="text" id="d-porte" name='porte' defaultValue={data.porte} />
               </div>
             </div>
           </>
@@ -154,42 +155,42 @@ export function Modal({
           <>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
-              <input type="text" id="d-nome" placeholder='Nome do motor' defaultValue={data.nome} />
+              <input type="text" id="d-nome" name='nome' placeholder='Nome do motor' defaultValue={data.nome} />
             </div>
             <div className="input-box">
               <label htmlFor="d-descricao">Descrição</label>
-              <input type="text" id="d-descricao" placeholder='Descrição do motor' defaultValue={data.descricao} />
+              <input type="text" id="d-descricao" name='descricao' placeholder='Descrição do motor' defaultValue={data.descricao} />
             </div>
             <div className="input-box">
               <label htmlFor="d-projetos">Projetos Executados</label>
-              <input type="text" id="d-projetos" placeholder='Projetos executados pelo motor' defaultValue={data.projetos} />
+              <input type="text" id="d-projetos" name='projetos' placeholder='Projetos executados pelo motor' defaultValue={data.projetos} />
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-motor_tipo">Tipo</label>
-                <input type="text" id="d-motor_tipo" placeholder='Tipo do Motor' defaultValue={data.motor_tipo} />
+                <input type="text" id="d-motor_tipo" name='motor_tipo' placeholder='Tipo do Motor' defaultValue={data.motor_tipo} />
               </div><div className="input-box">
                 <label htmlFor="d-data_criacao">Data de criação</label>
-                <input type="text" id="d-data_criacao" placeholder='Data de criação do motor' defaultValue={data.data_criacao} />
+                <input type="text" id="d-data_criacao" name='data_criacao' placeholder='Data de criação do motor' defaultValue={data.data_criacao} />
               </div>
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-lideres">Lideres</label>
-                <input type="text" id="d-lideres" placeholder='Lideres do motor' defaultValue={data.lideres} />
+                <input type="text" id="d-lideres" name='lideres' placeholder='Lideres do motor' defaultValue={data.lideres} />
               </div><div className="input-box">
                 <label htmlFor="d-equipe">Equipe</label>
-                <input type="text" id="d-equipe" placeholder='Equipe participante do motor' defaultValue={data.equipe} />
+                <input type="text" id="d-equipe" name='equipe' placeholder='Equipe participante do motor' defaultValue={data.equipe} />
               </div>
             </div>
             <h3>Financeiro</h3>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-qtd_empresas_atendidas">№ de empresas atendidas</label>
-                <input type="text" id="d-qtd_empresas_atendidas" placeholder='Quantidade de empresas atendidas pelo motor' defaultValue={data.qtd_empresas_atendidas} />
+                <input type="text" id="d-qtd_empresas_atendidas" name='qtd_empresas_atendidas' placeholder='Quantidade de empresas atendidas pelo motor' defaultValue={data.qtd_empresas_atendidas} />
               </div><div className="input-box">
                 <label htmlFor="d-faturamento">Faturamento total</label>
-                <input type="text" id="d-faturamento" placeholder='Faturamento total do motor' defaultValue={data.faturamento} />
+                <input type="text" id="d-faturamento" name='faturamento' placeholder='Faturamento total do motor' defaultValue={data.faturamento} />
               </div>
             </div>
           </>
@@ -199,20 +200,77 @@ export function Modal({
     }
   }
 
+  const formRef = useRef<HTMLFormElement>(null);
+  async function handleSave() {
+    if (!formRef.current) return console.error("Não foi possível acessar o formulário");
+
+    const formData = new FormData(formRef.current);
+    const rawdata = Object.fromEntries(formData.entries());
+    let data: any = {}
+
+    switch (modalType) {
+      case "disciplinas":
+        data = {
+          ...rawdata,
+          alunos_matriculados: rawdata.alunos_matriculados
+          ? rawdata.alunos_matriculados.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
+          : [],
+          alunos_aprovados: rawdata.alunos_aprovados
+          ? rawdata.alunos_aprovados.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
+          : []
+        };
+        break;
+
+      case "eventos":
+        data = {
+          ...rawdata,
+          publico_participante: rawdata.publico_participante
+          ? rawdata.publico_participante.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
+          : [],
+          equipe: rawdata.equipe
+          ? rawdata.equipe.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
+          : [],
+          coordenadores: rawdata.coordenadores
+          ? rawdata.coordenadores.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
+          : [],
+          parceiros: rawdata.parceiros
+          ? rawdata.parceiros.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
+          : []
+        };
+        break;
+
+      case "negocios":
+        data = {
+          ...rawdata,
+          fundadores: rawdata.fundadores
+          ? rawdata.fundadores.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
+          : []
+        };
+        break;
+
+      default:
+        data = {
+          ...rawdata
+        };
+        break;
+    }
+    console.log(value);
+  }
+
   return (
     <section className="modal-bg">
       <div className="modal">
         <header>
-          <FaRegSave />
+          <FaRegSave onClick={handleSave} />
           <FaRegTrashAlt />
           <FaX onClick={closeModal} />
         </header>
         <section className="modal-content">
           <div className='left-div'>
             <h2>{`Modal de ${DimensaoEnum[modalType]}`}</h2>
-            <div className='modal-form'>
+            <form ref={formRef} className='modal-form'>
               {renderSwitch(modalType)}
-            </div>
+            </form>
           </div>
           <TextEditor value={value} onChange={onChange} />
         </section>

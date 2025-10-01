@@ -14,7 +14,8 @@
   transform: translate(-50%, -50%);
   background-color: white;
   border-radius: 20px;
-  width: 1330px;
+  max-width: 1330px;
+  width: 100%;
   height: 800px;
   padding: 20px 40px 40px 40px;
   z-index: 1;
@@ -72,8 +73,11 @@
 }
 
 .left-div {
-  max-width: 620px;
+  max-width: 50%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .columns {
@@ -106,6 +110,7 @@
 
 .quill {
   width: 100%;
+  max-width: 50%;
   display: flex;
   flex-direction: column;
 

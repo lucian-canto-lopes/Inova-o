@@ -92,8 +92,18 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.DisciplinaScalarFieldEnum = {
+exports.Prisma.DimensaoScalarFieldEnum = {
   id: 'id',
+  tipo: 'tipo'
+};
+
+exports.Prisma.Dimensao_DimensaoScalarFieldEnum = {
+  dimensaoAId: 'dimensaoAId',
+  dimensaoBId: 'dimensaoBId'
+};
+
+exports.Prisma.DisciplinaScalarFieldEnum = {
+  dimensaoId: 'dimensaoId',
   nome: 'nome',
   coordenador: 'coordenador',
   semestre: 'semestre',
@@ -103,7 +113,7 @@ exports.Prisma.DisciplinaScalarFieldEnum = {
 };
 
 exports.Prisma.EventoScalarFieldEnum = {
-  id: 'id',
+  dimensaoId: 'dimensaoId',
   nome: 'nome',
   descricao: 'descricao',
   data_inicio: 'data_inicio',
@@ -118,7 +128,7 @@ exports.Prisma.EventoScalarFieldEnum = {
 };
 
 exports.Prisma.MotorScalarFieldEnum = {
-  id: 'id',
+  dimensaoId: 'dimensaoId',
   nome: 'nome',
   descricao: 'descricao',
   projetos: 'projetos',
@@ -131,7 +141,7 @@ exports.Prisma.MotorScalarFieldEnum = {
 };
 
 exports.Prisma.NegocioScalarFieldEnum = {
-  id: 'id',
+  dimensaoId: 'dimensaoId',
   nome: 'nome',
   area_atuacao: 'area_atuacao',
   faturamento_anual: 'faturamento_anual',
@@ -152,6 +162,8 @@ exports.Prisma.QueryMode = {
 
 
 exports.Prisma.ModelName = {
+  Dimensao: 'Dimensao',
+  Dimensao_Dimensao: 'Dimensao_Dimensao',
   Disciplina: 'Disciplina',
   Evento: 'Evento',
   Motor: 'Motor',
@@ -186,7 +198,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -204,13 +216,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Disciplina {\n  id                  Int      @id @default(autoincrement())\n  nome                String\n  coordenador         String\n  semestre            String\n  codigo              String   @unique\n  alunos_matriculados String[]\n  alunos_aprovados    String[]\n}\n\nmodel Evento {\n  id                   Int      @id @default(autoincrement())\n  nome                 String\n  descricao            String\n  data_inicio          DateTime\n  duracao              String\n  custo                Float\n  receita              Float\n  publico_participante String[]\n  qtd_publico          Int\n  equipe               String[]\n  coordenadores        String[]\n  parceiros            String[]\n}\n\nmodel Motor {\n  id                     Int      @id @default(autoincrement())\n  nome                   String\n  descricao              String\n  projetos               String[]\n  motor_tipo             String\n  data_criacao           String\n  lideres                String[]\n  equipe                 String[]\n  qtd_empresas_atendidas Int\n  faturamento            Float\n}\n\nmodel Negocio {\n  id                Int      @id @default(autoincrement())\n  nome              String\n  area_atuacao      String\n  faturamento_anual Float\n  ano_criacao       DateTime\n  fundadores        String[]\n  porte             String\n}\n",
-  "inlineSchemaHash": "dff5aeb14f27ba1407474287ff6ebf0dbb611ca62ef8ca5d5200fef72a5739c8",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Dimensao {\n  id                 Int                 @id @default(autoincrement())\n  tipo               String\n  Dimensao_DimensaoA Dimensao_Dimensao[] @relation(\"DimensaoA\")\n  Dimensao_DimensaoB Dimensao_Dimensao[] @relation(\"DimensaoB\")\n  Disciplina         Disciplina?\n  Evento             Evento?\n  Motor              Motor?\n  Negocio            Negocio?\n}\n\nmodel Dimensao_Dimensao {\n  dimensaoA   Dimensao @relation(\"DimensaoA\", fields: [dimensaoAId], references: [id])\n  dimensaoAId Int\n  dimensaoB   Dimensao @relation(\"DimensaoB\", fields: [dimensaoBId], references: [id])\n  dimensaoBId Int\n\n  @@id([dimensaoAId, dimensaoBId])\n}\n\nmodel Disciplina {\n  dimensao            Dimensao @relation(fields: [dimensaoId], references: [id])\n  dimensaoId          Int      @id @unique\n  nome                String\n  coordenador         String\n  semestre            String\n  codigo              String   @unique\n  alunos_matriculados String[]\n  alunos_aprovados    String[]\n}\n\nmodel Evento {\n  dimensao             Dimensao @relation(fields: [dimensaoId], references: [id])\n  dimensaoId           Int      @id @unique\n  nome                 String\n  descricao            String\n  data_inicio          DateTime\n  duracao              String\n  custo                Float\n  receita              Float\n  publico_participante String[]\n  qtd_publico          Int\n  equipe               String[]\n  coordenadores        String[]\n  parceiros            String[]\n}\n\nmodel Motor {\n  dimensao               Dimensao @relation(fields: [dimensaoId], references: [id])\n  dimensaoId             Int      @id @unique\n  nome                   String\n  descricao              String\n  projetos               String[]\n  motor_tipo             String\n  data_criacao           String\n  lideres                String[]\n  equipe                 String[]\n  qtd_empresas_atendidas Int\n  faturamento            Float\n}\n\nmodel Negocio {\n  dimensao          Dimensao @relation(fields: [dimensaoId], references: [id])\n  dimensaoId        Int      @id @unique\n  nome              String\n  area_atuacao      String\n  faturamento_anual Float\n  ano_criacao       DateTime\n  fundadores        String[]\n  porte             String\n}\n",
+  "inlineSchemaHash": "c61620e0e7b0e935c8b63f6c4748715f01c1ba30387b2383711bdee19d50238d",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Disciplina\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nome\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"coordenador\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"semestre\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"codigo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"alunos_matriculados\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"alunos_aprovados\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"Evento\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nome\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"descricao\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"data_inicio\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"duracao\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"custo\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"receita\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"publico_participante\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"qtd_publico\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"equipe\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"coordenadores\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"parceiros\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"Motor\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nome\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"descricao\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"projetos\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"motor_tipo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"data_criacao\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lideres\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"equipe\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"qtd_empresas_atendidas\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"faturamento\",\"kind\":\"scalar\",\"type\":\"Float\"}],\"dbName\":null},\"Negocio\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nome\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"area_atuacao\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"faturamento_anual\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"ano_criacao\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"fundadores\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"porte\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Dimensao\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"tipo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Dimensao_DimensaoA\",\"kind\":\"object\",\"type\":\"Dimensao_Dimensao\",\"relationName\":\"DimensaoA\"},{\"name\":\"Dimensao_DimensaoB\",\"kind\":\"object\",\"type\":\"Dimensao_Dimensao\",\"relationName\":\"DimensaoB\"},{\"name\":\"Disciplina\",\"kind\":\"object\",\"type\":\"Disciplina\",\"relationName\":\"DimensaoToDisciplina\"},{\"name\":\"Evento\",\"kind\":\"object\",\"type\":\"Evento\",\"relationName\":\"DimensaoToEvento\"},{\"name\":\"Motor\",\"kind\":\"object\",\"type\":\"Motor\",\"relationName\":\"DimensaoToMotor\"},{\"name\":\"Negocio\",\"kind\":\"object\",\"type\":\"Negocio\",\"relationName\":\"DimensaoToNegocio\"}],\"dbName\":null},\"Dimensao_Dimensao\":{\"fields\":[{\"name\":\"dimensaoA\",\"kind\":\"object\",\"type\":\"Dimensao\",\"relationName\":\"DimensaoA\"},{\"name\":\"dimensaoAId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"dimensaoB\",\"kind\":\"object\",\"type\":\"Dimensao\",\"relationName\":\"DimensaoB\"},{\"name\":\"dimensaoBId\",\"kind\":\"scalar\",\"type\":\"Int\"}],\"dbName\":null},\"Disciplina\":{\"fields\":[{\"name\":\"dimensao\",\"kind\":\"object\",\"type\":\"Dimensao\",\"relationName\":\"DimensaoToDisciplina\"},{\"name\":\"dimensaoId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nome\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"coordenador\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"semestre\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"codigo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"alunos_matriculados\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"alunos_aprovados\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"Evento\":{\"fields\":[{\"name\":\"dimensao\",\"kind\":\"object\",\"type\":\"Dimensao\",\"relationName\":\"DimensaoToEvento\"},{\"name\":\"dimensaoId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nome\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"descricao\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"data_inicio\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"duracao\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"custo\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"receita\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"publico_participante\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"qtd_publico\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"equipe\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"coordenadores\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"parceiros\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"Motor\":{\"fields\":[{\"name\":\"dimensao\",\"kind\":\"object\",\"type\":\"Dimensao\",\"relationName\":\"DimensaoToMotor\"},{\"name\":\"dimensaoId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nome\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"descricao\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"projetos\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"motor_tipo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"data_criacao\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lideres\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"equipe\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"qtd_empresas_atendidas\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"faturamento\",\"kind\":\"scalar\",\"type\":\"Float\"}],\"dbName\":null},\"Negocio\":{\"fields\":[{\"name\":\"dimensao\",\"kind\":\"object\",\"type\":\"Dimensao\",\"relationName\":\"DimensaoToNegocio\"},{\"name\":\"dimensaoId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nome\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"area_atuacao\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"faturamento_anual\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"ano_criacao\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"fundadores\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"porte\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

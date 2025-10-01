@@ -14,6 +14,16 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model Dimensao
+ * 
+ */
+export type Dimensao = $Result.DefaultSelection<Prisma.$DimensaoPayload>
+/**
+ * Model Dimensao_Dimensao
+ * 
+ */
+export type Dimensao_Dimensao = $Result.DefaultSelection<Prisma.$Dimensao_DimensaoPayload>
+/**
  * Model Disciplina
  * 
  */
@@ -41,8 +51,8 @@ export type Negocio = $Result.DefaultSelection<Prisma.$NegocioPayload>
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Disciplinas
- * const disciplinas = await prisma.disciplina.findMany()
+ * // Fetch zero or more Dimensaos
+ * const dimensaos = await prisma.dimensao.findMany()
  * ```
  *
  *
@@ -62,8 +72,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Disciplinas
-   * const disciplinas = await prisma.disciplina.findMany()
+   * // Fetch zero or more Dimensaos
+   * const dimensaos = await prisma.dimensao.findMany()
    * ```
    *
    *
@@ -153,6 +163,26 @@ export class PrismaClient<
   }>>
 
       /**
+   * `prisma.dimensao`: Exposes CRUD operations for the **Dimensao** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Dimensaos
+    * const dimensaos = await prisma.dimensao.findMany()
+    * ```
+    */
+  get dimensao(): Prisma.DimensaoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.dimensao_Dimensao`: Exposes CRUD operations for the **Dimensao_Dimensao** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Dimensao_Dimensaos
+    * const dimensao_Dimensaos = await prisma.dimensao_Dimensao.findMany()
+    * ```
+    */
+  get dimensao_Dimensao(): Prisma.Dimensao_DimensaoDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.disciplina`: Exposes CRUD operations for the **Disciplina** model.
     * Example usage:
     * ```ts
@@ -631,6 +661,8 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    Dimensao: 'Dimensao',
+    Dimensao_Dimensao: 'Dimensao_Dimensao',
     Disciplina: 'Disciplina',
     Evento: 'Evento',
     Motor: 'Motor',
@@ -653,10 +685,158 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "disciplina" | "evento" | "motor" | "negocio"
+      modelProps: "dimensao" | "dimensao_Dimensao" | "disciplina" | "evento" | "motor" | "negocio"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      Dimensao: {
+        payload: Prisma.$DimensaoPayload<ExtArgs>
+        fields: Prisma.DimensaoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DimensaoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DimensaoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DimensaoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DimensaoPayload>
+          }
+          findFirst: {
+            args: Prisma.DimensaoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DimensaoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DimensaoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DimensaoPayload>
+          }
+          findMany: {
+            args: Prisma.DimensaoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DimensaoPayload>[]
+          }
+          create: {
+            args: Prisma.DimensaoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DimensaoPayload>
+          }
+          createMany: {
+            args: Prisma.DimensaoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DimensaoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DimensaoPayload>[]
+          }
+          delete: {
+            args: Prisma.DimensaoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DimensaoPayload>
+          }
+          update: {
+            args: Prisma.DimensaoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DimensaoPayload>
+          }
+          deleteMany: {
+            args: Prisma.DimensaoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DimensaoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DimensaoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DimensaoPayload>[]
+          }
+          upsert: {
+            args: Prisma.DimensaoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DimensaoPayload>
+          }
+          aggregate: {
+            args: Prisma.DimensaoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDimensao>
+          }
+          groupBy: {
+            args: Prisma.DimensaoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DimensaoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DimensaoCountArgs<ExtArgs>
+            result: $Utils.Optional<DimensaoCountAggregateOutputType> | number
+          }
+        }
+      }
+      Dimensao_Dimensao: {
+        payload: Prisma.$Dimensao_DimensaoPayload<ExtArgs>
+        fields: Prisma.Dimensao_DimensaoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.Dimensao_DimensaoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Dimensao_DimensaoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.Dimensao_DimensaoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Dimensao_DimensaoPayload>
+          }
+          findFirst: {
+            args: Prisma.Dimensao_DimensaoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Dimensao_DimensaoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.Dimensao_DimensaoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Dimensao_DimensaoPayload>
+          }
+          findMany: {
+            args: Prisma.Dimensao_DimensaoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Dimensao_DimensaoPayload>[]
+          }
+          create: {
+            args: Prisma.Dimensao_DimensaoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Dimensao_DimensaoPayload>
+          }
+          createMany: {
+            args: Prisma.Dimensao_DimensaoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.Dimensao_DimensaoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Dimensao_DimensaoPayload>[]
+          }
+          delete: {
+            args: Prisma.Dimensao_DimensaoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Dimensao_DimensaoPayload>
+          }
+          update: {
+            args: Prisma.Dimensao_DimensaoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Dimensao_DimensaoPayload>
+          }
+          deleteMany: {
+            args: Prisma.Dimensao_DimensaoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.Dimensao_DimensaoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.Dimensao_DimensaoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Dimensao_DimensaoPayload>[]
+          }
+          upsert: {
+            args: Prisma.Dimensao_DimensaoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Dimensao_DimensaoPayload>
+          }
+          aggregate: {
+            args: Prisma.Dimensao_DimensaoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDimensao_Dimensao>
+          }
+          groupBy: {
+            args: Prisma.Dimensao_DimensaoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Dimensao_DimensaoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.Dimensao_DimensaoCountArgs<ExtArgs>
+            result: $Utils.Optional<Dimensao_DimensaoCountAggregateOutputType> | number
+          }
+        }
+      }
       Disciplina: {
         payload: Prisma.$DisciplinaPayload<ExtArgs>
         fields: Prisma.DisciplinaFieldRefs
@@ -1049,6 +1229,8 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
+    dimensao?: DimensaoOmit
+    dimensao_Dimensao?: Dimensao_DimensaoOmit
     disciplina?: DisciplinaOmit
     evento?: EventoOmit
     motor?: MotorOmit
@@ -1128,10 +1310,2299 @@ export namespace Prisma {
    */
 
 
+  /**
+   * Count Type DimensaoCountOutputType
+   */
+
+  export type DimensaoCountOutputType = {
+    Dimensao_DimensaoA: number
+    Dimensao_DimensaoB: number
+  }
+
+  export type DimensaoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Dimensao_DimensaoA?: boolean | DimensaoCountOutputTypeCountDimensao_DimensaoAArgs
+    Dimensao_DimensaoB?: boolean | DimensaoCountOutputTypeCountDimensao_DimensaoBArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DimensaoCountOutputType without action
+   */
+  export type DimensaoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DimensaoCountOutputType
+     */
+    select?: DimensaoCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DimensaoCountOutputType without action
+   */
+  export type DimensaoCountOutputTypeCountDimensao_DimensaoAArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: Dimensao_DimensaoWhereInput
+  }
+
+  /**
+   * DimensaoCountOutputType without action
+   */
+  export type DimensaoCountOutputTypeCountDimensao_DimensaoBArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: Dimensao_DimensaoWhereInput
+  }
+
 
   /**
    * Models
    */
+
+  /**
+   * Model Dimensao
+   */
+
+  export type AggregateDimensao = {
+    _count: DimensaoCountAggregateOutputType | null
+    _avg: DimensaoAvgAggregateOutputType | null
+    _sum: DimensaoSumAggregateOutputType | null
+    _min: DimensaoMinAggregateOutputType | null
+    _max: DimensaoMaxAggregateOutputType | null
+  }
+
+  export type DimensaoAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type DimensaoSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type DimensaoMinAggregateOutputType = {
+    id: number | null
+    tipo: string | null
+  }
+
+  export type DimensaoMaxAggregateOutputType = {
+    id: number | null
+    tipo: string | null
+  }
+
+  export type DimensaoCountAggregateOutputType = {
+    id: number
+    tipo: number
+    _all: number
+  }
+
+
+  export type DimensaoAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type DimensaoSumAggregateInputType = {
+    id?: true
+  }
+
+  export type DimensaoMinAggregateInputType = {
+    id?: true
+    tipo?: true
+  }
+
+  export type DimensaoMaxAggregateInputType = {
+    id?: true
+    tipo?: true
+  }
+
+  export type DimensaoCountAggregateInputType = {
+    id?: true
+    tipo?: true
+    _all?: true
+  }
+
+  export type DimensaoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Dimensao to aggregate.
+     */
+    where?: DimensaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dimensaos to fetch.
+     */
+    orderBy?: DimensaoOrderByWithRelationInput | DimensaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DimensaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dimensaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dimensaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Dimensaos
+    **/
+    _count?: true | DimensaoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DimensaoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DimensaoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DimensaoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DimensaoMaxAggregateInputType
+  }
+
+  export type GetDimensaoAggregateType<T extends DimensaoAggregateArgs> = {
+        [P in keyof T & keyof AggregateDimensao]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDimensao[P]>
+      : GetScalarType<T[P], AggregateDimensao[P]>
+  }
+
+
+
+
+  export type DimensaoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DimensaoWhereInput
+    orderBy?: DimensaoOrderByWithAggregationInput | DimensaoOrderByWithAggregationInput[]
+    by: DimensaoScalarFieldEnum[] | DimensaoScalarFieldEnum
+    having?: DimensaoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DimensaoCountAggregateInputType | true
+    _avg?: DimensaoAvgAggregateInputType
+    _sum?: DimensaoSumAggregateInputType
+    _min?: DimensaoMinAggregateInputType
+    _max?: DimensaoMaxAggregateInputType
+  }
+
+  export type DimensaoGroupByOutputType = {
+    id: number
+    tipo: string
+    _count: DimensaoCountAggregateOutputType | null
+    _avg: DimensaoAvgAggregateOutputType | null
+    _sum: DimensaoSumAggregateOutputType | null
+    _min: DimensaoMinAggregateOutputType | null
+    _max: DimensaoMaxAggregateOutputType | null
+  }
+
+  type GetDimensaoGroupByPayload<T extends DimensaoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DimensaoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DimensaoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DimensaoGroupByOutputType[P]>
+            : GetScalarType<T[P], DimensaoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DimensaoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tipo?: boolean
+    Dimensao_DimensaoA?: boolean | Dimensao$Dimensao_DimensaoAArgs<ExtArgs>
+    Dimensao_DimensaoB?: boolean | Dimensao$Dimensao_DimensaoBArgs<ExtArgs>
+    Disciplina?: boolean | Dimensao$DisciplinaArgs<ExtArgs>
+    Evento?: boolean | Dimensao$EventoArgs<ExtArgs>
+    Motor?: boolean | Dimensao$MotorArgs<ExtArgs>
+    Negocio?: boolean | Dimensao$NegocioArgs<ExtArgs>
+    _count?: boolean | DimensaoCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dimensao"]>
+
+  export type DimensaoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tipo?: boolean
+  }, ExtArgs["result"]["dimensao"]>
+
+  export type DimensaoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tipo?: boolean
+  }, ExtArgs["result"]["dimensao"]>
+
+  export type DimensaoSelectScalar = {
+    id?: boolean
+    tipo?: boolean
+  }
+
+  export type DimensaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tipo", ExtArgs["result"]["dimensao"]>
+  export type DimensaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Dimensao_DimensaoA?: boolean | Dimensao$Dimensao_DimensaoAArgs<ExtArgs>
+    Dimensao_DimensaoB?: boolean | Dimensao$Dimensao_DimensaoBArgs<ExtArgs>
+    Disciplina?: boolean | Dimensao$DisciplinaArgs<ExtArgs>
+    Evento?: boolean | Dimensao$EventoArgs<ExtArgs>
+    Motor?: boolean | Dimensao$MotorArgs<ExtArgs>
+    Negocio?: boolean | Dimensao$NegocioArgs<ExtArgs>
+    _count?: boolean | DimensaoCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DimensaoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type DimensaoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $DimensaoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Dimensao"
+    objects: {
+      Dimensao_DimensaoA: Prisma.$Dimensao_DimensaoPayload<ExtArgs>[]
+      Dimensao_DimensaoB: Prisma.$Dimensao_DimensaoPayload<ExtArgs>[]
+      Disciplina: Prisma.$DisciplinaPayload<ExtArgs> | null
+      Evento: Prisma.$EventoPayload<ExtArgs> | null
+      Motor: Prisma.$MotorPayload<ExtArgs> | null
+      Negocio: Prisma.$NegocioPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      tipo: string
+    }, ExtArgs["result"]["dimensao"]>
+    composites: {}
+  }
+
+  type DimensaoGetPayload<S extends boolean | null | undefined | DimensaoDefaultArgs> = $Result.GetResult<Prisma.$DimensaoPayload, S>
+
+  type DimensaoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DimensaoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DimensaoCountAggregateInputType | true
+    }
+
+  export interface DimensaoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Dimensao'], meta: { name: 'Dimensao' } }
+    /**
+     * Find zero or one Dimensao that matches the filter.
+     * @param {DimensaoFindUniqueArgs} args - Arguments to find a Dimensao
+     * @example
+     * // Get one Dimensao
+     * const dimensao = await prisma.dimensao.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DimensaoFindUniqueArgs>(args: SelectSubset<T, DimensaoFindUniqueArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Dimensao that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DimensaoFindUniqueOrThrowArgs} args - Arguments to find a Dimensao
+     * @example
+     * // Get one Dimensao
+     * const dimensao = await prisma.dimensao.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DimensaoFindUniqueOrThrowArgs>(args: SelectSubset<T, DimensaoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Dimensao that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DimensaoFindFirstArgs} args - Arguments to find a Dimensao
+     * @example
+     * // Get one Dimensao
+     * const dimensao = await prisma.dimensao.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DimensaoFindFirstArgs>(args?: SelectSubset<T, DimensaoFindFirstArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Dimensao that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DimensaoFindFirstOrThrowArgs} args - Arguments to find a Dimensao
+     * @example
+     * // Get one Dimensao
+     * const dimensao = await prisma.dimensao.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DimensaoFindFirstOrThrowArgs>(args?: SelectSubset<T, DimensaoFindFirstOrThrowArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Dimensaos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DimensaoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Dimensaos
+     * const dimensaos = await prisma.dimensao.findMany()
+     * 
+     * // Get first 10 Dimensaos
+     * const dimensaos = await prisma.dimensao.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dimensaoWithIdOnly = await prisma.dimensao.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DimensaoFindManyArgs>(args?: SelectSubset<T, DimensaoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Dimensao.
+     * @param {DimensaoCreateArgs} args - Arguments to create a Dimensao.
+     * @example
+     * // Create one Dimensao
+     * const Dimensao = await prisma.dimensao.create({
+     *   data: {
+     *     // ... data to create a Dimensao
+     *   }
+     * })
+     * 
+     */
+    create<T extends DimensaoCreateArgs>(args: SelectSubset<T, DimensaoCreateArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Dimensaos.
+     * @param {DimensaoCreateManyArgs} args - Arguments to create many Dimensaos.
+     * @example
+     * // Create many Dimensaos
+     * const dimensao = await prisma.dimensao.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DimensaoCreateManyArgs>(args?: SelectSubset<T, DimensaoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Dimensaos and returns the data saved in the database.
+     * @param {DimensaoCreateManyAndReturnArgs} args - Arguments to create many Dimensaos.
+     * @example
+     * // Create many Dimensaos
+     * const dimensao = await prisma.dimensao.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Dimensaos and only return the `id`
+     * const dimensaoWithIdOnly = await prisma.dimensao.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DimensaoCreateManyAndReturnArgs>(args?: SelectSubset<T, DimensaoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Dimensao.
+     * @param {DimensaoDeleteArgs} args - Arguments to delete one Dimensao.
+     * @example
+     * // Delete one Dimensao
+     * const Dimensao = await prisma.dimensao.delete({
+     *   where: {
+     *     // ... filter to delete one Dimensao
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DimensaoDeleteArgs>(args: SelectSubset<T, DimensaoDeleteArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Dimensao.
+     * @param {DimensaoUpdateArgs} args - Arguments to update one Dimensao.
+     * @example
+     * // Update one Dimensao
+     * const dimensao = await prisma.dimensao.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DimensaoUpdateArgs>(args: SelectSubset<T, DimensaoUpdateArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Dimensaos.
+     * @param {DimensaoDeleteManyArgs} args - Arguments to filter Dimensaos to delete.
+     * @example
+     * // Delete a few Dimensaos
+     * const { count } = await prisma.dimensao.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DimensaoDeleteManyArgs>(args?: SelectSubset<T, DimensaoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Dimensaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DimensaoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Dimensaos
+     * const dimensao = await prisma.dimensao.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DimensaoUpdateManyArgs>(args: SelectSubset<T, DimensaoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Dimensaos and returns the data updated in the database.
+     * @param {DimensaoUpdateManyAndReturnArgs} args - Arguments to update many Dimensaos.
+     * @example
+     * // Update many Dimensaos
+     * const dimensao = await prisma.dimensao.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Dimensaos and only return the `id`
+     * const dimensaoWithIdOnly = await prisma.dimensao.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DimensaoUpdateManyAndReturnArgs>(args: SelectSubset<T, DimensaoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Dimensao.
+     * @param {DimensaoUpsertArgs} args - Arguments to update or create a Dimensao.
+     * @example
+     * // Update or create a Dimensao
+     * const dimensao = await prisma.dimensao.upsert({
+     *   create: {
+     *     // ... data to create a Dimensao
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Dimensao we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DimensaoUpsertArgs>(args: SelectSubset<T, DimensaoUpsertArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Dimensaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DimensaoCountArgs} args - Arguments to filter Dimensaos to count.
+     * @example
+     * // Count the number of Dimensaos
+     * const count = await prisma.dimensao.count({
+     *   where: {
+     *     // ... the filter for the Dimensaos we want to count
+     *   }
+     * })
+    **/
+    count<T extends DimensaoCountArgs>(
+      args?: Subset<T, DimensaoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DimensaoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Dimensao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DimensaoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DimensaoAggregateArgs>(args: Subset<T, DimensaoAggregateArgs>): Prisma.PrismaPromise<GetDimensaoAggregateType<T>>
+
+    /**
+     * Group by Dimensao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DimensaoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DimensaoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DimensaoGroupByArgs['orderBy'] }
+        : { orderBy?: DimensaoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DimensaoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDimensaoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Dimensao model
+   */
+  readonly fields: DimensaoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Dimensao.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DimensaoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    Dimensao_DimensaoA<T extends Dimensao$Dimensao_DimensaoAArgs<ExtArgs> = {}>(args?: Subset<T, Dimensao$Dimensao_DimensaoAArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Dimensao_DimensaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Dimensao_DimensaoB<T extends Dimensao$Dimensao_DimensaoBArgs<ExtArgs> = {}>(args?: Subset<T, Dimensao$Dimensao_DimensaoBArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Dimensao_DimensaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Disciplina<T extends Dimensao$DisciplinaArgs<ExtArgs> = {}>(args?: Subset<T, Dimensao$DisciplinaArgs<ExtArgs>>): Prisma__DisciplinaClient<$Result.GetResult<Prisma.$DisciplinaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    Evento<T extends Dimensao$EventoArgs<ExtArgs> = {}>(args?: Subset<T, Dimensao$EventoArgs<ExtArgs>>): Prisma__EventoClient<$Result.GetResult<Prisma.$EventoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    Motor<T extends Dimensao$MotorArgs<ExtArgs> = {}>(args?: Subset<T, Dimensao$MotorArgs<ExtArgs>>): Prisma__MotorClient<$Result.GetResult<Prisma.$MotorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    Negocio<T extends Dimensao$NegocioArgs<ExtArgs> = {}>(args?: Subset<T, Dimensao$NegocioArgs<ExtArgs>>): Prisma__NegocioClient<$Result.GetResult<Prisma.$NegocioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Dimensao model
+   */
+  interface DimensaoFieldRefs {
+    readonly id: FieldRef<"Dimensao", 'Int'>
+    readonly tipo: FieldRef<"Dimensao", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Dimensao findUnique
+   */
+  export type DimensaoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao
+     */
+    select?: DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao
+     */
+    omit?: DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DimensaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Dimensao to fetch.
+     */
+    where: DimensaoWhereUniqueInput
+  }
+
+  /**
+   * Dimensao findUniqueOrThrow
+   */
+  export type DimensaoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao
+     */
+    select?: DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao
+     */
+    omit?: DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DimensaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Dimensao to fetch.
+     */
+    where: DimensaoWhereUniqueInput
+  }
+
+  /**
+   * Dimensao findFirst
+   */
+  export type DimensaoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao
+     */
+    select?: DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao
+     */
+    omit?: DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DimensaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Dimensao to fetch.
+     */
+    where?: DimensaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dimensaos to fetch.
+     */
+    orderBy?: DimensaoOrderByWithRelationInput | DimensaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Dimensaos.
+     */
+    cursor?: DimensaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dimensaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dimensaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Dimensaos.
+     */
+    distinct?: DimensaoScalarFieldEnum | DimensaoScalarFieldEnum[]
+  }
+
+  /**
+   * Dimensao findFirstOrThrow
+   */
+  export type DimensaoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao
+     */
+    select?: DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao
+     */
+    omit?: DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DimensaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Dimensao to fetch.
+     */
+    where?: DimensaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dimensaos to fetch.
+     */
+    orderBy?: DimensaoOrderByWithRelationInput | DimensaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Dimensaos.
+     */
+    cursor?: DimensaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dimensaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dimensaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Dimensaos.
+     */
+    distinct?: DimensaoScalarFieldEnum | DimensaoScalarFieldEnum[]
+  }
+
+  /**
+   * Dimensao findMany
+   */
+  export type DimensaoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao
+     */
+    select?: DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao
+     */
+    omit?: DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DimensaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Dimensaos to fetch.
+     */
+    where?: DimensaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dimensaos to fetch.
+     */
+    orderBy?: DimensaoOrderByWithRelationInput | DimensaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Dimensaos.
+     */
+    cursor?: DimensaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dimensaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dimensaos.
+     */
+    skip?: number
+    distinct?: DimensaoScalarFieldEnum | DimensaoScalarFieldEnum[]
+  }
+
+  /**
+   * Dimensao create
+   */
+  export type DimensaoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao
+     */
+    select?: DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao
+     */
+    omit?: DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DimensaoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Dimensao.
+     */
+    data: XOR<DimensaoCreateInput, DimensaoUncheckedCreateInput>
+  }
+
+  /**
+   * Dimensao createMany
+   */
+  export type DimensaoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Dimensaos.
+     */
+    data: DimensaoCreateManyInput | DimensaoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Dimensao createManyAndReturn
+   */
+  export type DimensaoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao
+     */
+    select?: DimensaoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao
+     */
+    omit?: DimensaoOmit<ExtArgs> | null
+    /**
+     * The data used to create many Dimensaos.
+     */
+    data: DimensaoCreateManyInput | DimensaoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Dimensao update
+   */
+  export type DimensaoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao
+     */
+    select?: DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao
+     */
+    omit?: DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DimensaoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Dimensao.
+     */
+    data: XOR<DimensaoUpdateInput, DimensaoUncheckedUpdateInput>
+    /**
+     * Choose, which Dimensao to update.
+     */
+    where: DimensaoWhereUniqueInput
+  }
+
+  /**
+   * Dimensao updateMany
+   */
+  export type DimensaoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Dimensaos.
+     */
+    data: XOR<DimensaoUpdateManyMutationInput, DimensaoUncheckedUpdateManyInput>
+    /**
+     * Filter which Dimensaos to update
+     */
+    where?: DimensaoWhereInput
+    /**
+     * Limit how many Dimensaos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Dimensao updateManyAndReturn
+   */
+  export type DimensaoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao
+     */
+    select?: DimensaoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao
+     */
+    omit?: DimensaoOmit<ExtArgs> | null
+    /**
+     * The data used to update Dimensaos.
+     */
+    data: XOR<DimensaoUpdateManyMutationInput, DimensaoUncheckedUpdateManyInput>
+    /**
+     * Filter which Dimensaos to update
+     */
+    where?: DimensaoWhereInput
+    /**
+     * Limit how many Dimensaos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Dimensao upsert
+   */
+  export type DimensaoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao
+     */
+    select?: DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao
+     */
+    omit?: DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DimensaoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Dimensao to update in case it exists.
+     */
+    where: DimensaoWhereUniqueInput
+    /**
+     * In case the Dimensao found by the `where` argument doesn't exist, create a new Dimensao with this data.
+     */
+    create: XOR<DimensaoCreateInput, DimensaoUncheckedCreateInput>
+    /**
+     * In case the Dimensao was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DimensaoUpdateInput, DimensaoUncheckedUpdateInput>
+  }
+
+  /**
+   * Dimensao delete
+   */
+  export type DimensaoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao
+     */
+    select?: DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao
+     */
+    omit?: DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DimensaoInclude<ExtArgs> | null
+    /**
+     * Filter which Dimensao to delete.
+     */
+    where: DimensaoWhereUniqueInput
+  }
+
+  /**
+   * Dimensao deleteMany
+   */
+  export type DimensaoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Dimensaos to delete
+     */
+    where?: DimensaoWhereInput
+    /**
+     * Limit how many Dimensaos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Dimensao.Dimensao_DimensaoA
+   */
+  export type Dimensao$Dimensao_DimensaoAArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoInclude<ExtArgs> | null
+    where?: Dimensao_DimensaoWhereInput
+    orderBy?: Dimensao_DimensaoOrderByWithRelationInput | Dimensao_DimensaoOrderByWithRelationInput[]
+    cursor?: Dimensao_DimensaoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Dimensao_DimensaoScalarFieldEnum | Dimensao_DimensaoScalarFieldEnum[]
+  }
+
+  /**
+   * Dimensao.Dimensao_DimensaoB
+   */
+  export type Dimensao$Dimensao_DimensaoBArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoInclude<ExtArgs> | null
+    where?: Dimensao_DimensaoWhereInput
+    orderBy?: Dimensao_DimensaoOrderByWithRelationInput | Dimensao_DimensaoOrderByWithRelationInput[]
+    cursor?: Dimensao_DimensaoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Dimensao_DimensaoScalarFieldEnum | Dimensao_DimensaoScalarFieldEnum[]
+  }
+
+  /**
+   * Dimensao.Disciplina
+   */
+  export type Dimensao$DisciplinaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Disciplina
+     */
+    select?: DisciplinaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Disciplina
+     */
+    omit?: DisciplinaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisciplinaInclude<ExtArgs> | null
+    where?: DisciplinaWhereInput
+  }
+
+  /**
+   * Dimensao.Evento
+   */
+  export type Dimensao$EventoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Evento
+     */
+    select?: EventoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Evento
+     */
+    omit?: EventoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventoInclude<ExtArgs> | null
+    where?: EventoWhereInput
+  }
+
+  /**
+   * Dimensao.Motor
+   */
+  export type Dimensao$MotorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Motor
+     */
+    select?: MotorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Motor
+     */
+    omit?: MotorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorInclude<ExtArgs> | null
+    where?: MotorWhereInput
+  }
+
+  /**
+   * Dimensao.Negocio
+   */
+  export type Dimensao$NegocioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Negocio
+     */
+    select?: NegocioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Negocio
+     */
+    omit?: NegocioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NegocioInclude<ExtArgs> | null
+    where?: NegocioWhereInput
+  }
+
+  /**
+   * Dimensao without action
+   */
+  export type DimensaoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao
+     */
+    select?: DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao
+     */
+    omit?: DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DimensaoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Dimensao_Dimensao
+   */
+
+  export type AggregateDimensao_Dimensao = {
+    _count: Dimensao_DimensaoCountAggregateOutputType | null
+    _avg: Dimensao_DimensaoAvgAggregateOutputType | null
+    _sum: Dimensao_DimensaoSumAggregateOutputType | null
+    _min: Dimensao_DimensaoMinAggregateOutputType | null
+    _max: Dimensao_DimensaoMaxAggregateOutputType | null
+  }
+
+  export type Dimensao_DimensaoAvgAggregateOutputType = {
+    dimensaoAId: number | null
+    dimensaoBId: number | null
+  }
+
+  export type Dimensao_DimensaoSumAggregateOutputType = {
+    dimensaoAId: number | null
+    dimensaoBId: number | null
+  }
+
+  export type Dimensao_DimensaoMinAggregateOutputType = {
+    dimensaoAId: number | null
+    dimensaoBId: number | null
+  }
+
+  export type Dimensao_DimensaoMaxAggregateOutputType = {
+    dimensaoAId: number | null
+    dimensaoBId: number | null
+  }
+
+  export type Dimensao_DimensaoCountAggregateOutputType = {
+    dimensaoAId: number
+    dimensaoBId: number
+    _all: number
+  }
+
+
+  export type Dimensao_DimensaoAvgAggregateInputType = {
+    dimensaoAId?: true
+    dimensaoBId?: true
+  }
+
+  export type Dimensao_DimensaoSumAggregateInputType = {
+    dimensaoAId?: true
+    dimensaoBId?: true
+  }
+
+  export type Dimensao_DimensaoMinAggregateInputType = {
+    dimensaoAId?: true
+    dimensaoBId?: true
+  }
+
+  export type Dimensao_DimensaoMaxAggregateInputType = {
+    dimensaoAId?: true
+    dimensaoBId?: true
+  }
+
+  export type Dimensao_DimensaoCountAggregateInputType = {
+    dimensaoAId?: true
+    dimensaoBId?: true
+    _all?: true
+  }
+
+  export type Dimensao_DimensaoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Dimensao_Dimensao to aggregate.
+     */
+    where?: Dimensao_DimensaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dimensao_Dimensaos to fetch.
+     */
+    orderBy?: Dimensao_DimensaoOrderByWithRelationInput | Dimensao_DimensaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: Dimensao_DimensaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dimensao_Dimensaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dimensao_Dimensaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Dimensao_Dimensaos
+    **/
+    _count?: true | Dimensao_DimensaoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Dimensao_DimensaoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Dimensao_DimensaoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Dimensao_DimensaoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Dimensao_DimensaoMaxAggregateInputType
+  }
+
+  export type GetDimensao_DimensaoAggregateType<T extends Dimensao_DimensaoAggregateArgs> = {
+        [P in keyof T & keyof AggregateDimensao_Dimensao]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDimensao_Dimensao[P]>
+      : GetScalarType<T[P], AggregateDimensao_Dimensao[P]>
+  }
+
+
+
+
+  export type Dimensao_DimensaoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: Dimensao_DimensaoWhereInput
+    orderBy?: Dimensao_DimensaoOrderByWithAggregationInput | Dimensao_DimensaoOrderByWithAggregationInput[]
+    by: Dimensao_DimensaoScalarFieldEnum[] | Dimensao_DimensaoScalarFieldEnum
+    having?: Dimensao_DimensaoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Dimensao_DimensaoCountAggregateInputType | true
+    _avg?: Dimensao_DimensaoAvgAggregateInputType
+    _sum?: Dimensao_DimensaoSumAggregateInputType
+    _min?: Dimensao_DimensaoMinAggregateInputType
+    _max?: Dimensao_DimensaoMaxAggregateInputType
+  }
+
+  export type Dimensao_DimensaoGroupByOutputType = {
+    dimensaoAId: number
+    dimensaoBId: number
+    _count: Dimensao_DimensaoCountAggregateOutputType | null
+    _avg: Dimensao_DimensaoAvgAggregateOutputType | null
+    _sum: Dimensao_DimensaoSumAggregateOutputType | null
+    _min: Dimensao_DimensaoMinAggregateOutputType | null
+    _max: Dimensao_DimensaoMaxAggregateOutputType | null
+  }
+
+  type GetDimensao_DimensaoGroupByPayload<T extends Dimensao_DimensaoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Dimensao_DimensaoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Dimensao_DimensaoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Dimensao_DimensaoGroupByOutputType[P]>
+            : GetScalarType<T[P], Dimensao_DimensaoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type Dimensao_DimensaoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    dimensaoAId?: boolean
+    dimensaoBId?: boolean
+    dimensaoA?: boolean | DimensaoDefaultArgs<ExtArgs>
+    dimensaoB?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dimensao_Dimensao"]>
+
+  export type Dimensao_DimensaoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    dimensaoAId?: boolean
+    dimensaoBId?: boolean
+    dimensaoA?: boolean | DimensaoDefaultArgs<ExtArgs>
+    dimensaoB?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dimensao_Dimensao"]>
+
+  export type Dimensao_DimensaoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    dimensaoAId?: boolean
+    dimensaoBId?: boolean
+    dimensaoA?: boolean | DimensaoDefaultArgs<ExtArgs>
+    dimensaoB?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dimensao_Dimensao"]>
+
+  export type Dimensao_DimensaoSelectScalar = {
+    dimensaoAId?: boolean
+    dimensaoBId?: boolean
+  }
+
+  export type Dimensao_DimensaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"dimensaoAId" | "dimensaoBId", ExtArgs["result"]["dimensao_Dimensao"]>
+  export type Dimensao_DimensaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensaoA?: boolean | DimensaoDefaultArgs<ExtArgs>
+    dimensaoB?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
+  export type Dimensao_DimensaoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensaoA?: boolean | DimensaoDefaultArgs<ExtArgs>
+    dimensaoB?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
+  export type Dimensao_DimensaoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensaoA?: boolean | DimensaoDefaultArgs<ExtArgs>
+    dimensaoB?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
+
+  export type $Dimensao_DimensaoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Dimensao_Dimensao"
+    objects: {
+      dimensaoA: Prisma.$DimensaoPayload<ExtArgs>
+      dimensaoB: Prisma.$DimensaoPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      dimensaoAId: number
+      dimensaoBId: number
+    }, ExtArgs["result"]["dimensao_Dimensao"]>
+    composites: {}
+  }
+
+  type Dimensao_DimensaoGetPayload<S extends boolean | null | undefined | Dimensao_DimensaoDefaultArgs> = $Result.GetResult<Prisma.$Dimensao_DimensaoPayload, S>
+
+  type Dimensao_DimensaoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<Dimensao_DimensaoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Dimensao_DimensaoCountAggregateInputType | true
+    }
+
+  export interface Dimensao_DimensaoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Dimensao_Dimensao'], meta: { name: 'Dimensao_Dimensao' } }
+    /**
+     * Find zero or one Dimensao_Dimensao that matches the filter.
+     * @param {Dimensao_DimensaoFindUniqueArgs} args - Arguments to find a Dimensao_Dimensao
+     * @example
+     * // Get one Dimensao_Dimensao
+     * const dimensao_Dimensao = await prisma.dimensao_Dimensao.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends Dimensao_DimensaoFindUniqueArgs>(args: SelectSubset<T, Dimensao_DimensaoFindUniqueArgs<ExtArgs>>): Prisma__Dimensao_DimensaoClient<$Result.GetResult<Prisma.$Dimensao_DimensaoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Dimensao_Dimensao that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {Dimensao_DimensaoFindUniqueOrThrowArgs} args - Arguments to find a Dimensao_Dimensao
+     * @example
+     * // Get one Dimensao_Dimensao
+     * const dimensao_Dimensao = await prisma.dimensao_Dimensao.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends Dimensao_DimensaoFindUniqueOrThrowArgs>(args: SelectSubset<T, Dimensao_DimensaoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__Dimensao_DimensaoClient<$Result.GetResult<Prisma.$Dimensao_DimensaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Dimensao_Dimensao that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Dimensao_DimensaoFindFirstArgs} args - Arguments to find a Dimensao_Dimensao
+     * @example
+     * // Get one Dimensao_Dimensao
+     * const dimensao_Dimensao = await prisma.dimensao_Dimensao.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends Dimensao_DimensaoFindFirstArgs>(args?: SelectSubset<T, Dimensao_DimensaoFindFirstArgs<ExtArgs>>): Prisma__Dimensao_DimensaoClient<$Result.GetResult<Prisma.$Dimensao_DimensaoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Dimensao_Dimensao that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Dimensao_DimensaoFindFirstOrThrowArgs} args - Arguments to find a Dimensao_Dimensao
+     * @example
+     * // Get one Dimensao_Dimensao
+     * const dimensao_Dimensao = await prisma.dimensao_Dimensao.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends Dimensao_DimensaoFindFirstOrThrowArgs>(args?: SelectSubset<T, Dimensao_DimensaoFindFirstOrThrowArgs<ExtArgs>>): Prisma__Dimensao_DimensaoClient<$Result.GetResult<Prisma.$Dimensao_DimensaoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Dimensao_Dimensaos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Dimensao_DimensaoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Dimensao_Dimensaos
+     * const dimensao_Dimensaos = await prisma.dimensao_Dimensao.findMany()
+     * 
+     * // Get first 10 Dimensao_Dimensaos
+     * const dimensao_Dimensaos = await prisma.dimensao_Dimensao.findMany({ take: 10 })
+     * 
+     * // Only select the `dimensaoAId`
+     * const dimensao_DimensaoWithDimensaoAIdOnly = await prisma.dimensao_Dimensao.findMany({ select: { dimensaoAId: true } })
+     * 
+     */
+    findMany<T extends Dimensao_DimensaoFindManyArgs>(args?: SelectSubset<T, Dimensao_DimensaoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Dimensao_DimensaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Dimensao_Dimensao.
+     * @param {Dimensao_DimensaoCreateArgs} args - Arguments to create a Dimensao_Dimensao.
+     * @example
+     * // Create one Dimensao_Dimensao
+     * const Dimensao_Dimensao = await prisma.dimensao_Dimensao.create({
+     *   data: {
+     *     // ... data to create a Dimensao_Dimensao
+     *   }
+     * })
+     * 
+     */
+    create<T extends Dimensao_DimensaoCreateArgs>(args: SelectSubset<T, Dimensao_DimensaoCreateArgs<ExtArgs>>): Prisma__Dimensao_DimensaoClient<$Result.GetResult<Prisma.$Dimensao_DimensaoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Dimensao_Dimensaos.
+     * @param {Dimensao_DimensaoCreateManyArgs} args - Arguments to create many Dimensao_Dimensaos.
+     * @example
+     * // Create many Dimensao_Dimensaos
+     * const dimensao_Dimensao = await prisma.dimensao_Dimensao.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends Dimensao_DimensaoCreateManyArgs>(args?: SelectSubset<T, Dimensao_DimensaoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Dimensao_Dimensaos and returns the data saved in the database.
+     * @param {Dimensao_DimensaoCreateManyAndReturnArgs} args - Arguments to create many Dimensao_Dimensaos.
+     * @example
+     * // Create many Dimensao_Dimensaos
+     * const dimensao_Dimensao = await prisma.dimensao_Dimensao.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Dimensao_Dimensaos and only return the `dimensaoAId`
+     * const dimensao_DimensaoWithDimensaoAIdOnly = await prisma.dimensao_Dimensao.createManyAndReturn({
+     *   select: { dimensaoAId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends Dimensao_DimensaoCreateManyAndReturnArgs>(args?: SelectSubset<T, Dimensao_DimensaoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Dimensao_DimensaoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Dimensao_Dimensao.
+     * @param {Dimensao_DimensaoDeleteArgs} args - Arguments to delete one Dimensao_Dimensao.
+     * @example
+     * // Delete one Dimensao_Dimensao
+     * const Dimensao_Dimensao = await prisma.dimensao_Dimensao.delete({
+     *   where: {
+     *     // ... filter to delete one Dimensao_Dimensao
+     *   }
+     * })
+     * 
+     */
+    delete<T extends Dimensao_DimensaoDeleteArgs>(args: SelectSubset<T, Dimensao_DimensaoDeleteArgs<ExtArgs>>): Prisma__Dimensao_DimensaoClient<$Result.GetResult<Prisma.$Dimensao_DimensaoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Dimensao_Dimensao.
+     * @param {Dimensao_DimensaoUpdateArgs} args - Arguments to update one Dimensao_Dimensao.
+     * @example
+     * // Update one Dimensao_Dimensao
+     * const dimensao_Dimensao = await prisma.dimensao_Dimensao.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends Dimensao_DimensaoUpdateArgs>(args: SelectSubset<T, Dimensao_DimensaoUpdateArgs<ExtArgs>>): Prisma__Dimensao_DimensaoClient<$Result.GetResult<Prisma.$Dimensao_DimensaoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Dimensao_Dimensaos.
+     * @param {Dimensao_DimensaoDeleteManyArgs} args - Arguments to filter Dimensao_Dimensaos to delete.
+     * @example
+     * // Delete a few Dimensao_Dimensaos
+     * const { count } = await prisma.dimensao_Dimensao.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends Dimensao_DimensaoDeleteManyArgs>(args?: SelectSubset<T, Dimensao_DimensaoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Dimensao_Dimensaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Dimensao_DimensaoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Dimensao_Dimensaos
+     * const dimensao_Dimensao = await prisma.dimensao_Dimensao.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends Dimensao_DimensaoUpdateManyArgs>(args: SelectSubset<T, Dimensao_DimensaoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Dimensao_Dimensaos and returns the data updated in the database.
+     * @param {Dimensao_DimensaoUpdateManyAndReturnArgs} args - Arguments to update many Dimensao_Dimensaos.
+     * @example
+     * // Update many Dimensao_Dimensaos
+     * const dimensao_Dimensao = await prisma.dimensao_Dimensao.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Dimensao_Dimensaos and only return the `dimensaoAId`
+     * const dimensao_DimensaoWithDimensaoAIdOnly = await prisma.dimensao_Dimensao.updateManyAndReturn({
+     *   select: { dimensaoAId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends Dimensao_DimensaoUpdateManyAndReturnArgs>(args: SelectSubset<T, Dimensao_DimensaoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Dimensao_DimensaoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Dimensao_Dimensao.
+     * @param {Dimensao_DimensaoUpsertArgs} args - Arguments to update or create a Dimensao_Dimensao.
+     * @example
+     * // Update or create a Dimensao_Dimensao
+     * const dimensao_Dimensao = await prisma.dimensao_Dimensao.upsert({
+     *   create: {
+     *     // ... data to create a Dimensao_Dimensao
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Dimensao_Dimensao we want to update
+     *   }
+     * })
+     */
+    upsert<T extends Dimensao_DimensaoUpsertArgs>(args: SelectSubset<T, Dimensao_DimensaoUpsertArgs<ExtArgs>>): Prisma__Dimensao_DimensaoClient<$Result.GetResult<Prisma.$Dimensao_DimensaoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Dimensao_Dimensaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Dimensao_DimensaoCountArgs} args - Arguments to filter Dimensao_Dimensaos to count.
+     * @example
+     * // Count the number of Dimensao_Dimensaos
+     * const count = await prisma.dimensao_Dimensao.count({
+     *   where: {
+     *     // ... the filter for the Dimensao_Dimensaos we want to count
+     *   }
+     * })
+    **/
+    count<T extends Dimensao_DimensaoCountArgs>(
+      args?: Subset<T, Dimensao_DimensaoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Dimensao_DimensaoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Dimensao_Dimensao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Dimensao_DimensaoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Dimensao_DimensaoAggregateArgs>(args: Subset<T, Dimensao_DimensaoAggregateArgs>): Prisma.PrismaPromise<GetDimensao_DimensaoAggregateType<T>>
+
+    /**
+     * Group by Dimensao_Dimensao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Dimensao_DimensaoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends Dimensao_DimensaoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: Dimensao_DimensaoGroupByArgs['orderBy'] }
+        : { orderBy?: Dimensao_DimensaoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, Dimensao_DimensaoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDimensao_DimensaoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Dimensao_Dimensao model
+   */
+  readonly fields: Dimensao_DimensaoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Dimensao_Dimensao.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__Dimensao_DimensaoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    dimensaoA<T extends DimensaoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DimensaoDefaultArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    dimensaoB<T extends DimensaoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DimensaoDefaultArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Dimensao_Dimensao model
+   */
+  interface Dimensao_DimensaoFieldRefs {
+    readonly dimensaoAId: FieldRef<"Dimensao_Dimensao", 'Int'>
+    readonly dimensaoBId: FieldRef<"Dimensao_Dimensao", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Dimensao_Dimensao findUnique
+   */
+  export type Dimensao_DimensaoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Dimensao_Dimensao to fetch.
+     */
+    where: Dimensao_DimensaoWhereUniqueInput
+  }
+
+  /**
+   * Dimensao_Dimensao findUniqueOrThrow
+   */
+  export type Dimensao_DimensaoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Dimensao_Dimensao to fetch.
+     */
+    where: Dimensao_DimensaoWhereUniqueInput
+  }
+
+  /**
+   * Dimensao_Dimensao findFirst
+   */
+  export type Dimensao_DimensaoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Dimensao_Dimensao to fetch.
+     */
+    where?: Dimensao_DimensaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dimensao_Dimensaos to fetch.
+     */
+    orderBy?: Dimensao_DimensaoOrderByWithRelationInput | Dimensao_DimensaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Dimensao_Dimensaos.
+     */
+    cursor?: Dimensao_DimensaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dimensao_Dimensaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dimensao_Dimensaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Dimensao_Dimensaos.
+     */
+    distinct?: Dimensao_DimensaoScalarFieldEnum | Dimensao_DimensaoScalarFieldEnum[]
+  }
+
+  /**
+   * Dimensao_Dimensao findFirstOrThrow
+   */
+  export type Dimensao_DimensaoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Dimensao_Dimensao to fetch.
+     */
+    where?: Dimensao_DimensaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dimensao_Dimensaos to fetch.
+     */
+    orderBy?: Dimensao_DimensaoOrderByWithRelationInput | Dimensao_DimensaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Dimensao_Dimensaos.
+     */
+    cursor?: Dimensao_DimensaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dimensao_Dimensaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dimensao_Dimensaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Dimensao_Dimensaos.
+     */
+    distinct?: Dimensao_DimensaoScalarFieldEnum | Dimensao_DimensaoScalarFieldEnum[]
+  }
+
+  /**
+   * Dimensao_Dimensao findMany
+   */
+  export type Dimensao_DimensaoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Dimensao_Dimensaos to fetch.
+     */
+    where?: Dimensao_DimensaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dimensao_Dimensaos to fetch.
+     */
+    orderBy?: Dimensao_DimensaoOrderByWithRelationInput | Dimensao_DimensaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Dimensao_Dimensaos.
+     */
+    cursor?: Dimensao_DimensaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dimensao_Dimensaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dimensao_Dimensaos.
+     */
+    skip?: number
+    distinct?: Dimensao_DimensaoScalarFieldEnum | Dimensao_DimensaoScalarFieldEnum[]
+  }
+
+  /**
+   * Dimensao_Dimensao create
+   */
+  export type Dimensao_DimensaoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Dimensao_Dimensao.
+     */
+    data: XOR<Dimensao_DimensaoCreateInput, Dimensao_DimensaoUncheckedCreateInput>
+  }
+
+  /**
+   * Dimensao_Dimensao createMany
+   */
+  export type Dimensao_DimensaoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Dimensao_Dimensaos.
+     */
+    data: Dimensao_DimensaoCreateManyInput | Dimensao_DimensaoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Dimensao_Dimensao createManyAndReturn
+   */
+  export type Dimensao_DimensaoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * The data used to create many Dimensao_Dimensaos.
+     */
+    data: Dimensao_DimensaoCreateManyInput | Dimensao_DimensaoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Dimensao_Dimensao update
+   */
+  export type Dimensao_DimensaoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Dimensao_Dimensao.
+     */
+    data: XOR<Dimensao_DimensaoUpdateInput, Dimensao_DimensaoUncheckedUpdateInput>
+    /**
+     * Choose, which Dimensao_Dimensao to update.
+     */
+    where: Dimensao_DimensaoWhereUniqueInput
+  }
+
+  /**
+   * Dimensao_Dimensao updateMany
+   */
+  export type Dimensao_DimensaoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Dimensao_Dimensaos.
+     */
+    data: XOR<Dimensao_DimensaoUpdateManyMutationInput, Dimensao_DimensaoUncheckedUpdateManyInput>
+    /**
+     * Filter which Dimensao_Dimensaos to update
+     */
+    where?: Dimensao_DimensaoWhereInput
+    /**
+     * Limit how many Dimensao_Dimensaos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Dimensao_Dimensao updateManyAndReturn
+   */
+  export type Dimensao_DimensaoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * The data used to update Dimensao_Dimensaos.
+     */
+    data: XOR<Dimensao_DimensaoUpdateManyMutationInput, Dimensao_DimensaoUncheckedUpdateManyInput>
+    /**
+     * Filter which Dimensao_Dimensaos to update
+     */
+    where?: Dimensao_DimensaoWhereInput
+    /**
+     * Limit how many Dimensao_Dimensaos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Dimensao_Dimensao upsert
+   */
+  export type Dimensao_DimensaoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Dimensao_Dimensao to update in case it exists.
+     */
+    where: Dimensao_DimensaoWhereUniqueInput
+    /**
+     * In case the Dimensao_Dimensao found by the `where` argument doesn't exist, create a new Dimensao_Dimensao with this data.
+     */
+    create: XOR<Dimensao_DimensaoCreateInput, Dimensao_DimensaoUncheckedCreateInput>
+    /**
+     * In case the Dimensao_Dimensao was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<Dimensao_DimensaoUpdateInput, Dimensao_DimensaoUncheckedUpdateInput>
+  }
+
+  /**
+   * Dimensao_Dimensao delete
+   */
+  export type Dimensao_DimensaoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoInclude<ExtArgs> | null
+    /**
+     * Filter which Dimensao_Dimensao to delete.
+     */
+    where: Dimensao_DimensaoWhereUniqueInput
+  }
+
+  /**
+   * Dimensao_Dimensao deleteMany
+   */
+  export type Dimensao_DimensaoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Dimensao_Dimensaos to delete
+     */
+    where?: Dimensao_DimensaoWhereInput
+    /**
+     * Limit how many Dimensao_Dimensaos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Dimensao_Dimensao without action
+   */
+  export type Dimensao_DimensaoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensao_Dimensao
+     */
+    select?: Dimensao_DimensaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensao_Dimensao
+     */
+    omit?: Dimensao_DimensaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Dimensao_DimensaoInclude<ExtArgs> | null
+  }
+
 
   /**
    * Model Disciplina
@@ -1146,15 +3617,15 @@ export namespace Prisma {
   }
 
   export type DisciplinaAvgAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
   }
 
   export type DisciplinaSumAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
   }
 
   export type DisciplinaMinAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     nome: string | null
     coordenador: string | null
     semestre: string | null
@@ -1162,7 +3633,7 @@ export namespace Prisma {
   }
 
   export type DisciplinaMaxAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     nome: string | null
     coordenador: string | null
     semestre: string | null
@@ -1170,7 +3641,7 @@ export namespace Prisma {
   }
 
   export type DisciplinaCountAggregateOutputType = {
-    id: number
+    dimensaoId: number
     nome: number
     coordenador: number
     semestre: number
@@ -1182,15 +3653,15 @@ export namespace Prisma {
 
 
   export type DisciplinaAvgAggregateInputType = {
-    id?: true
+    dimensaoId?: true
   }
 
   export type DisciplinaSumAggregateInputType = {
-    id?: true
+    dimensaoId?: true
   }
 
   export type DisciplinaMinAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     nome?: true
     coordenador?: true
     semestre?: true
@@ -1198,7 +3669,7 @@ export namespace Prisma {
   }
 
   export type DisciplinaMaxAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     nome?: true
     coordenador?: true
     semestre?: true
@@ -1206,7 +3677,7 @@ export namespace Prisma {
   }
 
   export type DisciplinaCountAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     nome?: true
     coordenador?: true
     semestre?: true
@@ -1303,7 +3774,7 @@ export namespace Prisma {
   }
 
   export type DisciplinaGroupByOutputType = {
-    id: number
+    dimensaoId: number
     nome: string
     coordenador: string
     semestre: string
@@ -1332,37 +3803,40 @@ export namespace Prisma {
 
 
   export type DisciplinaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     coordenador?: boolean
     semestre?: boolean
     codigo?: boolean
     alunos_matriculados?: boolean
     alunos_aprovados?: boolean
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["disciplina"]>
 
   export type DisciplinaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     coordenador?: boolean
     semestre?: boolean
     codigo?: boolean
     alunos_matriculados?: boolean
     alunos_aprovados?: boolean
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["disciplina"]>
 
   export type DisciplinaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     coordenador?: boolean
     semestre?: boolean
     codigo?: boolean
     alunos_matriculados?: boolean
     alunos_aprovados?: boolean
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["disciplina"]>
 
   export type DisciplinaSelectScalar = {
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     coordenador?: boolean
     semestre?: boolean
@@ -1371,13 +3845,24 @@ export namespace Prisma {
     alunos_aprovados?: boolean
   }
 
-  export type DisciplinaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "coordenador" | "semestre" | "codigo" | "alunos_matriculados" | "alunos_aprovados", ExtArgs["result"]["disciplina"]>
+  export type DisciplinaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"dimensaoId" | "nome" | "coordenador" | "semestre" | "codigo" | "alunos_matriculados" | "alunos_aprovados", ExtArgs["result"]["disciplina"]>
+  export type DisciplinaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
+  export type DisciplinaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
+  export type DisciplinaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
 
   export type $DisciplinaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Disciplina"
-    objects: {}
+    objects: {
+      dimensao: Prisma.$DimensaoPayload<ExtArgs>
+    }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
+      dimensaoId: number
       nome: string
       coordenador: string
       semestre: string
@@ -1467,8 +3952,8 @@ export namespace Prisma {
      * // Get first 10 Disciplinas
      * const disciplinas = await prisma.disciplina.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const disciplinaWithIdOnly = await prisma.disciplina.findMany({ select: { id: true } })
+     * // Only select the `dimensaoId`
+     * const disciplinaWithDimensaoIdOnly = await prisma.disciplina.findMany({ select: { dimensaoId: true } })
      * 
      */
     findMany<T extends DisciplinaFindManyArgs>(args?: SelectSubset<T, DisciplinaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DisciplinaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -1512,9 +3997,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Disciplinas and only return the `id`
-     * const disciplinaWithIdOnly = await prisma.disciplina.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many Disciplinas and only return the `dimensaoId`
+     * const disciplinaWithDimensaoIdOnly = await prisma.disciplina.createManyAndReturn({
+     *   select: { dimensaoId: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -1603,9 +4088,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Disciplinas and only return the `id`
-     * const disciplinaWithIdOnly = await prisma.disciplina.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more Disciplinas and only return the `dimensaoId`
+     * const disciplinaWithDimensaoIdOnly = await prisma.disciplina.updateManyAndReturn({
+     *   select: { dimensaoId: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -1778,6 +4263,7 @@ export namespace Prisma {
    */
   export interface Prisma__DisciplinaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    dimensao<T extends DimensaoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DimensaoDefaultArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1807,7 +4293,7 @@ export namespace Prisma {
    * Fields of the Disciplina model
    */
   interface DisciplinaFieldRefs {
-    readonly id: FieldRef<"Disciplina", 'Int'>
+    readonly dimensaoId: FieldRef<"Disciplina", 'Int'>
     readonly nome: FieldRef<"Disciplina", 'String'>
     readonly coordenador: FieldRef<"Disciplina", 'String'>
     readonly semestre: FieldRef<"Disciplina", 'String'>
@@ -1831,6 +4317,10 @@ export namespace Prisma {
      */
     omit?: DisciplinaOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisciplinaInclude<ExtArgs> | null
+    /**
      * Filter, which Disciplina to fetch.
      */
     where: DisciplinaWhereUniqueInput
@@ -1849,6 +4339,10 @@ export namespace Prisma {
      */
     omit?: DisciplinaOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisciplinaInclude<ExtArgs> | null
+    /**
      * Filter, which Disciplina to fetch.
      */
     where: DisciplinaWhereUniqueInput
@@ -1866,6 +4360,10 @@ export namespace Prisma {
      * Omit specific fields from the Disciplina
      */
     omit?: DisciplinaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisciplinaInclude<ExtArgs> | null
     /**
      * Filter, which Disciplina to fetch.
      */
@@ -1915,6 +4413,10 @@ export namespace Prisma {
      */
     omit?: DisciplinaOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisciplinaInclude<ExtArgs> | null
+    /**
      * Filter, which Disciplina to fetch.
      */
     where?: DisciplinaWhereInput
@@ -1963,6 +4465,10 @@ export namespace Prisma {
      */
     omit?: DisciplinaOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisciplinaInclude<ExtArgs> | null
+    /**
      * Filter, which Disciplinas to fetch.
      */
     where?: DisciplinaWhereInput
@@ -2006,6 +4512,10 @@ export namespace Prisma {
      */
     omit?: DisciplinaOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisciplinaInclude<ExtArgs> | null
+    /**
      * The data needed to create a Disciplina.
      */
     data: XOR<DisciplinaCreateInput, DisciplinaUncheckedCreateInput>
@@ -2039,6 +4549,10 @@ export namespace Prisma {
      */
     data: DisciplinaCreateManyInput | DisciplinaCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisciplinaIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2053,6 +4567,10 @@ export namespace Prisma {
      * Omit specific fields from the Disciplina
      */
     omit?: DisciplinaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisciplinaInclude<ExtArgs> | null
     /**
      * The data needed to update a Disciplina.
      */
@@ -2105,6 +4623,10 @@ export namespace Prisma {
      * Limit how many Disciplinas to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisciplinaIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2119,6 +4641,10 @@ export namespace Prisma {
      * Omit specific fields from the Disciplina
      */
     omit?: DisciplinaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisciplinaInclude<ExtArgs> | null
     /**
      * The filter to search for the Disciplina to update in case it exists.
      */
@@ -2145,6 +4671,10 @@ export namespace Prisma {
      * Omit specific fields from the Disciplina
      */
     omit?: DisciplinaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisciplinaInclude<ExtArgs> | null
     /**
      * Filter which Disciplina to delete.
      */
@@ -2177,6 +4707,10 @@ export namespace Prisma {
      * Omit specific fields from the Disciplina
      */
     omit?: DisciplinaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DisciplinaInclude<ExtArgs> | null
   }
 
 
@@ -2193,21 +4727,21 @@ export namespace Prisma {
   }
 
   export type EventoAvgAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     custo: number | null
     receita: number | null
     qtd_publico: number | null
   }
 
   export type EventoSumAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     custo: number | null
     receita: number | null
     qtd_publico: number | null
   }
 
   export type EventoMinAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     nome: string | null
     descricao: string | null
     data_inicio: Date | null
@@ -2218,7 +4752,7 @@ export namespace Prisma {
   }
 
   export type EventoMaxAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     nome: string | null
     descricao: string | null
     data_inicio: Date | null
@@ -2229,7 +4763,7 @@ export namespace Prisma {
   }
 
   export type EventoCountAggregateOutputType = {
-    id: number
+    dimensaoId: number
     nome: number
     descricao: number
     data_inicio: number
@@ -2246,21 +4780,21 @@ export namespace Prisma {
 
 
   export type EventoAvgAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     custo?: true
     receita?: true
     qtd_publico?: true
   }
 
   export type EventoSumAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     custo?: true
     receita?: true
     qtd_publico?: true
   }
 
   export type EventoMinAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     nome?: true
     descricao?: true
     data_inicio?: true
@@ -2271,7 +4805,7 @@ export namespace Prisma {
   }
 
   export type EventoMaxAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     nome?: true
     descricao?: true
     data_inicio?: true
@@ -2282,7 +4816,7 @@ export namespace Prisma {
   }
 
   export type EventoCountAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     nome?: true
     descricao?: true
     data_inicio?: true
@@ -2384,7 +4918,7 @@ export namespace Prisma {
   }
 
   export type EventoGroupByOutputType = {
-    id: number
+    dimensaoId: number
     nome: string
     descricao: string
     data_inicio: Date
@@ -2418,7 +4952,7 @@ export namespace Prisma {
 
 
   export type EventoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     descricao?: boolean
     data_inicio?: boolean
@@ -2430,10 +4964,11 @@ export namespace Prisma {
     equipe?: boolean
     coordenadores?: boolean
     parceiros?: boolean
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["evento"]>
 
   export type EventoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     descricao?: boolean
     data_inicio?: boolean
@@ -2445,10 +4980,11 @@ export namespace Prisma {
     equipe?: boolean
     coordenadores?: boolean
     parceiros?: boolean
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["evento"]>
 
   export type EventoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     descricao?: boolean
     data_inicio?: boolean
@@ -2460,10 +4996,11 @@ export namespace Prisma {
     equipe?: boolean
     coordenadores?: boolean
     parceiros?: boolean
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["evento"]>
 
   export type EventoSelectScalar = {
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     descricao?: boolean
     data_inicio?: boolean
@@ -2477,13 +5014,24 @@ export namespace Prisma {
     parceiros?: boolean
   }
 
-  export type EventoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "descricao" | "data_inicio" | "duracao" | "custo" | "receita" | "publico_participante" | "qtd_publico" | "equipe" | "coordenadores" | "parceiros", ExtArgs["result"]["evento"]>
+  export type EventoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"dimensaoId" | "nome" | "descricao" | "data_inicio" | "duracao" | "custo" | "receita" | "publico_participante" | "qtd_publico" | "equipe" | "coordenadores" | "parceiros", ExtArgs["result"]["evento"]>
+  export type EventoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
+  export type EventoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
+  export type EventoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
 
   export type $EventoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Evento"
-    objects: {}
+    objects: {
+      dimensao: Prisma.$DimensaoPayload<ExtArgs>
+    }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
+      dimensaoId: number
       nome: string
       descricao: string
       data_inicio: Date
@@ -2578,8 +5126,8 @@ export namespace Prisma {
      * // Get first 10 Eventos
      * const eventos = await prisma.evento.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const eventoWithIdOnly = await prisma.evento.findMany({ select: { id: true } })
+     * // Only select the `dimensaoId`
+     * const eventoWithDimensaoIdOnly = await prisma.evento.findMany({ select: { dimensaoId: true } })
      * 
      */
     findMany<T extends EventoFindManyArgs>(args?: SelectSubset<T, EventoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -2623,9 +5171,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Eventos and only return the `id`
-     * const eventoWithIdOnly = await prisma.evento.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many Eventos and only return the `dimensaoId`
+     * const eventoWithDimensaoIdOnly = await prisma.evento.createManyAndReturn({
+     *   select: { dimensaoId: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -2714,9 +5262,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Eventos and only return the `id`
-     * const eventoWithIdOnly = await prisma.evento.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more Eventos and only return the `dimensaoId`
+     * const eventoWithDimensaoIdOnly = await prisma.evento.updateManyAndReturn({
+     *   select: { dimensaoId: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2889,6 +5437,7 @@ export namespace Prisma {
    */
   export interface Prisma__EventoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    dimensao<T extends DimensaoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DimensaoDefaultArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2918,7 +5467,7 @@ export namespace Prisma {
    * Fields of the Evento model
    */
   interface EventoFieldRefs {
-    readonly id: FieldRef<"Evento", 'Int'>
+    readonly dimensaoId: FieldRef<"Evento", 'Int'>
     readonly nome: FieldRef<"Evento", 'String'>
     readonly descricao: FieldRef<"Evento", 'String'>
     readonly data_inicio: FieldRef<"Evento", 'DateTime'>
@@ -2947,6 +5496,10 @@ export namespace Prisma {
      */
     omit?: EventoOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventoInclude<ExtArgs> | null
+    /**
      * Filter, which Evento to fetch.
      */
     where: EventoWhereUniqueInput
@@ -2965,6 +5518,10 @@ export namespace Prisma {
      */
     omit?: EventoOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventoInclude<ExtArgs> | null
+    /**
      * Filter, which Evento to fetch.
      */
     where: EventoWhereUniqueInput
@@ -2982,6 +5539,10 @@ export namespace Prisma {
      * Omit specific fields from the Evento
      */
     omit?: EventoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventoInclude<ExtArgs> | null
     /**
      * Filter, which Evento to fetch.
      */
@@ -3031,6 +5592,10 @@ export namespace Prisma {
      */
     omit?: EventoOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventoInclude<ExtArgs> | null
+    /**
      * Filter, which Evento to fetch.
      */
     where?: EventoWhereInput
@@ -3079,6 +5644,10 @@ export namespace Prisma {
      */
     omit?: EventoOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventoInclude<ExtArgs> | null
+    /**
      * Filter, which Eventos to fetch.
      */
     where?: EventoWhereInput
@@ -3122,6 +5691,10 @@ export namespace Prisma {
      */
     omit?: EventoOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventoInclude<ExtArgs> | null
+    /**
      * The data needed to create a Evento.
      */
     data: XOR<EventoCreateInput, EventoUncheckedCreateInput>
@@ -3155,6 +5728,10 @@ export namespace Prisma {
      */
     data: EventoCreateManyInput | EventoCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventoIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3169,6 +5746,10 @@ export namespace Prisma {
      * Omit specific fields from the Evento
      */
     omit?: EventoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventoInclude<ExtArgs> | null
     /**
      * The data needed to update a Evento.
      */
@@ -3221,6 +5802,10 @@ export namespace Prisma {
      * Limit how many Eventos to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventoIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3235,6 +5820,10 @@ export namespace Prisma {
      * Omit specific fields from the Evento
      */
     omit?: EventoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventoInclude<ExtArgs> | null
     /**
      * The filter to search for the Evento to update in case it exists.
      */
@@ -3261,6 +5850,10 @@ export namespace Prisma {
      * Omit specific fields from the Evento
      */
     omit?: EventoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventoInclude<ExtArgs> | null
     /**
      * Filter which Evento to delete.
      */
@@ -3293,6 +5886,10 @@ export namespace Prisma {
      * Omit specific fields from the Evento
      */
     omit?: EventoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventoInclude<ExtArgs> | null
   }
 
 
@@ -3309,19 +5906,19 @@ export namespace Prisma {
   }
 
   export type MotorAvgAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     qtd_empresas_atendidas: number | null
     faturamento: number | null
   }
 
   export type MotorSumAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     qtd_empresas_atendidas: number | null
     faturamento: number | null
   }
 
   export type MotorMinAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     nome: string | null
     descricao: string | null
     motor_tipo: string | null
@@ -3331,7 +5928,7 @@ export namespace Prisma {
   }
 
   export type MotorMaxAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     nome: string | null
     descricao: string | null
     motor_tipo: string | null
@@ -3341,7 +5938,7 @@ export namespace Prisma {
   }
 
   export type MotorCountAggregateOutputType = {
-    id: number
+    dimensaoId: number
     nome: number
     descricao: number
     projetos: number
@@ -3356,19 +5953,19 @@ export namespace Prisma {
 
 
   export type MotorAvgAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     qtd_empresas_atendidas?: true
     faturamento?: true
   }
 
   export type MotorSumAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     qtd_empresas_atendidas?: true
     faturamento?: true
   }
 
   export type MotorMinAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     nome?: true
     descricao?: true
     motor_tipo?: true
@@ -3378,7 +5975,7 @@ export namespace Prisma {
   }
 
   export type MotorMaxAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     nome?: true
     descricao?: true
     motor_tipo?: true
@@ -3388,7 +5985,7 @@ export namespace Prisma {
   }
 
   export type MotorCountAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     nome?: true
     descricao?: true
     projetos?: true
@@ -3488,7 +6085,7 @@ export namespace Prisma {
   }
 
   export type MotorGroupByOutputType = {
-    id: number
+    dimensaoId: number
     nome: string
     descricao: string
     projetos: string[]
@@ -3520,7 +6117,7 @@ export namespace Prisma {
 
 
   export type MotorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     descricao?: boolean
     projetos?: boolean
@@ -3530,10 +6127,11 @@ export namespace Prisma {
     equipe?: boolean
     qtd_empresas_atendidas?: boolean
     faturamento?: boolean
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["motor"]>
 
   export type MotorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     descricao?: boolean
     projetos?: boolean
@@ -3543,10 +6141,11 @@ export namespace Prisma {
     equipe?: boolean
     qtd_empresas_atendidas?: boolean
     faturamento?: boolean
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["motor"]>
 
   export type MotorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     descricao?: boolean
     projetos?: boolean
@@ -3556,10 +6155,11 @@ export namespace Prisma {
     equipe?: boolean
     qtd_empresas_atendidas?: boolean
     faturamento?: boolean
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["motor"]>
 
   export type MotorSelectScalar = {
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     descricao?: boolean
     projetos?: boolean
@@ -3571,13 +6171,24 @@ export namespace Prisma {
     faturamento?: boolean
   }
 
-  export type MotorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "descricao" | "projetos" | "motor_tipo" | "data_criacao" | "lideres" | "equipe" | "qtd_empresas_atendidas" | "faturamento", ExtArgs["result"]["motor"]>
+  export type MotorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"dimensaoId" | "nome" | "descricao" | "projetos" | "motor_tipo" | "data_criacao" | "lideres" | "equipe" | "qtd_empresas_atendidas" | "faturamento", ExtArgs["result"]["motor"]>
+  export type MotorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
+  export type MotorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
+  export type MotorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
 
   export type $MotorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Motor"
-    objects: {}
+    objects: {
+      dimensao: Prisma.$DimensaoPayload<ExtArgs>
+    }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
+      dimensaoId: number
       nome: string
       descricao: string
       projetos: string[]
@@ -3670,8 +6281,8 @@ export namespace Prisma {
      * // Get first 10 Motors
      * const motors = await prisma.motor.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const motorWithIdOnly = await prisma.motor.findMany({ select: { id: true } })
+     * // Only select the `dimensaoId`
+     * const motorWithDimensaoIdOnly = await prisma.motor.findMany({ select: { dimensaoId: true } })
      * 
      */
     findMany<T extends MotorFindManyArgs>(args?: SelectSubset<T, MotorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -3715,9 +6326,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Motors and only return the `id`
-     * const motorWithIdOnly = await prisma.motor.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many Motors and only return the `dimensaoId`
+     * const motorWithDimensaoIdOnly = await prisma.motor.createManyAndReturn({
+     *   select: { dimensaoId: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -3806,9 +6417,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Motors and only return the `id`
-     * const motorWithIdOnly = await prisma.motor.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more Motors and only return the `dimensaoId`
+     * const motorWithDimensaoIdOnly = await prisma.motor.updateManyAndReturn({
+     *   select: { dimensaoId: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3981,6 +6592,7 @@ export namespace Prisma {
    */
   export interface Prisma__MotorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    dimensao<T extends DimensaoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DimensaoDefaultArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4010,7 +6622,7 @@ export namespace Prisma {
    * Fields of the Motor model
    */
   interface MotorFieldRefs {
-    readonly id: FieldRef<"Motor", 'Int'>
+    readonly dimensaoId: FieldRef<"Motor", 'Int'>
     readonly nome: FieldRef<"Motor", 'String'>
     readonly descricao: FieldRef<"Motor", 'String'>
     readonly projetos: FieldRef<"Motor", 'String[]'>
@@ -4037,6 +6649,10 @@ export namespace Prisma {
      */
     omit?: MotorOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorInclude<ExtArgs> | null
+    /**
      * Filter, which Motor to fetch.
      */
     where: MotorWhereUniqueInput
@@ -4055,6 +6671,10 @@ export namespace Prisma {
      */
     omit?: MotorOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorInclude<ExtArgs> | null
+    /**
      * Filter, which Motor to fetch.
      */
     where: MotorWhereUniqueInput
@@ -4072,6 +6692,10 @@ export namespace Prisma {
      * Omit specific fields from the Motor
      */
     omit?: MotorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorInclude<ExtArgs> | null
     /**
      * Filter, which Motor to fetch.
      */
@@ -4121,6 +6745,10 @@ export namespace Prisma {
      */
     omit?: MotorOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorInclude<ExtArgs> | null
+    /**
      * Filter, which Motor to fetch.
      */
     where?: MotorWhereInput
@@ -4169,6 +6797,10 @@ export namespace Prisma {
      */
     omit?: MotorOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorInclude<ExtArgs> | null
+    /**
      * Filter, which Motors to fetch.
      */
     where?: MotorWhereInput
@@ -4212,6 +6844,10 @@ export namespace Prisma {
      */
     omit?: MotorOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorInclude<ExtArgs> | null
+    /**
      * The data needed to create a Motor.
      */
     data: XOR<MotorCreateInput, MotorUncheckedCreateInput>
@@ -4245,6 +6881,10 @@ export namespace Prisma {
      */
     data: MotorCreateManyInput | MotorCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4259,6 +6899,10 @@ export namespace Prisma {
      * Omit specific fields from the Motor
      */
     omit?: MotorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorInclude<ExtArgs> | null
     /**
      * The data needed to update a Motor.
      */
@@ -4311,6 +6955,10 @@ export namespace Prisma {
      * Limit how many Motors to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4325,6 +6973,10 @@ export namespace Prisma {
      * Omit specific fields from the Motor
      */
     omit?: MotorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorInclude<ExtArgs> | null
     /**
      * The filter to search for the Motor to update in case it exists.
      */
@@ -4351,6 +7003,10 @@ export namespace Prisma {
      * Omit specific fields from the Motor
      */
     omit?: MotorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorInclude<ExtArgs> | null
     /**
      * Filter which Motor to delete.
      */
@@ -4383,6 +7039,10 @@ export namespace Prisma {
      * Omit specific fields from the Motor
      */
     omit?: MotorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorInclude<ExtArgs> | null
   }
 
 
@@ -4399,17 +7059,17 @@ export namespace Prisma {
   }
 
   export type NegocioAvgAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     faturamento_anual: number | null
   }
 
   export type NegocioSumAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     faturamento_anual: number | null
   }
 
   export type NegocioMinAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     nome: string | null
     area_atuacao: string | null
     faturamento_anual: number | null
@@ -4418,7 +7078,7 @@ export namespace Prisma {
   }
 
   export type NegocioMaxAggregateOutputType = {
-    id: number | null
+    dimensaoId: number | null
     nome: string | null
     area_atuacao: string | null
     faturamento_anual: number | null
@@ -4427,7 +7087,7 @@ export namespace Prisma {
   }
 
   export type NegocioCountAggregateOutputType = {
-    id: number
+    dimensaoId: number
     nome: number
     area_atuacao: number
     faturamento_anual: number
@@ -4439,17 +7099,17 @@ export namespace Prisma {
 
 
   export type NegocioAvgAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     faturamento_anual?: true
   }
 
   export type NegocioSumAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     faturamento_anual?: true
   }
 
   export type NegocioMinAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     nome?: true
     area_atuacao?: true
     faturamento_anual?: true
@@ -4458,7 +7118,7 @@ export namespace Prisma {
   }
 
   export type NegocioMaxAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     nome?: true
     area_atuacao?: true
     faturamento_anual?: true
@@ -4467,7 +7127,7 @@ export namespace Prisma {
   }
 
   export type NegocioCountAggregateInputType = {
-    id?: true
+    dimensaoId?: true
     nome?: true
     area_atuacao?: true
     faturamento_anual?: true
@@ -4564,7 +7224,7 @@ export namespace Prisma {
   }
 
   export type NegocioGroupByOutputType = {
-    id: number
+    dimensaoId: number
     nome: string
     area_atuacao: string
     faturamento_anual: number
@@ -4593,37 +7253,40 @@ export namespace Prisma {
 
 
   export type NegocioSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     area_atuacao?: boolean
     faturamento_anual?: boolean
     ano_criacao?: boolean
     fundadores?: boolean
     porte?: boolean
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["negocio"]>
 
   export type NegocioSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     area_atuacao?: boolean
     faturamento_anual?: boolean
     ano_criacao?: boolean
     fundadores?: boolean
     porte?: boolean
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["negocio"]>
 
   export type NegocioSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     area_atuacao?: boolean
     faturamento_anual?: boolean
     ano_criacao?: boolean
     fundadores?: boolean
     porte?: boolean
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["negocio"]>
 
   export type NegocioSelectScalar = {
-    id?: boolean
+    dimensaoId?: boolean
     nome?: boolean
     area_atuacao?: boolean
     faturamento_anual?: boolean
@@ -4632,13 +7295,24 @@ export namespace Prisma {
     porte?: boolean
   }
 
-  export type NegocioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "area_atuacao" | "faturamento_anual" | "ano_criacao" | "fundadores" | "porte", ExtArgs["result"]["negocio"]>
+  export type NegocioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"dimensaoId" | "nome" | "area_atuacao" | "faturamento_anual" | "ano_criacao" | "fundadores" | "porte", ExtArgs["result"]["negocio"]>
+  export type NegocioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
+  export type NegocioIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
+  export type NegocioIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
+  }
 
   export type $NegocioPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Negocio"
-    objects: {}
+    objects: {
+      dimensao: Prisma.$DimensaoPayload<ExtArgs>
+    }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
+      dimensaoId: number
       nome: string
       area_atuacao: string
       faturamento_anual: number
@@ -4728,8 +7402,8 @@ export namespace Prisma {
      * // Get first 10 Negocios
      * const negocios = await prisma.negocio.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const negocioWithIdOnly = await prisma.negocio.findMany({ select: { id: true } })
+     * // Only select the `dimensaoId`
+     * const negocioWithDimensaoIdOnly = await prisma.negocio.findMany({ select: { dimensaoId: true } })
      * 
      */
     findMany<T extends NegocioFindManyArgs>(args?: SelectSubset<T, NegocioFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NegocioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -4773,9 +7447,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Negocios and only return the `id`
-     * const negocioWithIdOnly = await prisma.negocio.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many Negocios and only return the `dimensaoId`
+     * const negocioWithDimensaoIdOnly = await prisma.negocio.createManyAndReturn({
+     *   select: { dimensaoId: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -4864,9 +7538,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Negocios and only return the `id`
-     * const negocioWithIdOnly = await prisma.negocio.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more Negocios and only return the `dimensaoId`
+     * const negocioWithDimensaoIdOnly = await prisma.negocio.updateManyAndReturn({
+     *   select: { dimensaoId: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5039,6 +7713,7 @@ export namespace Prisma {
    */
   export interface Prisma__NegocioClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    dimensao<T extends DimensaoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DimensaoDefaultArgs<ExtArgs>>): Prisma__DimensaoClient<$Result.GetResult<Prisma.$DimensaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5068,7 +7743,7 @@ export namespace Prisma {
    * Fields of the Negocio model
    */
   interface NegocioFieldRefs {
-    readonly id: FieldRef<"Negocio", 'Int'>
+    readonly dimensaoId: FieldRef<"Negocio", 'Int'>
     readonly nome: FieldRef<"Negocio", 'String'>
     readonly area_atuacao: FieldRef<"Negocio", 'String'>
     readonly faturamento_anual: FieldRef<"Negocio", 'Float'>
@@ -5092,6 +7767,10 @@ export namespace Prisma {
      */
     omit?: NegocioOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NegocioInclude<ExtArgs> | null
+    /**
      * Filter, which Negocio to fetch.
      */
     where: NegocioWhereUniqueInput
@@ -5110,6 +7789,10 @@ export namespace Prisma {
      */
     omit?: NegocioOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NegocioInclude<ExtArgs> | null
+    /**
      * Filter, which Negocio to fetch.
      */
     where: NegocioWhereUniqueInput
@@ -5127,6 +7810,10 @@ export namespace Prisma {
      * Omit specific fields from the Negocio
      */
     omit?: NegocioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NegocioInclude<ExtArgs> | null
     /**
      * Filter, which Negocio to fetch.
      */
@@ -5176,6 +7863,10 @@ export namespace Prisma {
      */
     omit?: NegocioOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NegocioInclude<ExtArgs> | null
+    /**
      * Filter, which Negocio to fetch.
      */
     where?: NegocioWhereInput
@@ -5224,6 +7915,10 @@ export namespace Prisma {
      */
     omit?: NegocioOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NegocioInclude<ExtArgs> | null
+    /**
      * Filter, which Negocios to fetch.
      */
     where?: NegocioWhereInput
@@ -5267,6 +7962,10 @@ export namespace Prisma {
      */
     omit?: NegocioOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NegocioInclude<ExtArgs> | null
+    /**
      * The data needed to create a Negocio.
      */
     data: XOR<NegocioCreateInput, NegocioUncheckedCreateInput>
@@ -5300,6 +7999,10 @@ export namespace Prisma {
      */
     data: NegocioCreateManyInput | NegocioCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NegocioIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -5314,6 +8017,10 @@ export namespace Prisma {
      * Omit specific fields from the Negocio
      */
     omit?: NegocioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NegocioInclude<ExtArgs> | null
     /**
      * The data needed to update a Negocio.
      */
@@ -5366,6 +8073,10 @@ export namespace Prisma {
      * Limit how many Negocios to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NegocioIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -5380,6 +8091,10 @@ export namespace Prisma {
      * Omit specific fields from the Negocio
      */
     omit?: NegocioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NegocioInclude<ExtArgs> | null
     /**
      * The filter to search for the Negocio to update in case it exists.
      */
@@ -5406,6 +8121,10 @@ export namespace Prisma {
      * Omit specific fields from the Negocio
      */
     omit?: NegocioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NegocioInclude<ExtArgs> | null
     /**
      * Filter which Negocio to delete.
      */
@@ -5438,6 +8157,10 @@ export namespace Prisma {
      * Omit specific fields from the Negocio
      */
     omit?: NegocioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NegocioInclude<ExtArgs> | null
   }
 
 
@@ -5455,8 +8178,24 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-  export const DisciplinaScalarFieldEnum: {
+  export const DimensaoScalarFieldEnum: {
     id: 'id',
+    tipo: 'tipo'
+  };
+
+  export type DimensaoScalarFieldEnum = (typeof DimensaoScalarFieldEnum)[keyof typeof DimensaoScalarFieldEnum]
+
+
+  export const Dimensao_DimensaoScalarFieldEnum: {
+    dimensaoAId: 'dimensaoAId',
+    dimensaoBId: 'dimensaoBId'
+  };
+
+  export type Dimensao_DimensaoScalarFieldEnum = (typeof Dimensao_DimensaoScalarFieldEnum)[keyof typeof Dimensao_DimensaoScalarFieldEnum]
+
+
+  export const DisciplinaScalarFieldEnum: {
+    dimensaoId: 'dimensaoId',
     nome: 'nome',
     coordenador: 'coordenador',
     semestre: 'semestre',
@@ -5469,7 +8208,7 @@ export namespace Prisma {
 
 
   export const EventoScalarFieldEnum: {
-    id: 'id',
+    dimensaoId: 'dimensaoId',
     nome: 'nome',
     descricao: 'descricao',
     data_inicio: 'data_inicio',
@@ -5487,7 +8226,7 @@ export namespace Prisma {
 
 
   export const MotorScalarFieldEnum: {
-    id: 'id',
+    dimensaoId: 'dimensaoId',
     nome: 'nome',
     descricao: 'descricao',
     projetos: 'projetos',
@@ -5503,7 +8242,7 @@ export namespace Prisma {
 
 
   export const NegocioScalarFieldEnum: {
-    id: 'id',
+    dimensaoId: 'dimensaoId',
     nome: 'nome',
     area_atuacao: 'area_atuacao',
     faturamento_anual: 'faturamento_anual',
@@ -5595,31 +8334,136 @@ export namespace Prisma {
    */
 
 
+  export type DimensaoWhereInput = {
+    AND?: DimensaoWhereInput | DimensaoWhereInput[]
+    OR?: DimensaoWhereInput[]
+    NOT?: DimensaoWhereInput | DimensaoWhereInput[]
+    id?: IntFilter<"Dimensao"> | number
+    tipo?: StringFilter<"Dimensao"> | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoListRelationFilter
+    Dimensao_DimensaoB?: Dimensao_DimensaoListRelationFilter
+    Disciplina?: XOR<DisciplinaNullableScalarRelationFilter, DisciplinaWhereInput> | null
+    Evento?: XOR<EventoNullableScalarRelationFilter, EventoWhereInput> | null
+    Motor?: XOR<MotorNullableScalarRelationFilter, MotorWhereInput> | null
+    Negocio?: XOR<NegocioNullableScalarRelationFilter, NegocioWhereInput> | null
+  }
+
+  export type DimensaoOrderByWithRelationInput = {
+    id?: SortOrder
+    tipo?: SortOrder
+    Dimensao_DimensaoA?: Dimensao_DimensaoOrderByRelationAggregateInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoOrderByRelationAggregateInput
+    Disciplina?: DisciplinaOrderByWithRelationInput
+    Evento?: EventoOrderByWithRelationInput
+    Motor?: MotorOrderByWithRelationInput
+    Negocio?: NegocioOrderByWithRelationInput
+  }
+
+  export type DimensaoWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: DimensaoWhereInput | DimensaoWhereInput[]
+    OR?: DimensaoWhereInput[]
+    NOT?: DimensaoWhereInput | DimensaoWhereInput[]
+    tipo?: StringFilter<"Dimensao"> | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoListRelationFilter
+    Dimensao_DimensaoB?: Dimensao_DimensaoListRelationFilter
+    Disciplina?: XOR<DisciplinaNullableScalarRelationFilter, DisciplinaWhereInput> | null
+    Evento?: XOR<EventoNullableScalarRelationFilter, EventoWhereInput> | null
+    Motor?: XOR<MotorNullableScalarRelationFilter, MotorWhereInput> | null
+    Negocio?: XOR<NegocioNullableScalarRelationFilter, NegocioWhereInput> | null
+  }, "id">
+
+  export type DimensaoOrderByWithAggregationInput = {
+    id?: SortOrder
+    tipo?: SortOrder
+    _count?: DimensaoCountOrderByAggregateInput
+    _avg?: DimensaoAvgOrderByAggregateInput
+    _max?: DimensaoMaxOrderByAggregateInput
+    _min?: DimensaoMinOrderByAggregateInput
+    _sum?: DimensaoSumOrderByAggregateInput
+  }
+
+  export type DimensaoScalarWhereWithAggregatesInput = {
+    AND?: DimensaoScalarWhereWithAggregatesInput | DimensaoScalarWhereWithAggregatesInput[]
+    OR?: DimensaoScalarWhereWithAggregatesInput[]
+    NOT?: DimensaoScalarWhereWithAggregatesInput | DimensaoScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Dimensao"> | number
+    tipo?: StringWithAggregatesFilter<"Dimensao"> | string
+  }
+
+  export type Dimensao_DimensaoWhereInput = {
+    AND?: Dimensao_DimensaoWhereInput | Dimensao_DimensaoWhereInput[]
+    OR?: Dimensao_DimensaoWhereInput[]
+    NOT?: Dimensao_DimensaoWhereInput | Dimensao_DimensaoWhereInput[]
+    dimensaoAId?: IntFilter<"Dimensao_Dimensao"> | number
+    dimensaoBId?: IntFilter<"Dimensao_Dimensao"> | number
+    dimensaoA?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
+    dimensaoB?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
+  }
+
+  export type Dimensao_DimensaoOrderByWithRelationInput = {
+    dimensaoAId?: SortOrder
+    dimensaoBId?: SortOrder
+    dimensaoA?: DimensaoOrderByWithRelationInput
+    dimensaoB?: DimensaoOrderByWithRelationInput
+  }
+
+  export type Dimensao_DimensaoWhereUniqueInput = Prisma.AtLeast<{
+    dimensaoAId_dimensaoBId?: Dimensao_DimensaoDimensaoAIdDimensaoBIdCompoundUniqueInput
+    AND?: Dimensao_DimensaoWhereInput | Dimensao_DimensaoWhereInput[]
+    OR?: Dimensao_DimensaoWhereInput[]
+    NOT?: Dimensao_DimensaoWhereInput | Dimensao_DimensaoWhereInput[]
+    dimensaoAId?: IntFilter<"Dimensao_Dimensao"> | number
+    dimensaoBId?: IntFilter<"Dimensao_Dimensao"> | number
+    dimensaoA?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
+    dimensaoB?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
+  }, "dimensaoAId_dimensaoBId">
+
+  export type Dimensao_DimensaoOrderByWithAggregationInput = {
+    dimensaoAId?: SortOrder
+    dimensaoBId?: SortOrder
+    _count?: Dimensao_DimensaoCountOrderByAggregateInput
+    _avg?: Dimensao_DimensaoAvgOrderByAggregateInput
+    _max?: Dimensao_DimensaoMaxOrderByAggregateInput
+    _min?: Dimensao_DimensaoMinOrderByAggregateInput
+    _sum?: Dimensao_DimensaoSumOrderByAggregateInput
+  }
+
+  export type Dimensao_DimensaoScalarWhereWithAggregatesInput = {
+    AND?: Dimensao_DimensaoScalarWhereWithAggregatesInput | Dimensao_DimensaoScalarWhereWithAggregatesInput[]
+    OR?: Dimensao_DimensaoScalarWhereWithAggregatesInput[]
+    NOT?: Dimensao_DimensaoScalarWhereWithAggregatesInput | Dimensao_DimensaoScalarWhereWithAggregatesInput[]
+    dimensaoAId?: IntWithAggregatesFilter<"Dimensao_Dimensao"> | number
+    dimensaoBId?: IntWithAggregatesFilter<"Dimensao_Dimensao"> | number
+  }
+
   export type DisciplinaWhereInput = {
     AND?: DisciplinaWhereInput | DisciplinaWhereInput[]
     OR?: DisciplinaWhereInput[]
     NOT?: DisciplinaWhereInput | DisciplinaWhereInput[]
-    id?: IntFilter<"Disciplina"> | number
+    dimensaoId?: IntFilter<"Disciplina"> | number
     nome?: StringFilter<"Disciplina"> | string
     coordenador?: StringFilter<"Disciplina"> | string
     semestre?: StringFilter<"Disciplina"> | string
     codigo?: StringFilter<"Disciplina"> | string
     alunos_matriculados?: StringNullableListFilter<"Disciplina">
     alunos_aprovados?: StringNullableListFilter<"Disciplina">
+    dimensao?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
   }
 
   export type DisciplinaOrderByWithRelationInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     coordenador?: SortOrder
     semestre?: SortOrder
     codigo?: SortOrder
     alunos_matriculados?: SortOrder
     alunos_aprovados?: SortOrder
+    dimensao?: DimensaoOrderByWithRelationInput
   }
 
   export type DisciplinaWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    dimensaoId?: number
     codigo?: string
     AND?: DisciplinaWhereInput | DisciplinaWhereInput[]
     OR?: DisciplinaWhereInput[]
@@ -5629,10 +8473,11 @@ export namespace Prisma {
     semestre?: StringFilter<"Disciplina"> | string
     alunos_matriculados?: StringNullableListFilter<"Disciplina">
     alunos_aprovados?: StringNullableListFilter<"Disciplina">
-  }, "id" | "codigo">
+    dimensao?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
+  }, "dimensaoId" | "dimensaoId" | "codigo">
 
   export type DisciplinaOrderByWithAggregationInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     coordenador?: SortOrder
     semestre?: SortOrder
@@ -5650,7 +8495,7 @@ export namespace Prisma {
     AND?: DisciplinaScalarWhereWithAggregatesInput | DisciplinaScalarWhereWithAggregatesInput[]
     OR?: DisciplinaScalarWhereWithAggregatesInput[]
     NOT?: DisciplinaScalarWhereWithAggregatesInput | DisciplinaScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Disciplina"> | number
+    dimensaoId?: IntWithAggregatesFilter<"Disciplina"> | number
     nome?: StringWithAggregatesFilter<"Disciplina"> | string
     coordenador?: StringWithAggregatesFilter<"Disciplina"> | string
     semestre?: StringWithAggregatesFilter<"Disciplina"> | string
@@ -5663,7 +8508,7 @@ export namespace Prisma {
     AND?: EventoWhereInput | EventoWhereInput[]
     OR?: EventoWhereInput[]
     NOT?: EventoWhereInput | EventoWhereInput[]
-    id?: IntFilter<"Evento"> | number
+    dimensaoId?: IntFilter<"Evento"> | number
     nome?: StringFilter<"Evento"> | string
     descricao?: StringFilter<"Evento"> | string
     data_inicio?: DateTimeFilter<"Evento"> | Date | string
@@ -5675,10 +8520,11 @@ export namespace Prisma {
     equipe?: StringNullableListFilter<"Evento">
     coordenadores?: StringNullableListFilter<"Evento">
     parceiros?: StringNullableListFilter<"Evento">
+    dimensao?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
   }
 
   export type EventoOrderByWithRelationInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     descricao?: SortOrder
     data_inicio?: SortOrder
@@ -5690,10 +8536,11 @@ export namespace Prisma {
     equipe?: SortOrder
     coordenadores?: SortOrder
     parceiros?: SortOrder
+    dimensao?: DimensaoOrderByWithRelationInput
   }
 
   export type EventoWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    dimensaoId?: number
     AND?: EventoWhereInput | EventoWhereInput[]
     OR?: EventoWhereInput[]
     NOT?: EventoWhereInput | EventoWhereInput[]
@@ -5708,10 +8555,11 @@ export namespace Prisma {
     equipe?: StringNullableListFilter<"Evento">
     coordenadores?: StringNullableListFilter<"Evento">
     parceiros?: StringNullableListFilter<"Evento">
-  }, "id">
+    dimensao?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
+  }, "dimensaoId" | "dimensaoId">
 
   export type EventoOrderByWithAggregationInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     descricao?: SortOrder
     data_inicio?: SortOrder
@@ -5734,7 +8582,7 @@ export namespace Prisma {
     AND?: EventoScalarWhereWithAggregatesInput | EventoScalarWhereWithAggregatesInput[]
     OR?: EventoScalarWhereWithAggregatesInput[]
     NOT?: EventoScalarWhereWithAggregatesInput | EventoScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Evento"> | number
+    dimensaoId?: IntWithAggregatesFilter<"Evento"> | number
     nome?: StringWithAggregatesFilter<"Evento"> | string
     descricao?: StringWithAggregatesFilter<"Evento"> | string
     data_inicio?: DateTimeWithAggregatesFilter<"Evento"> | Date | string
@@ -5752,7 +8600,7 @@ export namespace Prisma {
     AND?: MotorWhereInput | MotorWhereInput[]
     OR?: MotorWhereInput[]
     NOT?: MotorWhereInput | MotorWhereInput[]
-    id?: IntFilter<"Motor"> | number
+    dimensaoId?: IntFilter<"Motor"> | number
     nome?: StringFilter<"Motor"> | string
     descricao?: StringFilter<"Motor"> | string
     projetos?: StringNullableListFilter<"Motor">
@@ -5762,10 +8610,11 @@ export namespace Prisma {
     equipe?: StringNullableListFilter<"Motor">
     qtd_empresas_atendidas?: IntFilter<"Motor"> | number
     faturamento?: FloatFilter<"Motor"> | number
+    dimensao?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
   }
 
   export type MotorOrderByWithRelationInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     descricao?: SortOrder
     projetos?: SortOrder
@@ -5775,10 +8624,11 @@ export namespace Prisma {
     equipe?: SortOrder
     qtd_empresas_atendidas?: SortOrder
     faturamento?: SortOrder
+    dimensao?: DimensaoOrderByWithRelationInput
   }
 
   export type MotorWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    dimensaoId?: number
     AND?: MotorWhereInput | MotorWhereInput[]
     OR?: MotorWhereInput[]
     NOT?: MotorWhereInput | MotorWhereInput[]
@@ -5791,10 +8641,11 @@ export namespace Prisma {
     equipe?: StringNullableListFilter<"Motor">
     qtd_empresas_atendidas?: IntFilter<"Motor"> | number
     faturamento?: FloatFilter<"Motor"> | number
-  }, "id">
+    dimensao?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
+  }, "dimensaoId" | "dimensaoId">
 
   export type MotorOrderByWithAggregationInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     descricao?: SortOrder
     projetos?: SortOrder
@@ -5815,7 +8666,7 @@ export namespace Prisma {
     AND?: MotorScalarWhereWithAggregatesInput | MotorScalarWhereWithAggregatesInput[]
     OR?: MotorScalarWhereWithAggregatesInput[]
     NOT?: MotorScalarWhereWithAggregatesInput | MotorScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Motor"> | number
+    dimensaoId?: IntWithAggregatesFilter<"Motor"> | number
     nome?: StringWithAggregatesFilter<"Motor"> | string
     descricao?: StringWithAggregatesFilter<"Motor"> | string
     projetos?: StringNullableListFilter<"Motor">
@@ -5831,27 +8682,29 @@ export namespace Prisma {
     AND?: NegocioWhereInput | NegocioWhereInput[]
     OR?: NegocioWhereInput[]
     NOT?: NegocioWhereInput | NegocioWhereInput[]
-    id?: IntFilter<"Negocio"> | number
+    dimensaoId?: IntFilter<"Negocio"> | number
     nome?: StringFilter<"Negocio"> | string
     area_atuacao?: StringFilter<"Negocio"> | string
     faturamento_anual?: FloatFilter<"Negocio"> | number
     ano_criacao?: DateTimeFilter<"Negocio"> | Date | string
     fundadores?: StringNullableListFilter<"Negocio">
     porte?: StringFilter<"Negocio"> | string
+    dimensao?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
   }
 
   export type NegocioOrderByWithRelationInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     area_atuacao?: SortOrder
     faturamento_anual?: SortOrder
     ano_criacao?: SortOrder
     fundadores?: SortOrder
     porte?: SortOrder
+    dimensao?: DimensaoOrderByWithRelationInput
   }
 
   export type NegocioWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    dimensaoId?: number
     AND?: NegocioWhereInput | NegocioWhereInput[]
     OR?: NegocioWhereInput[]
     NOT?: NegocioWhereInput | NegocioWhereInput[]
@@ -5861,10 +8714,11 @@ export namespace Prisma {
     ano_criacao?: DateTimeFilter<"Negocio"> | Date | string
     fundadores?: StringNullableListFilter<"Negocio">
     porte?: StringFilter<"Negocio"> | string
-  }, "id">
+    dimensao?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
+  }, "dimensaoId" | "dimensaoId">
 
   export type NegocioOrderByWithAggregationInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     area_atuacao?: SortOrder
     faturamento_anual?: SortOrder
@@ -5882,13 +8736,103 @@ export namespace Prisma {
     AND?: NegocioScalarWhereWithAggregatesInput | NegocioScalarWhereWithAggregatesInput[]
     OR?: NegocioScalarWhereWithAggregatesInput[]
     NOT?: NegocioScalarWhereWithAggregatesInput | NegocioScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Negocio"> | number
+    dimensaoId?: IntWithAggregatesFilter<"Negocio"> | number
     nome?: StringWithAggregatesFilter<"Negocio"> | string
     area_atuacao?: StringWithAggregatesFilter<"Negocio"> | string
     faturamento_anual?: FloatWithAggregatesFilter<"Negocio"> | number
     ano_criacao?: DateTimeWithAggregatesFilter<"Negocio"> | Date | string
     fundadores?: StringNullableListFilter<"Negocio">
     porte?: StringWithAggregatesFilter<"Negocio"> | string
+  }
+
+  export type DimensaoCreateInput = {
+    tipo: string
+    Dimensao_DimensaoA?: Dimensao_DimensaoCreateNestedManyWithoutDimensaoAInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoCreateNestedManyWithoutDimensaoBInput
+    Disciplina?: DisciplinaCreateNestedOneWithoutDimensaoInput
+    Evento?: EventoCreateNestedOneWithoutDimensaoInput
+    Motor?: MotorCreateNestedOneWithoutDimensaoInput
+    Negocio?: NegocioCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoUncheckedCreateInput = {
+    id?: number
+    tipo: string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoAInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoBInput
+    Disciplina?: DisciplinaUncheckedCreateNestedOneWithoutDimensaoInput
+    Evento?: EventoUncheckedCreateNestedOneWithoutDimensaoInput
+    Motor?: MotorUncheckedCreateNestedOneWithoutDimensaoInput
+    Negocio?: NegocioUncheckedCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoUpdateInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUpdateManyWithoutDimensaoANestedInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUpdateManyWithoutDimensaoBNestedInput
+    Disciplina?: DisciplinaUpdateOneWithoutDimensaoNestedInput
+    Evento?: EventoUpdateOneWithoutDimensaoNestedInput
+    Motor?: MotorUpdateOneWithoutDimensaoNestedInput
+    Negocio?: NegocioUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type DimensaoUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoANestedInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoBNestedInput
+    Disciplina?: DisciplinaUncheckedUpdateOneWithoutDimensaoNestedInput
+    Evento?: EventoUncheckedUpdateOneWithoutDimensaoNestedInput
+    Motor?: MotorUncheckedUpdateOneWithoutDimensaoNestedInput
+    Negocio?: NegocioUncheckedUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type DimensaoCreateManyInput = {
+    id?: number
+    tipo: string
+  }
+
+  export type DimensaoUpdateManyMutationInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type DimensaoUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type Dimensao_DimensaoCreateInput = {
+    dimensaoA: DimensaoCreateNestedOneWithoutDimensao_DimensaoAInput
+    dimensaoB: DimensaoCreateNestedOneWithoutDimensao_DimensaoBInput
+  }
+
+  export type Dimensao_DimensaoUncheckedCreateInput = {
+    dimensaoAId: number
+    dimensaoBId: number
+  }
+
+  export type Dimensao_DimensaoUpdateInput = {
+    dimensaoA?: DimensaoUpdateOneRequiredWithoutDimensao_DimensaoANestedInput
+    dimensaoB?: DimensaoUpdateOneRequiredWithoutDimensao_DimensaoBNestedInput
+  }
+
+  export type Dimensao_DimensaoUncheckedUpdateInput = {
+    dimensaoAId?: IntFieldUpdateOperationsInput | number
+    dimensaoBId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type Dimensao_DimensaoCreateManyInput = {
+    dimensaoAId: number
+    dimensaoBId: number
+  }
+
+  export type Dimensao_DimensaoUpdateManyMutationInput = {
+
+  }
+
+  export type Dimensao_DimensaoUncheckedUpdateManyInput = {
+    dimensaoAId?: IntFieldUpdateOperationsInput | number
+    dimensaoBId?: IntFieldUpdateOperationsInput | number
   }
 
   export type DisciplinaCreateInput = {
@@ -5898,10 +8842,11 @@ export namespace Prisma {
     codigo: string
     alunos_matriculados?: DisciplinaCreatealunos_matriculadosInput | string[]
     alunos_aprovados?: DisciplinaCreatealunos_aprovadosInput | string[]
+    dimensao: DimensaoCreateNestedOneWithoutDisciplinaInput
   }
 
   export type DisciplinaUncheckedCreateInput = {
-    id?: number
+    dimensaoId: number
     nome: string
     coordenador: string
     semestre: string
@@ -5917,10 +8862,11 @@ export namespace Prisma {
     codigo?: StringFieldUpdateOperationsInput | string
     alunos_matriculados?: DisciplinaUpdatealunos_matriculadosInput | string[]
     alunos_aprovados?: DisciplinaUpdatealunos_aprovadosInput | string[]
+    dimensao?: DimensaoUpdateOneRequiredWithoutDisciplinaNestedInput
   }
 
   export type DisciplinaUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    dimensaoId?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
     coordenador?: StringFieldUpdateOperationsInput | string
     semestre?: StringFieldUpdateOperationsInput | string
@@ -5930,7 +8876,7 @@ export namespace Prisma {
   }
 
   export type DisciplinaCreateManyInput = {
-    id?: number
+    dimensaoId: number
     nome: string
     coordenador: string
     semestre: string
@@ -5949,7 +8895,7 @@ export namespace Prisma {
   }
 
   export type DisciplinaUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    dimensaoId?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
     coordenador?: StringFieldUpdateOperationsInput | string
     semestre?: StringFieldUpdateOperationsInput | string
@@ -5970,10 +8916,11 @@ export namespace Prisma {
     equipe?: EventoCreateequipeInput | string[]
     coordenadores?: EventoCreatecoordenadoresInput | string[]
     parceiros?: EventoCreateparceirosInput | string[]
+    dimensao: DimensaoCreateNestedOneWithoutEventoInput
   }
 
   export type EventoUncheckedCreateInput = {
-    id?: number
+    dimensaoId: number
     nome: string
     descricao: string
     data_inicio: Date | string
@@ -5999,10 +8946,11 @@ export namespace Prisma {
     equipe?: EventoUpdateequipeInput | string[]
     coordenadores?: EventoUpdatecoordenadoresInput | string[]
     parceiros?: EventoUpdateparceirosInput | string[]
+    dimensao?: DimensaoUpdateOneRequiredWithoutEventoNestedInput
   }
 
   export type EventoUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    dimensaoId?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
     descricao?: StringFieldUpdateOperationsInput | string
     data_inicio?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6017,7 +8965,7 @@ export namespace Prisma {
   }
 
   export type EventoCreateManyInput = {
-    id?: number
+    dimensaoId: number
     nome: string
     descricao: string
     data_inicio: Date | string
@@ -6046,7 +8994,7 @@ export namespace Prisma {
   }
 
   export type EventoUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    dimensaoId?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
     descricao?: StringFieldUpdateOperationsInput | string
     data_inicio?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6070,10 +9018,11 @@ export namespace Prisma {
     equipe?: MotorCreateequipeInput | string[]
     qtd_empresas_atendidas: number
     faturamento: number
+    dimensao: DimensaoCreateNestedOneWithoutMotorInput
   }
 
   export type MotorUncheckedCreateInput = {
-    id?: number
+    dimensaoId: number
     nome: string
     descricao: string
     projetos?: MotorCreateprojetosInput | string[]
@@ -6095,10 +9044,11 @@ export namespace Prisma {
     equipe?: MotorUpdateequipeInput | string[]
     qtd_empresas_atendidas?: IntFieldUpdateOperationsInput | number
     faturamento?: FloatFieldUpdateOperationsInput | number
+    dimensao?: DimensaoUpdateOneRequiredWithoutMotorNestedInput
   }
 
   export type MotorUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    dimensaoId?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
     descricao?: StringFieldUpdateOperationsInput | string
     projetos?: MotorUpdateprojetosInput | string[]
@@ -6111,7 +9061,7 @@ export namespace Prisma {
   }
 
   export type MotorCreateManyInput = {
-    id?: number
+    dimensaoId: number
     nome: string
     descricao: string
     projetos?: MotorCreateprojetosInput | string[]
@@ -6136,7 +9086,7 @@ export namespace Prisma {
   }
 
   export type MotorUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    dimensaoId?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
     descricao?: StringFieldUpdateOperationsInput | string
     projetos?: MotorUpdateprojetosInput | string[]
@@ -6155,10 +9105,11 @@ export namespace Prisma {
     ano_criacao: Date | string
     fundadores?: NegocioCreatefundadoresInput | string[]
     porte: string
+    dimensao: DimensaoCreateNestedOneWithoutNegocioInput
   }
 
   export type NegocioUncheckedCreateInput = {
-    id?: number
+    dimensaoId: number
     nome: string
     area_atuacao: string
     faturamento_anual: number
@@ -6174,10 +9125,11 @@ export namespace Prisma {
     ano_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
     fundadores?: NegocioUpdatefundadoresInput | string[]
     porte?: StringFieldUpdateOperationsInput | string
+    dimensao?: DimensaoUpdateOneRequiredWithoutNegocioNestedInput
   }
 
   export type NegocioUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    dimensaoId?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
     area_atuacao?: StringFieldUpdateOperationsInput | string
     faturamento_anual?: FloatFieldUpdateOperationsInput | number
@@ -6187,7 +9139,7 @@ export namespace Prisma {
   }
 
   export type NegocioCreateManyInput = {
-    id?: number
+    dimensaoId: number
     nome: string
     area_atuacao: string
     faturamento_anual: number
@@ -6206,7 +9158,7 @@ export namespace Prisma {
   }
 
   export type NegocioUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    dimensaoId?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
     area_atuacao?: StringFieldUpdateOperationsInput | string
     faturamento_anual?: FloatFieldUpdateOperationsInput | number
@@ -6241,45 +9193,56 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
+  export type Dimensao_DimensaoListRelationFilter = {
+    every?: Dimensao_DimensaoWhereInput
+    some?: Dimensao_DimensaoWhereInput
+    none?: Dimensao_DimensaoWhereInput
   }
 
-  export type DisciplinaCountOrderByAggregateInput = {
+  export type DisciplinaNullableScalarRelationFilter = {
+    is?: DisciplinaWhereInput | null
+    isNot?: DisciplinaWhereInput | null
+  }
+
+  export type EventoNullableScalarRelationFilter = {
+    is?: EventoWhereInput | null
+    isNot?: EventoWhereInput | null
+  }
+
+  export type MotorNullableScalarRelationFilter = {
+    is?: MotorWhereInput | null
+    isNot?: MotorWhereInput | null
+  }
+
+  export type NegocioNullableScalarRelationFilter = {
+    is?: NegocioWhereInput | null
+    isNot?: NegocioWhereInput | null
+  }
+
+  export type Dimensao_DimensaoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DimensaoCountOrderByAggregateInput = {
     id?: SortOrder
-    nome?: SortOrder
-    coordenador?: SortOrder
-    semestre?: SortOrder
-    codigo?: SortOrder
-    alunos_matriculados?: SortOrder
-    alunos_aprovados?: SortOrder
+    tipo?: SortOrder
   }
 
-  export type DisciplinaAvgOrderByAggregateInput = {
+  export type DimensaoAvgOrderByAggregateInput = {
     id?: SortOrder
   }
 
-  export type DisciplinaMaxOrderByAggregateInput = {
+  export type DimensaoMaxOrderByAggregateInput = {
     id?: SortOrder
-    nome?: SortOrder
-    coordenador?: SortOrder
-    semestre?: SortOrder
-    codigo?: SortOrder
+    tipo?: SortOrder
   }
 
-  export type DisciplinaMinOrderByAggregateInput = {
+  export type DimensaoMinOrderByAggregateInput = {
     id?: SortOrder
-    nome?: SortOrder
-    coordenador?: SortOrder
-    semestre?: SortOrder
-    codigo?: SortOrder
+    tipo?: SortOrder
   }
 
-  export type DisciplinaSumOrderByAggregateInput = {
+  export type DimensaoSumOrderByAggregateInput = {
     id?: SortOrder
   }
 
@@ -6317,6 +9280,83 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type DimensaoScalarRelationFilter = {
+    is?: DimensaoWhereInput
+    isNot?: DimensaoWhereInput
+  }
+
+  export type Dimensao_DimensaoDimensaoAIdDimensaoBIdCompoundUniqueInput = {
+    dimensaoAId: number
+    dimensaoBId: number
+  }
+
+  export type Dimensao_DimensaoCountOrderByAggregateInput = {
+    dimensaoAId?: SortOrder
+    dimensaoBId?: SortOrder
+  }
+
+  export type Dimensao_DimensaoAvgOrderByAggregateInput = {
+    dimensaoAId?: SortOrder
+    dimensaoBId?: SortOrder
+  }
+
+  export type Dimensao_DimensaoMaxOrderByAggregateInput = {
+    dimensaoAId?: SortOrder
+    dimensaoBId?: SortOrder
+  }
+
+  export type Dimensao_DimensaoMinOrderByAggregateInput = {
+    dimensaoAId?: SortOrder
+    dimensaoBId?: SortOrder
+  }
+
+  export type Dimensao_DimensaoSumOrderByAggregateInput = {
+    dimensaoAId?: SortOrder
+    dimensaoBId?: SortOrder
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type DisciplinaCountOrderByAggregateInput = {
+    dimensaoId?: SortOrder
+    nome?: SortOrder
+    coordenador?: SortOrder
+    semestre?: SortOrder
+    codigo?: SortOrder
+    alunos_matriculados?: SortOrder
+    alunos_aprovados?: SortOrder
+  }
+
+  export type DisciplinaAvgOrderByAggregateInput = {
+    dimensaoId?: SortOrder
+  }
+
+  export type DisciplinaMaxOrderByAggregateInput = {
+    dimensaoId?: SortOrder
+    nome?: SortOrder
+    coordenador?: SortOrder
+    semestre?: SortOrder
+    codigo?: SortOrder
+  }
+
+  export type DisciplinaMinOrderByAggregateInput = {
+    dimensaoId?: SortOrder
+    nome?: SortOrder
+    coordenador?: SortOrder
+    semestre?: SortOrder
+    codigo?: SortOrder
+  }
+
+  export type DisciplinaSumOrderByAggregateInput = {
+    dimensaoId?: SortOrder
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -6340,7 +9380,7 @@ export namespace Prisma {
   }
 
   export type EventoCountOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     descricao?: SortOrder
     data_inicio?: SortOrder
@@ -6355,14 +9395,14 @@ export namespace Prisma {
   }
 
   export type EventoAvgOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     custo?: SortOrder
     receita?: SortOrder
     qtd_publico?: SortOrder
   }
 
   export type EventoMaxOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     descricao?: SortOrder
     data_inicio?: SortOrder
@@ -6373,7 +9413,7 @@ export namespace Prisma {
   }
 
   export type EventoMinOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     descricao?: SortOrder
     data_inicio?: SortOrder
@@ -6384,7 +9424,7 @@ export namespace Prisma {
   }
 
   export type EventoSumOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     custo?: SortOrder
     receita?: SortOrder
     qtd_publico?: SortOrder
@@ -6421,7 +9461,7 @@ export namespace Prisma {
   }
 
   export type MotorCountOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     descricao?: SortOrder
     projetos?: SortOrder
@@ -6434,13 +9474,13 @@ export namespace Prisma {
   }
 
   export type MotorAvgOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     qtd_empresas_atendidas?: SortOrder
     faturamento?: SortOrder
   }
 
   export type MotorMaxOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     descricao?: SortOrder
     motor_tipo?: SortOrder
@@ -6450,7 +9490,7 @@ export namespace Prisma {
   }
 
   export type MotorMinOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     descricao?: SortOrder
     motor_tipo?: SortOrder
@@ -6460,13 +9500,13 @@ export namespace Prisma {
   }
 
   export type MotorSumOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     qtd_empresas_atendidas?: SortOrder
     faturamento?: SortOrder
   }
 
   export type NegocioCountOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     area_atuacao?: SortOrder
     faturamento_anual?: SortOrder
@@ -6476,12 +9516,12 @@ export namespace Prisma {
   }
 
   export type NegocioAvgOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     faturamento_anual?: SortOrder
   }
 
   export type NegocioMaxOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     area_atuacao?: SortOrder
     faturamento_anual?: SortOrder
@@ -6490,7 +9530,7 @@ export namespace Prisma {
   }
 
   export type NegocioMinOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     nome?: SortOrder
     area_atuacao?: SortOrder
     faturamento_anual?: SortOrder
@@ -6499,8 +9539,260 @@ export namespace Prisma {
   }
 
   export type NegocioSumOrderByAggregateInput = {
-    id?: SortOrder
+    dimensaoId?: SortOrder
     faturamento_anual?: SortOrder
+  }
+
+  export type Dimensao_DimensaoCreateNestedManyWithoutDimensaoAInput = {
+    create?: XOR<Dimensao_DimensaoCreateWithoutDimensaoAInput, Dimensao_DimensaoUncheckedCreateWithoutDimensaoAInput> | Dimensao_DimensaoCreateWithoutDimensaoAInput[] | Dimensao_DimensaoUncheckedCreateWithoutDimensaoAInput[]
+    connectOrCreate?: Dimensao_DimensaoCreateOrConnectWithoutDimensaoAInput | Dimensao_DimensaoCreateOrConnectWithoutDimensaoAInput[]
+    createMany?: Dimensao_DimensaoCreateManyDimensaoAInputEnvelope
+    connect?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+  }
+
+  export type Dimensao_DimensaoCreateNestedManyWithoutDimensaoBInput = {
+    create?: XOR<Dimensao_DimensaoCreateWithoutDimensaoBInput, Dimensao_DimensaoUncheckedCreateWithoutDimensaoBInput> | Dimensao_DimensaoCreateWithoutDimensaoBInput[] | Dimensao_DimensaoUncheckedCreateWithoutDimensaoBInput[]
+    connectOrCreate?: Dimensao_DimensaoCreateOrConnectWithoutDimensaoBInput | Dimensao_DimensaoCreateOrConnectWithoutDimensaoBInput[]
+    createMany?: Dimensao_DimensaoCreateManyDimensaoBInputEnvelope
+    connect?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+  }
+
+  export type DisciplinaCreateNestedOneWithoutDimensaoInput = {
+    create?: XOR<DisciplinaCreateWithoutDimensaoInput, DisciplinaUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: DisciplinaCreateOrConnectWithoutDimensaoInput
+    connect?: DisciplinaWhereUniqueInput
+  }
+
+  export type EventoCreateNestedOneWithoutDimensaoInput = {
+    create?: XOR<EventoCreateWithoutDimensaoInput, EventoUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: EventoCreateOrConnectWithoutDimensaoInput
+    connect?: EventoWhereUniqueInput
+  }
+
+  export type MotorCreateNestedOneWithoutDimensaoInput = {
+    create?: XOR<MotorCreateWithoutDimensaoInput, MotorUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: MotorCreateOrConnectWithoutDimensaoInput
+    connect?: MotorWhereUniqueInput
+  }
+
+  export type NegocioCreateNestedOneWithoutDimensaoInput = {
+    create?: XOR<NegocioCreateWithoutDimensaoInput, NegocioUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: NegocioCreateOrConnectWithoutDimensaoInput
+    connect?: NegocioWhereUniqueInput
+  }
+
+  export type Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoAInput = {
+    create?: XOR<Dimensao_DimensaoCreateWithoutDimensaoAInput, Dimensao_DimensaoUncheckedCreateWithoutDimensaoAInput> | Dimensao_DimensaoCreateWithoutDimensaoAInput[] | Dimensao_DimensaoUncheckedCreateWithoutDimensaoAInput[]
+    connectOrCreate?: Dimensao_DimensaoCreateOrConnectWithoutDimensaoAInput | Dimensao_DimensaoCreateOrConnectWithoutDimensaoAInput[]
+    createMany?: Dimensao_DimensaoCreateManyDimensaoAInputEnvelope
+    connect?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+  }
+
+  export type Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoBInput = {
+    create?: XOR<Dimensao_DimensaoCreateWithoutDimensaoBInput, Dimensao_DimensaoUncheckedCreateWithoutDimensaoBInput> | Dimensao_DimensaoCreateWithoutDimensaoBInput[] | Dimensao_DimensaoUncheckedCreateWithoutDimensaoBInput[]
+    connectOrCreate?: Dimensao_DimensaoCreateOrConnectWithoutDimensaoBInput | Dimensao_DimensaoCreateOrConnectWithoutDimensaoBInput[]
+    createMany?: Dimensao_DimensaoCreateManyDimensaoBInputEnvelope
+    connect?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+  }
+
+  export type DisciplinaUncheckedCreateNestedOneWithoutDimensaoInput = {
+    create?: XOR<DisciplinaCreateWithoutDimensaoInput, DisciplinaUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: DisciplinaCreateOrConnectWithoutDimensaoInput
+    connect?: DisciplinaWhereUniqueInput
+  }
+
+  export type EventoUncheckedCreateNestedOneWithoutDimensaoInput = {
+    create?: XOR<EventoCreateWithoutDimensaoInput, EventoUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: EventoCreateOrConnectWithoutDimensaoInput
+    connect?: EventoWhereUniqueInput
+  }
+
+  export type MotorUncheckedCreateNestedOneWithoutDimensaoInput = {
+    create?: XOR<MotorCreateWithoutDimensaoInput, MotorUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: MotorCreateOrConnectWithoutDimensaoInput
+    connect?: MotorWhereUniqueInput
+  }
+
+  export type NegocioUncheckedCreateNestedOneWithoutDimensaoInput = {
+    create?: XOR<NegocioCreateWithoutDimensaoInput, NegocioUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: NegocioCreateOrConnectWithoutDimensaoInput
+    connect?: NegocioWhereUniqueInput
+  }
+
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
+  }
+
+  export type Dimensao_DimensaoUpdateManyWithoutDimensaoANestedInput = {
+    create?: XOR<Dimensao_DimensaoCreateWithoutDimensaoAInput, Dimensao_DimensaoUncheckedCreateWithoutDimensaoAInput> | Dimensao_DimensaoCreateWithoutDimensaoAInput[] | Dimensao_DimensaoUncheckedCreateWithoutDimensaoAInput[]
+    connectOrCreate?: Dimensao_DimensaoCreateOrConnectWithoutDimensaoAInput | Dimensao_DimensaoCreateOrConnectWithoutDimensaoAInput[]
+    upsert?: Dimensao_DimensaoUpsertWithWhereUniqueWithoutDimensaoAInput | Dimensao_DimensaoUpsertWithWhereUniqueWithoutDimensaoAInput[]
+    createMany?: Dimensao_DimensaoCreateManyDimensaoAInputEnvelope
+    set?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    disconnect?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    delete?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    connect?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    update?: Dimensao_DimensaoUpdateWithWhereUniqueWithoutDimensaoAInput | Dimensao_DimensaoUpdateWithWhereUniqueWithoutDimensaoAInput[]
+    updateMany?: Dimensao_DimensaoUpdateManyWithWhereWithoutDimensaoAInput | Dimensao_DimensaoUpdateManyWithWhereWithoutDimensaoAInput[]
+    deleteMany?: Dimensao_DimensaoScalarWhereInput | Dimensao_DimensaoScalarWhereInput[]
+  }
+
+  export type Dimensao_DimensaoUpdateManyWithoutDimensaoBNestedInput = {
+    create?: XOR<Dimensao_DimensaoCreateWithoutDimensaoBInput, Dimensao_DimensaoUncheckedCreateWithoutDimensaoBInput> | Dimensao_DimensaoCreateWithoutDimensaoBInput[] | Dimensao_DimensaoUncheckedCreateWithoutDimensaoBInput[]
+    connectOrCreate?: Dimensao_DimensaoCreateOrConnectWithoutDimensaoBInput | Dimensao_DimensaoCreateOrConnectWithoutDimensaoBInput[]
+    upsert?: Dimensao_DimensaoUpsertWithWhereUniqueWithoutDimensaoBInput | Dimensao_DimensaoUpsertWithWhereUniqueWithoutDimensaoBInput[]
+    createMany?: Dimensao_DimensaoCreateManyDimensaoBInputEnvelope
+    set?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    disconnect?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    delete?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    connect?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    update?: Dimensao_DimensaoUpdateWithWhereUniqueWithoutDimensaoBInput | Dimensao_DimensaoUpdateWithWhereUniqueWithoutDimensaoBInput[]
+    updateMany?: Dimensao_DimensaoUpdateManyWithWhereWithoutDimensaoBInput | Dimensao_DimensaoUpdateManyWithWhereWithoutDimensaoBInput[]
+    deleteMany?: Dimensao_DimensaoScalarWhereInput | Dimensao_DimensaoScalarWhereInput[]
+  }
+
+  export type DisciplinaUpdateOneWithoutDimensaoNestedInput = {
+    create?: XOR<DisciplinaCreateWithoutDimensaoInput, DisciplinaUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: DisciplinaCreateOrConnectWithoutDimensaoInput
+    upsert?: DisciplinaUpsertWithoutDimensaoInput
+    disconnect?: DisciplinaWhereInput | boolean
+    delete?: DisciplinaWhereInput | boolean
+    connect?: DisciplinaWhereUniqueInput
+    update?: XOR<XOR<DisciplinaUpdateToOneWithWhereWithoutDimensaoInput, DisciplinaUpdateWithoutDimensaoInput>, DisciplinaUncheckedUpdateWithoutDimensaoInput>
+  }
+
+  export type EventoUpdateOneWithoutDimensaoNestedInput = {
+    create?: XOR<EventoCreateWithoutDimensaoInput, EventoUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: EventoCreateOrConnectWithoutDimensaoInput
+    upsert?: EventoUpsertWithoutDimensaoInput
+    disconnect?: EventoWhereInput | boolean
+    delete?: EventoWhereInput | boolean
+    connect?: EventoWhereUniqueInput
+    update?: XOR<XOR<EventoUpdateToOneWithWhereWithoutDimensaoInput, EventoUpdateWithoutDimensaoInput>, EventoUncheckedUpdateWithoutDimensaoInput>
+  }
+
+  export type MotorUpdateOneWithoutDimensaoNestedInput = {
+    create?: XOR<MotorCreateWithoutDimensaoInput, MotorUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: MotorCreateOrConnectWithoutDimensaoInput
+    upsert?: MotorUpsertWithoutDimensaoInput
+    disconnect?: MotorWhereInput | boolean
+    delete?: MotorWhereInput | boolean
+    connect?: MotorWhereUniqueInput
+    update?: XOR<XOR<MotorUpdateToOneWithWhereWithoutDimensaoInput, MotorUpdateWithoutDimensaoInput>, MotorUncheckedUpdateWithoutDimensaoInput>
+  }
+
+  export type NegocioUpdateOneWithoutDimensaoNestedInput = {
+    create?: XOR<NegocioCreateWithoutDimensaoInput, NegocioUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: NegocioCreateOrConnectWithoutDimensaoInput
+    upsert?: NegocioUpsertWithoutDimensaoInput
+    disconnect?: NegocioWhereInput | boolean
+    delete?: NegocioWhereInput | boolean
+    connect?: NegocioWhereUniqueInput
+    update?: XOR<XOR<NegocioUpdateToOneWithWhereWithoutDimensaoInput, NegocioUpdateWithoutDimensaoInput>, NegocioUncheckedUpdateWithoutDimensaoInput>
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoANestedInput = {
+    create?: XOR<Dimensao_DimensaoCreateWithoutDimensaoAInput, Dimensao_DimensaoUncheckedCreateWithoutDimensaoAInput> | Dimensao_DimensaoCreateWithoutDimensaoAInput[] | Dimensao_DimensaoUncheckedCreateWithoutDimensaoAInput[]
+    connectOrCreate?: Dimensao_DimensaoCreateOrConnectWithoutDimensaoAInput | Dimensao_DimensaoCreateOrConnectWithoutDimensaoAInput[]
+    upsert?: Dimensao_DimensaoUpsertWithWhereUniqueWithoutDimensaoAInput | Dimensao_DimensaoUpsertWithWhereUniqueWithoutDimensaoAInput[]
+    createMany?: Dimensao_DimensaoCreateManyDimensaoAInputEnvelope
+    set?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    disconnect?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    delete?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    connect?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    update?: Dimensao_DimensaoUpdateWithWhereUniqueWithoutDimensaoAInput | Dimensao_DimensaoUpdateWithWhereUniqueWithoutDimensaoAInput[]
+    updateMany?: Dimensao_DimensaoUpdateManyWithWhereWithoutDimensaoAInput | Dimensao_DimensaoUpdateManyWithWhereWithoutDimensaoAInput[]
+    deleteMany?: Dimensao_DimensaoScalarWhereInput | Dimensao_DimensaoScalarWhereInput[]
+  }
+
+  export type Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoBNestedInput = {
+    create?: XOR<Dimensao_DimensaoCreateWithoutDimensaoBInput, Dimensao_DimensaoUncheckedCreateWithoutDimensaoBInput> | Dimensao_DimensaoCreateWithoutDimensaoBInput[] | Dimensao_DimensaoUncheckedCreateWithoutDimensaoBInput[]
+    connectOrCreate?: Dimensao_DimensaoCreateOrConnectWithoutDimensaoBInput | Dimensao_DimensaoCreateOrConnectWithoutDimensaoBInput[]
+    upsert?: Dimensao_DimensaoUpsertWithWhereUniqueWithoutDimensaoBInput | Dimensao_DimensaoUpsertWithWhereUniqueWithoutDimensaoBInput[]
+    createMany?: Dimensao_DimensaoCreateManyDimensaoBInputEnvelope
+    set?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    disconnect?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    delete?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    connect?: Dimensao_DimensaoWhereUniqueInput | Dimensao_DimensaoWhereUniqueInput[]
+    update?: Dimensao_DimensaoUpdateWithWhereUniqueWithoutDimensaoBInput | Dimensao_DimensaoUpdateWithWhereUniqueWithoutDimensaoBInput[]
+    updateMany?: Dimensao_DimensaoUpdateManyWithWhereWithoutDimensaoBInput | Dimensao_DimensaoUpdateManyWithWhereWithoutDimensaoBInput[]
+    deleteMany?: Dimensao_DimensaoScalarWhereInput | Dimensao_DimensaoScalarWhereInput[]
+  }
+
+  export type DisciplinaUncheckedUpdateOneWithoutDimensaoNestedInput = {
+    create?: XOR<DisciplinaCreateWithoutDimensaoInput, DisciplinaUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: DisciplinaCreateOrConnectWithoutDimensaoInput
+    upsert?: DisciplinaUpsertWithoutDimensaoInput
+    disconnect?: DisciplinaWhereInput | boolean
+    delete?: DisciplinaWhereInput | boolean
+    connect?: DisciplinaWhereUniqueInput
+    update?: XOR<XOR<DisciplinaUpdateToOneWithWhereWithoutDimensaoInput, DisciplinaUpdateWithoutDimensaoInput>, DisciplinaUncheckedUpdateWithoutDimensaoInput>
+  }
+
+  export type EventoUncheckedUpdateOneWithoutDimensaoNestedInput = {
+    create?: XOR<EventoCreateWithoutDimensaoInput, EventoUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: EventoCreateOrConnectWithoutDimensaoInput
+    upsert?: EventoUpsertWithoutDimensaoInput
+    disconnect?: EventoWhereInput | boolean
+    delete?: EventoWhereInput | boolean
+    connect?: EventoWhereUniqueInput
+    update?: XOR<XOR<EventoUpdateToOneWithWhereWithoutDimensaoInput, EventoUpdateWithoutDimensaoInput>, EventoUncheckedUpdateWithoutDimensaoInput>
+  }
+
+  export type MotorUncheckedUpdateOneWithoutDimensaoNestedInput = {
+    create?: XOR<MotorCreateWithoutDimensaoInput, MotorUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: MotorCreateOrConnectWithoutDimensaoInput
+    upsert?: MotorUpsertWithoutDimensaoInput
+    disconnect?: MotorWhereInput | boolean
+    delete?: MotorWhereInput | boolean
+    connect?: MotorWhereUniqueInput
+    update?: XOR<XOR<MotorUpdateToOneWithWhereWithoutDimensaoInput, MotorUpdateWithoutDimensaoInput>, MotorUncheckedUpdateWithoutDimensaoInput>
+  }
+
+  export type NegocioUncheckedUpdateOneWithoutDimensaoNestedInput = {
+    create?: XOR<NegocioCreateWithoutDimensaoInput, NegocioUncheckedCreateWithoutDimensaoInput>
+    connectOrCreate?: NegocioCreateOrConnectWithoutDimensaoInput
+    upsert?: NegocioUpsertWithoutDimensaoInput
+    disconnect?: NegocioWhereInput | boolean
+    delete?: NegocioWhereInput | boolean
+    connect?: NegocioWhereUniqueInput
+    update?: XOR<XOR<NegocioUpdateToOneWithWhereWithoutDimensaoInput, NegocioUpdateWithoutDimensaoInput>, NegocioUncheckedUpdateWithoutDimensaoInput>
+  }
+
+  export type DimensaoCreateNestedOneWithoutDimensao_DimensaoAInput = {
+    create?: XOR<DimensaoCreateWithoutDimensao_DimensaoAInput, DimensaoUncheckedCreateWithoutDimensao_DimensaoAInput>
+    connectOrCreate?: DimensaoCreateOrConnectWithoutDimensao_DimensaoAInput
+    connect?: DimensaoWhereUniqueInput
+  }
+
+  export type DimensaoCreateNestedOneWithoutDimensao_DimensaoBInput = {
+    create?: XOR<DimensaoCreateWithoutDimensao_DimensaoBInput, DimensaoUncheckedCreateWithoutDimensao_DimensaoBInput>
+    connectOrCreate?: DimensaoCreateOrConnectWithoutDimensao_DimensaoBInput
+    connect?: DimensaoWhereUniqueInput
+  }
+
+  export type DimensaoUpdateOneRequiredWithoutDimensao_DimensaoANestedInput = {
+    create?: XOR<DimensaoCreateWithoutDimensao_DimensaoAInput, DimensaoUncheckedCreateWithoutDimensao_DimensaoAInput>
+    connectOrCreate?: DimensaoCreateOrConnectWithoutDimensao_DimensaoAInput
+    upsert?: DimensaoUpsertWithoutDimensao_DimensaoAInput
+    connect?: DimensaoWhereUniqueInput
+    update?: XOR<XOR<DimensaoUpdateToOneWithWhereWithoutDimensao_DimensaoAInput, DimensaoUpdateWithoutDimensao_DimensaoAInput>, DimensaoUncheckedUpdateWithoutDimensao_DimensaoAInput>
+  }
+
+  export type DimensaoUpdateOneRequiredWithoutDimensao_DimensaoBNestedInput = {
+    create?: XOR<DimensaoCreateWithoutDimensao_DimensaoBInput, DimensaoUncheckedCreateWithoutDimensao_DimensaoBInput>
+    connectOrCreate?: DimensaoCreateOrConnectWithoutDimensao_DimensaoBInput
+    upsert?: DimensaoUpsertWithoutDimensao_DimensaoBInput
+    connect?: DimensaoWhereUniqueInput
+    update?: XOR<XOR<DimensaoUpdateToOneWithWhereWithoutDimensao_DimensaoBInput, DimensaoUpdateWithoutDimensao_DimensaoBInput>, DimensaoUncheckedUpdateWithoutDimensao_DimensaoBInput>
   }
 
   export type DisciplinaCreatealunos_matriculadosInput = {
@@ -6511,8 +9803,10 @@ export namespace Prisma {
     set: string[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
+  export type DimensaoCreateNestedOneWithoutDisciplinaInput = {
+    create?: XOR<DimensaoCreateWithoutDisciplinaInput, DimensaoUncheckedCreateWithoutDisciplinaInput>
+    connectOrCreate?: DimensaoCreateOrConnectWithoutDisciplinaInput
+    connect?: DimensaoWhereUniqueInput
   }
 
   export type DisciplinaUpdatealunos_matriculadosInput = {
@@ -6525,12 +9819,12 @@ export namespace Prisma {
     push?: string | string[]
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type DimensaoUpdateOneRequiredWithoutDisciplinaNestedInput = {
+    create?: XOR<DimensaoCreateWithoutDisciplinaInput, DimensaoUncheckedCreateWithoutDisciplinaInput>
+    connectOrCreate?: DimensaoCreateOrConnectWithoutDisciplinaInput
+    upsert?: DimensaoUpsertWithoutDisciplinaInput
+    connect?: DimensaoWhereUniqueInput
+    update?: XOR<XOR<DimensaoUpdateToOneWithWhereWithoutDisciplinaInput, DimensaoUpdateWithoutDisciplinaInput>, DimensaoUncheckedUpdateWithoutDisciplinaInput>
   }
 
   export type EventoCreatepublico_participanteInput = {
@@ -6547,6 +9841,12 @@ export namespace Prisma {
 
   export type EventoCreateparceirosInput = {
     set: string[]
+  }
+
+  export type DimensaoCreateNestedOneWithoutEventoInput = {
+    create?: XOR<DimensaoCreateWithoutEventoInput, DimensaoUncheckedCreateWithoutEventoInput>
+    connectOrCreate?: DimensaoCreateOrConnectWithoutEventoInput
+    connect?: DimensaoWhereUniqueInput
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -6581,6 +9881,14 @@ export namespace Prisma {
     push?: string | string[]
   }
 
+  export type DimensaoUpdateOneRequiredWithoutEventoNestedInput = {
+    create?: XOR<DimensaoCreateWithoutEventoInput, DimensaoUncheckedCreateWithoutEventoInput>
+    connectOrCreate?: DimensaoCreateOrConnectWithoutEventoInput
+    upsert?: DimensaoUpsertWithoutEventoInput
+    connect?: DimensaoWhereUniqueInput
+    update?: XOR<XOR<DimensaoUpdateToOneWithWhereWithoutEventoInput, DimensaoUpdateWithoutEventoInput>, DimensaoUncheckedUpdateWithoutEventoInput>
+  }
+
   export type MotorCreateprojetosInput = {
     set: string[]
   }
@@ -6591,6 +9899,12 @@ export namespace Prisma {
 
   export type MotorCreateequipeInput = {
     set: string[]
+  }
+
+  export type DimensaoCreateNestedOneWithoutMotorInput = {
+    create?: XOR<DimensaoCreateWithoutMotorInput, DimensaoUncheckedCreateWithoutMotorInput>
+    connectOrCreate?: DimensaoCreateOrConnectWithoutMotorInput
+    connect?: DimensaoWhereUniqueInput
   }
 
   export type MotorUpdateprojetosInput = {
@@ -6608,13 +9922,35 @@ export namespace Prisma {
     push?: string | string[]
   }
 
+  export type DimensaoUpdateOneRequiredWithoutMotorNestedInput = {
+    create?: XOR<DimensaoCreateWithoutMotorInput, DimensaoUncheckedCreateWithoutMotorInput>
+    connectOrCreate?: DimensaoCreateOrConnectWithoutMotorInput
+    upsert?: DimensaoUpsertWithoutMotorInput
+    connect?: DimensaoWhereUniqueInput
+    update?: XOR<XOR<DimensaoUpdateToOneWithWhereWithoutMotorInput, DimensaoUpdateWithoutMotorInput>, DimensaoUncheckedUpdateWithoutMotorInput>
+  }
+
   export type NegocioCreatefundadoresInput = {
     set: string[]
+  }
+
+  export type DimensaoCreateNestedOneWithoutNegocioInput = {
+    create?: XOR<DimensaoCreateWithoutNegocioInput, DimensaoUncheckedCreateWithoutNegocioInput>
+    connectOrCreate?: DimensaoCreateOrConnectWithoutNegocioInput
+    connect?: DimensaoWhereUniqueInput
   }
 
   export type NegocioUpdatefundadoresInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type DimensaoUpdateOneRequiredWithoutNegocioNestedInput = {
+    create?: XOR<DimensaoCreateWithoutNegocioInput, DimensaoUncheckedCreateWithoutNegocioInput>
+    connectOrCreate?: DimensaoCreateOrConnectWithoutNegocioInput
+    upsert?: DimensaoUpsertWithoutNegocioInput
+    connect?: DimensaoWhereUniqueInput
+    update?: XOR<XOR<DimensaoUpdateToOneWithWhereWithoutNegocioInput, DimensaoUpdateWithoutNegocioInput>, DimensaoUncheckedUpdateWithoutNegocioInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -6725,6 +10061,678 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type Dimensao_DimensaoCreateWithoutDimensaoAInput = {
+    dimensaoB: DimensaoCreateNestedOneWithoutDimensao_DimensaoBInput
+  }
+
+  export type Dimensao_DimensaoUncheckedCreateWithoutDimensaoAInput = {
+    dimensaoBId: number
+  }
+
+  export type Dimensao_DimensaoCreateOrConnectWithoutDimensaoAInput = {
+    where: Dimensao_DimensaoWhereUniqueInput
+    create: XOR<Dimensao_DimensaoCreateWithoutDimensaoAInput, Dimensao_DimensaoUncheckedCreateWithoutDimensaoAInput>
+  }
+
+  export type Dimensao_DimensaoCreateManyDimensaoAInputEnvelope = {
+    data: Dimensao_DimensaoCreateManyDimensaoAInput | Dimensao_DimensaoCreateManyDimensaoAInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type Dimensao_DimensaoCreateWithoutDimensaoBInput = {
+    dimensaoA: DimensaoCreateNestedOneWithoutDimensao_DimensaoAInput
+  }
+
+  export type Dimensao_DimensaoUncheckedCreateWithoutDimensaoBInput = {
+    dimensaoAId: number
+  }
+
+  export type Dimensao_DimensaoCreateOrConnectWithoutDimensaoBInput = {
+    where: Dimensao_DimensaoWhereUniqueInput
+    create: XOR<Dimensao_DimensaoCreateWithoutDimensaoBInput, Dimensao_DimensaoUncheckedCreateWithoutDimensaoBInput>
+  }
+
+  export type Dimensao_DimensaoCreateManyDimensaoBInputEnvelope = {
+    data: Dimensao_DimensaoCreateManyDimensaoBInput | Dimensao_DimensaoCreateManyDimensaoBInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DisciplinaCreateWithoutDimensaoInput = {
+    nome: string
+    coordenador: string
+    semestre: string
+    codigo: string
+    alunos_matriculados?: DisciplinaCreatealunos_matriculadosInput | string[]
+    alunos_aprovados?: DisciplinaCreatealunos_aprovadosInput | string[]
+  }
+
+  export type DisciplinaUncheckedCreateWithoutDimensaoInput = {
+    nome: string
+    coordenador: string
+    semestre: string
+    codigo: string
+    alunos_matriculados?: DisciplinaCreatealunos_matriculadosInput | string[]
+    alunos_aprovados?: DisciplinaCreatealunos_aprovadosInput | string[]
+  }
+
+  export type DisciplinaCreateOrConnectWithoutDimensaoInput = {
+    where: DisciplinaWhereUniqueInput
+    create: XOR<DisciplinaCreateWithoutDimensaoInput, DisciplinaUncheckedCreateWithoutDimensaoInput>
+  }
+
+  export type EventoCreateWithoutDimensaoInput = {
+    nome: string
+    descricao: string
+    data_inicio: Date | string
+    duracao: string
+    custo: number
+    receita: number
+    publico_participante?: EventoCreatepublico_participanteInput | string[]
+    qtd_publico: number
+    equipe?: EventoCreateequipeInput | string[]
+    coordenadores?: EventoCreatecoordenadoresInput | string[]
+    parceiros?: EventoCreateparceirosInput | string[]
+  }
+
+  export type EventoUncheckedCreateWithoutDimensaoInput = {
+    nome: string
+    descricao: string
+    data_inicio: Date | string
+    duracao: string
+    custo: number
+    receita: number
+    publico_participante?: EventoCreatepublico_participanteInput | string[]
+    qtd_publico: number
+    equipe?: EventoCreateequipeInput | string[]
+    coordenadores?: EventoCreatecoordenadoresInput | string[]
+    parceiros?: EventoCreateparceirosInput | string[]
+  }
+
+  export type EventoCreateOrConnectWithoutDimensaoInput = {
+    where: EventoWhereUniqueInput
+    create: XOR<EventoCreateWithoutDimensaoInput, EventoUncheckedCreateWithoutDimensaoInput>
+  }
+
+  export type MotorCreateWithoutDimensaoInput = {
+    nome: string
+    descricao: string
+    projetos?: MotorCreateprojetosInput | string[]
+    motor_tipo: string
+    data_criacao: string
+    lideres?: MotorCreatelideresInput | string[]
+    equipe?: MotorCreateequipeInput | string[]
+    qtd_empresas_atendidas: number
+    faturamento: number
+  }
+
+  export type MotorUncheckedCreateWithoutDimensaoInput = {
+    nome: string
+    descricao: string
+    projetos?: MotorCreateprojetosInput | string[]
+    motor_tipo: string
+    data_criacao: string
+    lideres?: MotorCreatelideresInput | string[]
+    equipe?: MotorCreateequipeInput | string[]
+    qtd_empresas_atendidas: number
+    faturamento: number
+  }
+
+  export type MotorCreateOrConnectWithoutDimensaoInput = {
+    where: MotorWhereUniqueInput
+    create: XOR<MotorCreateWithoutDimensaoInput, MotorUncheckedCreateWithoutDimensaoInput>
+  }
+
+  export type NegocioCreateWithoutDimensaoInput = {
+    nome: string
+    area_atuacao: string
+    faturamento_anual: number
+    ano_criacao: Date | string
+    fundadores?: NegocioCreatefundadoresInput | string[]
+    porte: string
+  }
+
+  export type NegocioUncheckedCreateWithoutDimensaoInput = {
+    nome: string
+    area_atuacao: string
+    faturamento_anual: number
+    ano_criacao: Date | string
+    fundadores?: NegocioCreatefundadoresInput | string[]
+    porte: string
+  }
+
+  export type NegocioCreateOrConnectWithoutDimensaoInput = {
+    where: NegocioWhereUniqueInput
+    create: XOR<NegocioCreateWithoutDimensaoInput, NegocioUncheckedCreateWithoutDimensaoInput>
+  }
+
+  export type Dimensao_DimensaoUpsertWithWhereUniqueWithoutDimensaoAInput = {
+    where: Dimensao_DimensaoWhereUniqueInput
+    update: XOR<Dimensao_DimensaoUpdateWithoutDimensaoAInput, Dimensao_DimensaoUncheckedUpdateWithoutDimensaoAInput>
+    create: XOR<Dimensao_DimensaoCreateWithoutDimensaoAInput, Dimensao_DimensaoUncheckedCreateWithoutDimensaoAInput>
+  }
+
+  export type Dimensao_DimensaoUpdateWithWhereUniqueWithoutDimensaoAInput = {
+    where: Dimensao_DimensaoWhereUniqueInput
+    data: XOR<Dimensao_DimensaoUpdateWithoutDimensaoAInput, Dimensao_DimensaoUncheckedUpdateWithoutDimensaoAInput>
+  }
+
+  export type Dimensao_DimensaoUpdateManyWithWhereWithoutDimensaoAInput = {
+    where: Dimensao_DimensaoScalarWhereInput
+    data: XOR<Dimensao_DimensaoUpdateManyMutationInput, Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoAInput>
+  }
+
+  export type Dimensao_DimensaoScalarWhereInput = {
+    AND?: Dimensao_DimensaoScalarWhereInput | Dimensao_DimensaoScalarWhereInput[]
+    OR?: Dimensao_DimensaoScalarWhereInput[]
+    NOT?: Dimensao_DimensaoScalarWhereInput | Dimensao_DimensaoScalarWhereInput[]
+    dimensaoAId?: IntFilter<"Dimensao_Dimensao"> | number
+    dimensaoBId?: IntFilter<"Dimensao_Dimensao"> | number
+  }
+
+  export type Dimensao_DimensaoUpsertWithWhereUniqueWithoutDimensaoBInput = {
+    where: Dimensao_DimensaoWhereUniqueInput
+    update: XOR<Dimensao_DimensaoUpdateWithoutDimensaoBInput, Dimensao_DimensaoUncheckedUpdateWithoutDimensaoBInput>
+    create: XOR<Dimensao_DimensaoCreateWithoutDimensaoBInput, Dimensao_DimensaoUncheckedCreateWithoutDimensaoBInput>
+  }
+
+  export type Dimensao_DimensaoUpdateWithWhereUniqueWithoutDimensaoBInput = {
+    where: Dimensao_DimensaoWhereUniqueInput
+    data: XOR<Dimensao_DimensaoUpdateWithoutDimensaoBInput, Dimensao_DimensaoUncheckedUpdateWithoutDimensaoBInput>
+  }
+
+  export type Dimensao_DimensaoUpdateManyWithWhereWithoutDimensaoBInput = {
+    where: Dimensao_DimensaoScalarWhereInput
+    data: XOR<Dimensao_DimensaoUpdateManyMutationInput, Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoBInput>
+  }
+
+  export type DisciplinaUpsertWithoutDimensaoInput = {
+    update: XOR<DisciplinaUpdateWithoutDimensaoInput, DisciplinaUncheckedUpdateWithoutDimensaoInput>
+    create: XOR<DisciplinaCreateWithoutDimensaoInput, DisciplinaUncheckedCreateWithoutDimensaoInput>
+    where?: DisciplinaWhereInput
+  }
+
+  export type DisciplinaUpdateToOneWithWhereWithoutDimensaoInput = {
+    where?: DisciplinaWhereInput
+    data: XOR<DisciplinaUpdateWithoutDimensaoInput, DisciplinaUncheckedUpdateWithoutDimensaoInput>
+  }
+
+  export type DisciplinaUpdateWithoutDimensaoInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    coordenador?: StringFieldUpdateOperationsInput | string
+    semestre?: StringFieldUpdateOperationsInput | string
+    codigo?: StringFieldUpdateOperationsInput | string
+    alunos_matriculados?: DisciplinaUpdatealunos_matriculadosInput | string[]
+    alunos_aprovados?: DisciplinaUpdatealunos_aprovadosInput | string[]
+  }
+
+  export type DisciplinaUncheckedUpdateWithoutDimensaoInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    coordenador?: StringFieldUpdateOperationsInput | string
+    semestre?: StringFieldUpdateOperationsInput | string
+    codigo?: StringFieldUpdateOperationsInput | string
+    alunos_matriculados?: DisciplinaUpdatealunos_matriculadosInput | string[]
+    alunos_aprovados?: DisciplinaUpdatealunos_aprovadosInput | string[]
+  }
+
+  export type EventoUpsertWithoutDimensaoInput = {
+    update: XOR<EventoUpdateWithoutDimensaoInput, EventoUncheckedUpdateWithoutDimensaoInput>
+    create: XOR<EventoCreateWithoutDimensaoInput, EventoUncheckedCreateWithoutDimensaoInput>
+    where?: EventoWhereInput
+  }
+
+  export type EventoUpdateToOneWithWhereWithoutDimensaoInput = {
+    where?: EventoWhereInput
+    data: XOR<EventoUpdateWithoutDimensaoInput, EventoUncheckedUpdateWithoutDimensaoInput>
+  }
+
+  export type EventoUpdateWithoutDimensaoInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    data_inicio?: DateTimeFieldUpdateOperationsInput | Date | string
+    duracao?: StringFieldUpdateOperationsInput | string
+    custo?: FloatFieldUpdateOperationsInput | number
+    receita?: FloatFieldUpdateOperationsInput | number
+    publico_participante?: EventoUpdatepublico_participanteInput | string[]
+    qtd_publico?: IntFieldUpdateOperationsInput | number
+    equipe?: EventoUpdateequipeInput | string[]
+    coordenadores?: EventoUpdatecoordenadoresInput | string[]
+    parceiros?: EventoUpdateparceirosInput | string[]
+  }
+
+  export type EventoUncheckedUpdateWithoutDimensaoInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    data_inicio?: DateTimeFieldUpdateOperationsInput | Date | string
+    duracao?: StringFieldUpdateOperationsInput | string
+    custo?: FloatFieldUpdateOperationsInput | number
+    receita?: FloatFieldUpdateOperationsInput | number
+    publico_participante?: EventoUpdatepublico_participanteInput | string[]
+    qtd_publico?: IntFieldUpdateOperationsInput | number
+    equipe?: EventoUpdateequipeInput | string[]
+    coordenadores?: EventoUpdatecoordenadoresInput | string[]
+    parceiros?: EventoUpdateparceirosInput | string[]
+  }
+
+  export type MotorUpsertWithoutDimensaoInput = {
+    update: XOR<MotorUpdateWithoutDimensaoInput, MotorUncheckedUpdateWithoutDimensaoInput>
+    create: XOR<MotorCreateWithoutDimensaoInput, MotorUncheckedCreateWithoutDimensaoInput>
+    where?: MotorWhereInput
+  }
+
+  export type MotorUpdateToOneWithWhereWithoutDimensaoInput = {
+    where?: MotorWhereInput
+    data: XOR<MotorUpdateWithoutDimensaoInput, MotorUncheckedUpdateWithoutDimensaoInput>
+  }
+
+  export type MotorUpdateWithoutDimensaoInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    projetos?: MotorUpdateprojetosInput | string[]
+    motor_tipo?: StringFieldUpdateOperationsInput | string
+    data_criacao?: StringFieldUpdateOperationsInput | string
+    lideres?: MotorUpdatelideresInput | string[]
+    equipe?: MotorUpdateequipeInput | string[]
+    qtd_empresas_atendidas?: IntFieldUpdateOperationsInput | number
+    faturamento?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type MotorUncheckedUpdateWithoutDimensaoInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    projetos?: MotorUpdateprojetosInput | string[]
+    motor_tipo?: StringFieldUpdateOperationsInput | string
+    data_criacao?: StringFieldUpdateOperationsInput | string
+    lideres?: MotorUpdatelideresInput | string[]
+    equipe?: MotorUpdateequipeInput | string[]
+    qtd_empresas_atendidas?: IntFieldUpdateOperationsInput | number
+    faturamento?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type NegocioUpsertWithoutDimensaoInput = {
+    update: XOR<NegocioUpdateWithoutDimensaoInput, NegocioUncheckedUpdateWithoutDimensaoInput>
+    create: XOR<NegocioCreateWithoutDimensaoInput, NegocioUncheckedCreateWithoutDimensaoInput>
+    where?: NegocioWhereInput
+  }
+
+  export type NegocioUpdateToOneWithWhereWithoutDimensaoInput = {
+    where?: NegocioWhereInput
+    data: XOR<NegocioUpdateWithoutDimensaoInput, NegocioUncheckedUpdateWithoutDimensaoInput>
+  }
+
+  export type NegocioUpdateWithoutDimensaoInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    area_atuacao?: StringFieldUpdateOperationsInput | string
+    faturamento_anual?: FloatFieldUpdateOperationsInput | number
+    ano_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    fundadores?: NegocioUpdatefundadoresInput | string[]
+    porte?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type NegocioUncheckedUpdateWithoutDimensaoInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    area_atuacao?: StringFieldUpdateOperationsInput | string
+    faturamento_anual?: FloatFieldUpdateOperationsInput | number
+    ano_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    fundadores?: NegocioUpdatefundadoresInput | string[]
+    porte?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type DimensaoCreateWithoutDimensao_DimensaoAInput = {
+    tipo: string
+    Dimensao_DimensaoB?: Dimensao_DimensaoCreateNestedManyWithoutDimensaoBInput
+    Disciplina?: DisciplinaCreateNestedOneWithoutDimensaoInput
+    Evento?: EventoCreateNestedOneWithoutDimensaoInput
+    Motor?: MotorCreateNestedOneWithoutDimensaoInput
+    Negocio?: NegocioCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoUncheckedCreateWithoutDimensao_DimensaoAInput = {
+    id?: number
+    tipo: string
+    Dimensao_DimensaoB?: Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoBInput
+    Disciplina?: DisciplinaUncheckedCreateNestedOneWithoutDimensaoInput
+    Evento?: EventoUncheckedCreateNestedOneWithoutDimensaoInput
+    Motor?: MotorUncheckedCreateNestedOneWithoutDimensaoInput
+    Negocio?: NegocioUncheckedCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoCreateOrConnectWithoutDimensao_DimensaoAInput = {
+    where: DimensaoWhereUniqueInput
+    create: XOR<DimensaoCreateWithoutDimensao_DimensaoAInput, DimensaoUncheckedCreateWithoutDimensao_DimensaoAInput>
+  }
+
+  export type DimensaoCreateWithoutDimensao_DimensaoBInput = {
+    tipo: string
+    Dimensao_DimensaoA?: Dimensao_DimensaoCreateNestedManyWithoutDimensaoAInput
+    Disciplina?: DisciplinaCreateNestedOneWithoutDimensaoInput
+    Evento?: EventoCreateNestedOneWithoutDimensaoInput
+    Motor?: MotorCreateNestedOneWithoutDimensaoInput
+    Negocio?: NegocioCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoUncheckedCreateWithoutDimensao_DimensaoBInput = {
+    id?: number
+    tipo: string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoAInput
+    Disciplina?: DisciplinaUncheckedCreateNestedOneWithoutDimensaoInput
+    Evento?: EventoUncheckedCreateNestedOneWithoutDimensaoInput
+    Motor?: MotorUncheckedCreateNestedOneWithoutDimensaoInput
+    Negocio?: NegocioUncheckedCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoCreateOrConnectWithoutDimensao_DimensaoBInput = {
+    where: DimensaoWhereUniqueInput
+    create: XOR<DimensaoCreateWithoutDimensao_DimensaoBInput, DimensaoUncheckedCreateWithoutDimensao_DimensaoBInput>
+  }
+
+  export type DimensaoUpsertWithoutDimensao_DimensaoAInput = {
+    update: XOR<DimensaoUpdateWithoutDimensao_DimensaoAInput, DimensaoUncheckedUpdateWithoutDimensao_DimensaoAInput>
+    create: XOR<DimensaoCreateWithoutDimensao_DimensaoAInput, DimensaoUncheckedCreateWithoutDimensao_DimensaoAInput>
+    where?: DimensaoWhereInput
+  }
+
+  export type DimensaoUpdateToOneWithWhereWithoutDimensao_DimensaoAInput = {
+    where?: DimensaoWhereInput
+    data: XOR<DimensaoUpdateWithoutDimensao_DimensaoAInput, DimensaoUncheckedUpdateWithoutDimensao_DimensaoAInput>
+  }
+
+  export type DimensaoUpdateWithoutDimensao_DimensaoAInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoB?: Dimensao_DimensaoUpdateManyWithoutDimensaoBNestedInput
+    Disciplina?: DisciplinaUpdateOneWithoutDimensaoNestedInput
+    Evento?: EventoUpdateOneWithoutDimensaoNestedInput
+    Motor?: MotorUpdateOneWithoutDimensaoNestedInput
+    Negocio?: NegocioUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type DimensaoUncheckedUpdateWithoutDimensao_DimensaoAInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoB?: Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoBNestedInput
+    Disciplina?: DisciplinaUncheckedUpdateOneWithoutDimensaoNestedInput
+    Evento?: EventoUncheckedUpdateOneWithoutDimensaoNestedInput
+    Motor?: MotorUncheckedUpdateOneWithoutDimensaoNestedInput
+    Negocio?: NegocioUncheckedUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type DimensaoUpsertWithoutDimensao_DimensaoBInput = {
+    update: XOR<DimensaoUpdateWithoutDimensao_DimensaoBInput, DimensaoUncheckedUpdateWithoutDimensao_DimensaoBInput>
+    create: XOR<DimensaoCreateWithoutDimensao_DimensaoBInput, DimensaoUncheckedCreateWithoutDimensao_DimensaoBInput>
+    where?: DimensaoWhereInput
+  }
+
+  export type DimensaoUpdateToOneWithWhereWithoutDimensao_DimensaoBInput = {
+    where?: DimensaoWhereInput
+    data: XOR<DimensaoUpdateWithoutDimensao_DimensaoBInput, DimensaoUncheckedUpdateWithoutDimensao_DimensaoBInput>
+  }
+
+  export type DimensaoUpdateWithoutDimensao_DimensaoBInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUpdateManyWithoutDimensaoANestedInput
+    Disciplina?: DisciplinaUpdateOneWithoutDimensaoNestedInput
+    Evento?: EventoUpdateOneWithoutDimensaoNestedInput
+    Motor?: MotorUpdateOneWithoutDimensaoNestedInput
+    Negocio?: NegocioUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type DimensaoUncheckedUpdateWithoutDimensao_DimensaoBInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoANestedInput
+    Disciplina?: DisciplinaUncheckedUpdateOneWithoutDimensaoNestedInput
+    Evento?: EventoUncheckedUpdateOneWithoutDimensaoNestedInput
+    Motor?: MotorUncheckedUpdateOneWithoutDimensaoNestedInput
+    Negocio?: NegocioUncheckedUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type DimensaoCreateWithoutDisciplinaInput = {
+    tipo: string
+    Dimensao_DimensaoA?: Dimensao_DimensaoCreateNestedManyWithoutDimensaoAInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoCreateNestedManyWithoutDimensaoBInput
+    Evento?: EventoCreateNestedOneWithoutDimensaoInput
+    Motor?: MotorCreateNestedOneWithoutDimensaoInput
+    Negocio?: NegocioCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoUncheckedCreateWithoutDisciplinaInput = {
+    id?: number
+    tipo: string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoAInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoBInput
+    Evento?: EventoUncheckedCreateNestedOneWithoutDimensaoInput
+    Motor?: MotorUncheckedCreateNestedOneWithoutDimensaoInput
+    Negocio?: NegocioUncheckedCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoCreateOrConnectWithoutDisciplinaInput = {
+    where: DimensaoWhereUniqueInput
+    create: XOR<DimensaoCreateWithoutDisciplinaInput, DimensaoUncheckedCreateWithoutDisciplinaInput>
+  }
+
+  export type DimensaoUpsertWithoutDisciplinaInput = {
+    update: XOR<DimensaoUpdateWithoutDisciplinaInput, DimensaoUncheckedUpdateWithoutDisciplinaInput>
+    create: XOR<DimensaoCreateWithoutDisciplinaInput, DimensaoUncheckedCreateWithoutDisciplinaInput>
+    where?: DimensaoWhereInput
+  }
+
+  export type DimensaoUpdateToOneWithWhereWithoutDisciplinaInput = {
+    where?: DimensaoWhereInput
+    data: XOR<DimensaoUpdateWithoutDisciplinaInput, DimensaoUncheckedUpdateWithoutDisciplinaInput>
+  }
+
+  export type DimensaoUpdateWithoutDisciplinaInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUpdateManyWithoutDimensaoANestedInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUpdateManyWithoutDimensaoBNestedInput
+    Evento?: EventoUpdateOneWithoutDimensaoNestedInput
+    Motor?: MotorUpdateOneWithoutDimensaoNestedInput
+    Negocio?: NegocioUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type DimensaoUncheckedUpdateWithoutDisciplinaInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoANestedInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoBNestedInput
+    Evento?: EventoUncheckedUpdateOneWithoutDimensaoNestedInput
+    Motor?: MotorUncheckedUpdateOneWithoutDimensaoNestedInput
+    Negocio?: NegocioUncheckedUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type DimensaoCreateWithoutEventoInput = {
+    tipo: string
+    Dimensao_DimensaoA?: Dimensao_DimensaoCreateNestedManyWithoutDimensaoAInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoCreateNestedManyWithoutDimensaoBInput
+    Disciplina?: DisciplinaCreateNestedOneWithoutDimensaoInput
+    Motor?: MotorCreateNestedOneWithoutDimensaoInput
+    Negocio?: NegocioCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoUncheckedCreateWithoutEventoInput = {
+    id?: number
+    tipo: string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoAInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoBInput
+    Disciplina?: DisciplinaUncheckedCreateNestedOneWithoutDimensaoInput
+    Motor?: MotorUncheckedCreateNestedOneWithoutDimensaoInput
+    Negocio?: NegocioUncheckedCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoCreateOrConnectWithoutEventoInput = {
+    where: DimensaoWhereUniqueInput
+    create: XOR<DimensaoCreateWithoutEventoInput, DimensaoUncheckedCreateWithoutEventoInput>
+  }
+
+  export type DimensaoUpsertWithoutEventoInput = {
+    update: XOR<DimensaoUpdateWithoutEventoInput, DimensaoUncheckedUpdateWithoutEventoInput>
+    create: XOR<DimensaoCreateWithoutEventoInput, DimensaoUncheckedCreateWithoutEventoInput>
+    where?: DimensaoWhereInput
+  }
+
+  export type DimensaoUpdateToOneWithWhereWithoutEventoInput = {
+    where?: DimensaoWhereInput
+    data: XOR<DimensaoUpdateWithoutEventoInput, DimensaoUncheckedUpdateWithoutEventoInput>
+  }
+
+  export type DimensaoUpdateWithoutEventoInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUpdateManyWithoutDimensaoANestedInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUpdateManyWithoutDimensaoBNestedInput
+    Disciplina?: DisciplinaUpdateOneWithoutDimensaoNestedInput
+    Motor?: MotorUpdateOneWithoutDimensaoNestedInput
+    Negocio?: NegocioUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type DimensaoUncheckedUpdateWithoutEventoInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoANestedInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoBNestedInput
+    Disciplina?: DisciplinaUncheckedUpdateOneWithoutDimensaoNestedInput
+    Motor?: MotorUncheckedUpdateOneWithoutDimensaoNestedInput
+    Negocio?: NegocioUncheckedUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type DimensaoCreateWithoutMotorInput = {
+    tipo: string
+    Dimensao_DimensaoA?: Dimensao_DimensaoCreateNestedManyWithoutDimensaoAInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoCreateNestedManyWithoutDimensaoBInput
+    Disciplina?: DisciplinaCreateNestedOneWithoutDimensaoInput
+    Evento?: EventoCreateNestedOneWithoutDimensaoInput
+    Negocio?: NegocioCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoUncheckedCreateWithoutMotorInput = {
+    id?: number
+    tipo: string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoAInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoBInput
+    Disciplina?: DisciplinaUncheckedCreateNestedOneWithoutDimensaoInput
+    Evento?: EventoUncheckedCreateNestedOneWithoutDimensaoInput
+    Negocio?: NegocioUncheckedCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoCreateOrConnectWithoutMotorInput = {
+    where: DimensaoWhereUniqueInput
+    create: XOR<DimensaoCreateWithoutMotorInput, DimensaoUncheckedCreateWithoutMotorInput>
+  }
+
+  export type DimensaoUpsertWithoutMotorInput = {
+    update: XOR<DimensaoUpdateWithoutMotorInput, DimensaoUncheckedUpdateWithoutMotorInput>
+    create: XOR<DimensaoCreateWithoutMotorInput, DimensaoUncheckedCreateWithoutMotorInput>
+    where?: DimensaoWhereInput
+  }
+
+  export type DimensaoUpdateToOneWithWhereWithoutMotorInput = {
+    where?: DimensaoWhereInput
+    data: XOR<DimensaoUpdateWithoutMotorInput, DimensaoUncheckedUpdateWithoutMotorInput>
+  }
+
+  export type DimensaoUpdateWithoutMotorInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUpdateManyWithoutDimensaoANestedInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUpdateManyWithoutDimensaoBNestedInput
+    Disciplina?: DisciplinaUpdateOneWithoutDimensaoNestedInput
+    Evento?: EventoUpdateOneWithoutDimensaoNestedInput
+    Negocio?: NegocioUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type DimensaoUncheckedUpdateWithoutMotorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoANestedInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoBNestedInput
+    Disciplina?: DisciplinaUncheckedUpdateOneWithoutDimensaoNestedInput
+    Evento?: EventoUncheckedUpdateOneWithoutDimensaoNestedInput
+    Negocio?: NegocioUncheckedUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type DimensaoCreateWithoutNegocioInput = {
+    tipo: string
+    Dimensao_DimensaoA?: Dimensao_DimensaoCreateNestedManyWithoutDimensaoAInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoCreateNestedManyWithoutDimensaoBInput
+    Disciplina?: DisciplinaCreateNestedOneWithoutDimensaoInput
+    Evento?: EventoCreateNestedOneWithoutDimensaoInput
+    Motor?: MotorCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoUncheckedCreateWithoutNegocioInput = {
+    id?: number
+    tipo: string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoAInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUncheckedCreateNestedManyWithoutDimensaoBInput
+    Disciplina?: DisciplinaUncheckedCreateNestedOneWithoutDimensaoInput
+    Evento?: EventoUncheckedCreateNestedOneWithoutDimensaoInput
+    Motor?: MotorUncheckedCreateNestedOneWithoutDimensaoInput
+  }
+
+  export type DimensaoCreateOrConnectWithoutNegocioInput = {
+    where: DimensaoWhereUniqueInput
+    create: XOR<DimensaoCreateWithoutNegocioInput, DimensaoUncheckedCreateWithoutNegocioInput>
+  }
+
+  export type DimensaoUpsertWithoutNegocioInput = {
+    update: XOR<DimensaoUpdateWithoutNegocioInput, DimensaoUncheckedUpdateWithoutNegocioInput>
+    create: XOR<DimensaoCreateWithoutNegocioInput, DimensaoUncheckedCreateWithoutNegocioInput>
+    where?: DimensaoWhereInput
+  }
+
+  export type DimensaoUpdateToOneWithWhereWithoutNegocioInput = {
+    where?: DimensaoWhereInput
+    data: XOR<DimensaoUpdateWithoutNegocioInput, DimensaoUncheckedUpdateWithoutNegocioInput>
+  }
+
+  export type DimensaoUpdateWithoutNegocioInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUpdateManyWithoutDimensaoANestedInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUpdateManyWithoutDimensaoBNestedInput
+    Disciplina?: DisciplinaUpdateOneWithoutDimensaoNestedInput
+    Evento?: EventoUpdateOneWithoutDimensaoNestedInput
+    Motor?: MotorUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type DimensaoUncheckedUpdateWithoutNegocioInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    Dimensao_DimensaoA?: Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoANestedInput
+    Dimensao_DimensaoB?: Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoBNestedInput
+    Disciplina?: DisciplinaUncheckedUpdateOneWithoutDimensaoNestedInput
+    Evento?: EventoUncheckedUpdateOneWithoutDimensaoNestedInput
+    Motor?: MotorUncheckedUpdateOneWithoutDimensaoNestedInput
+  }
+
+  export type Dimensao_DimensaoCreateManyDimensaoAInput = {
+    dimensaoBId: number
+  }
+
+  export type Dimensao_DimensaoCreateManyDimensaoBInput = {
+    dimensaoAId: number
+  }
+
+  export type Dimensao_DimensaoUpdateWithoutDimensaoAInput = {
+    dimensaoB?: DimensaoUpdateOneRequiredWithoutDimensao_DimensaoBNestedInput
+  }
+
+  export type Dimensao_DimensaoUncheckedUpdateWithoutDimensaoAInput = {
+    dimensaoBId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoAInput = {
+    dimensaoBId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type Dimensao_DimensaoUpdateWithoutDimensaoBInput = {
+    dimensaoA?: DimensaoUpdateOneRequiredWithoutDimensao_DimensaoANestedInput
+  }
+
+  export type Dimensao_DimensaoUncheckedUpdateWithoutDimensaoBInput = {
+    dimensaoAId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type Dimensao_DimensaoUncheckedUpdateManyWithoutDimensaoBInput = {
+    dimensaoAId?: IntFieldUpdateOperationsInput | number
   }
 
 

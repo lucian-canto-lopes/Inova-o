@@ -120,8 +120,18 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.DisciplinaScalarFieldEnum = {
+exports.Prisma.DimensaoScalarFieldEnum = {
   id: 'id',
+  tipo: 'tipo'
+};
+
+exports.Prisma.Dimensao_DimensaoScalarFieldEnum = {
+  dimensaoAId: 'dimensaoAId',
+  dimensaoBId: 'dimensaoBId'
+};
+
+exports.Prisma.DisciplinaScalarFieldEnum = {
+  dimensaoId: 'dimensaoId',
   nome: 'nome',
   coordenador: 'coordenador',
   semestre: 'semestre',
@@ -131,7 +141,7 @@ exports.Prisma.DisciplinaScalarFieldEnum = {
 };
 
 exports.Prisma.EventoScalarFieldEnum = {
-  id: 'id',
+  dimensaoId: 'dimensaoId',
   nome: 'nome',
   descricao: 'descricao',
   data_inicio: 'data_inicio',
@@ -146,7 +156,7 @@ exports.Prisma.EventoScalarFieldEnum = {
 };
 
 exports.Prisma.MotorScalarFieldEnum = {
-  id: 'id',
+  dimensaoId: 'dimensaoId',
   nome: 'nome',
   descricao: 'descricao',
   projetos: 'projetos',
@@ -159,7 +169,7 @@ exports.Prisma.MotorScalarFieldEnum = {
 };
 
 exports.Prisma.NegocioScalarFieldEnum = {
-  id: 'id',
+  dimensaoId: 'dimensaoId',
   nome: 'nome',
   area_atuacao: 'area_atuacao',
   faturamento_anual: 'faturamento_anual',
@@ -180,6 +190,8 @@ exports.Prisma.QueryMode = {
 
 
 exports.Prisma.ModelName = {
+  Dimensao: 'Dimensao',
+  Dimensao_Dimensao: 'Dimensao_Dimensao',
   Disciplina: 'Disciplina',
   Evento: 'Evento',
   Motor: 'Motor',
