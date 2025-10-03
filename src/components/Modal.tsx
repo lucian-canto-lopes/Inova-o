@@ -29,6 +29,15 @@ export function Modal({
   value,
   onChange,
 }: Props) {
+  const formatCurrency= (input: HTMLInputElement) => {
+    input.value = input.value.replace(/\D/g,"");
+    if (input.value.length < 3) {
+      input.value = "00" + input.value;
+    }
+    input.value = input.value.slice(0, input.value.length -2) + "," + input.value.slice(input.value.length -2, input.value.length);
+    if (input.value.startsWith("0") && input.value.length > 4) input.value = input.value.slice(1, input.value.length);
+  }
+
   const renderSwitch = (modalType: DimensaoTipo) => {
     switch (modalType) {
       case 'disciplinas':
@@ -48,7 +57,7 @@ export function Modal({
                 <input type="text" id="d-semestre" name='semestre' placeholder='2025.1' defaultValue={data.semestre} />
               </div><div className="input-box">
                 <label htmlFor="d-codigo">Código</label>
-                <input type="text" id="d-codigo" placeholder='Código da disciplina' defaultValue={data.codigo} />
+                <input type="text" id="d-codigo" name='codigo' placeholder='Código da disciplina' defaultValue={data.codigo} />
               </div>
             </div>
             <div className="columns">
@@ -80,7 +89,7 @@ export function Modal({
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-data_inicio">Data de Início</label>
-                <input type="text" id="d-data_inicio" name='data_inicio' placeholder='Data de início' defaultValue={data.data_inicio} />
+                <input type="date" id="d-data_inicio" name='data_inicio' placeholder='Data de início' defaultValue={data.data_inicio} />
               </div><div className="input-box">
                 <label htmlFor="d-duracao">Duração</label>
                 <input type="text" id="d-duracao" name='duracao' placeholder='Duração do evento' defaultValue={data.duracao} />
@@ -89,10 +98,10 @@ export function Modal({
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-custo">Custo</label>
-                <input type="text" id="d-custo" name='custo' placeholder='Custo do evento' defaultValue={data.custo} />
+                <input type="text" id="d-custo" name='custo' placeholder='Custo do evento (Valor em reais (R$))' defaultValue={data.custo} onChange={(event) => formatCurrency(event.target)} />
               </div><div className="input-box">
                 <label htmlFor="d-receita">Receita</label>
-                <input type="text" id="d-receita" name='receita' placeholder='Receita do Evento' defaultValue={data.receita} />
+                <input type="text" id="d-receita" name='receita' placeholder='Receita do Evento (Valor em reais (R$))' defaultValue={data.receita} onChange={(event) => formatCurrency(event.target)} />
               </div>
             </div>
             <div className="input-box">
@@ -101,7 +110,7 @@ export function Modal({
             </div>
             <div className="input-box">
               <label htmlFor="d-qtd_publico">Quandidade de público</label>
-              <input type="text" id="d-qtd_publico" name='qtd_publico' placeholder='Quantidade de público do evento' defaultValue={data.qtd_publico} />
+              <input type="number" id="d-qtd_publico" name='qtd_publico' placeholder='Quantidade de público do evento' defaultValue={data.qtd_publico} />
             </div>
             <div className="input-box">
               <label htmlFor="d-equipe">Equipe de organização</label>
@@ -205,56 +214,16 @@ export function Modal({
     if (!formRef.current) return console.error("Não foi possível acessar o formulário");
 
     const formData = new FormData(formRef.current);
-    const rawdata = Object.fromEntries(formData.entries());
-    let data: any = {}
-
-    switch (modalType) {
-      case "disciplinas":
-        data = {
-          ...rawdata,
-          alunos_matriculados: rawdata.alunos_matriculados
-          ? rawdata.alunos_matriculados.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
-          : [],
-          alunos_aprovados: rawdata.alunos_aprovados
-          ? rawdata.alunos_aprovados.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
-          : []
-        };
-        break;
-
-      case "eventos":
-        data = {
-          ...rawdata,
-          publico_participante: rawdata.publico_participante
-          ? rawdata.publico_participante.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
-          : [],
-          equipe: rawdata.equipe
-          ? rawdata.equipe.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
-          : [],
-          coordenadores: rawdata.coordenadores
-          ? rawdata.coordenadores.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
-          : [],
-          parceiros: rawdata.parceiros
-          ? rawdata.parceiros.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
-          : []
-        };
-        break;
-
-      case "negocios":
-        data = {
-          ...rawdata,
-          fundadores: rawdata.fundadores
-          ? rawdata.fundadores.toString().split(/\s*[;,]\s*/).filter(s => s.trim())
-          : []
-        };
-        break;
-
-      default:
-        data = {
-          ...rawdata
-        };
-        break;
-    }
-    console.log(value);
+    const data = Object.fromEntries(formData.entries());
+    
+    await fetch(`http://localhost:3000/api/dimensoes/${modalType}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    .then(async response => await response.json()).then(data => console.log(data)).catch(error => console.error(error));
   }
 
   return (
