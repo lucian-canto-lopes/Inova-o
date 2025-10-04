@@ -279,8 +279,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.16.2
-   * Query Engine version: 1c57fdcd7e44b29b9313256c76699e91c3ac3c43
+   * Prisma Client JS version: 6.16.3
+   * Query Engine version: bb420e667c1820a8c05a38023385f6cc7ef8e83a
    */
   export type PrismaVersion = {
     client: string
@@ -5922,7 +5922,7 @@ export namespace Prisma {
     nome: string | null
     descricao: string | null
     motor_tipo: string | null
-    data_criacao: string | null
+    data_criacao: Date | null
     qtd_empresas_atendidas: number | null
     faturamento: number | null
   }
@@ -5932,7 +5932,7 @@ export namespace Prisma {
     nome: string | null
     descricao: string | null
     motor_tipo: string | null
-    data_criacao: string | null
+    data_criacao: Date | null
     qtd_empresas_atendidas: number | null
     faturamento: number | null
   }
@@ -6090,7 +6090,7 @@ export namespace Prisma {
     descricao: string
     projetos: string[]
     motor_tipo: string
-    data_criacao: string
+    data_criacao: Date
     lideres: string[]
     equipe: string[]
     qtd_empresas_atendidas: number
@@ -6193,7 +6193,7 @@ export namespace Prisma {
       descricao: string
       projetos: string[]
       motor_tipo: string
-      data_criacao: string
+      data_criacao: Date
       lideres: string[]
       equipe: string[]
       qtd_empresas_atendidas: number
@@ -6627,7 +6627,7 @@ export namespace Prisma {
     readonly descricao: FieldRef<"Motor", 'String'>
     readonly projetos: FieldRef<"Motor", 'String[]'>
     readonly motor_tipo: FieldRef<"Motor", 'String'>
-    readonly data_criacao: FieldRef<"Motor", 'String'>
+    readonly data_criacao: FieldRef<"Motor", 'DateTime'>
     readonly lideres: FieldRef<"Motor", 'String[]'>
     readonly equipe: FieldRef<"Motor", 'String[]'>
     readonly qtd_empresas_atendidas: FieldRef<"Motor", 'Int'>
@@ -7073,7 +7073,7 @@ export namespace Prisma {
     nome: string | null
     area_atuacao: string | null
     faturamento_anual: number | null
-    ano_criacao: Date | null
+    data_criacao: Date | null
     porte: string | null
   }
 
@@ -7082,7 +7082,7 @@ export namespace Prisma {
     nome: string | null
     area_atuacao: string | null
     faturamento_anual: number | null
-    ano_criacao: Date | null
+    data_criacao: Date | null
     porte: string | null
   }
 
@@ -7091,7 +7091,7 @@ export namespace Prisma {
     nome: number
     area_atuacao: number
     faturamento_anual: number
-    ano_criacao: number
+    data_criacao: number
     fundadores: number
     porte: number
     _all: number
@@ -7113,7 +7113,7 @@ export namespace Prisma {
     nome?: true
     area_atuacao?: true
     faturamento_anual?: true
-    ano_criacao?: true
+    data_criacao?: true
     porte?: true
   }
 
@@ -7122,7 +7122,7 @@ export namespace Prisma {
     nome?: true
     area_atuacao?: true
     faturamento_anual?: true
-    ano_criacao?: true
+    data_criacao?: true
     porte?: true
   }
 
@@ -7131,7 +7131,7 @@ export namespace Prisma {
     nome?: true
     area_atuacao?: true
     faturamento_anual?: true
-    ano_criacao?: true
+    data_criacao?: true
     fundadores?: true
     porte?: true
     _all?: true
@@ -7228,7 +7228,7 @@ export namespace Prisma {
     nome: string
     area_atuacao: string
     faturamento_anual: number
-    ano_criacao: Date
+    data_criacao: Date
     fundadores: string[]
     porte: string
     _count: NegocioCountAggregateOutputType | null
@@ -7257,7 +7257,7 @@ export namespace Prisma {
     nome?: boolean
     area_atuacao?: boolean
     faturamento_anual?: boolean
-    ano_criacao?: boolean
+    data_criacao?: boolean
     fundadores?: boolean
     porte?: boolean
     dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
@@ -7268,7 +7268,7 @@ export namespace Prisma {
     nome?: boolean
     area_atuacao?: boolean
     faturamento_anual?: boolean
-    ano_criacao?: boolean
+    data_criacao?: boolean
     fundadores?: boolean
     porte?: boolean
     dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
@@ -7279,7 +7279,7 @@ export namespace Prisma {
     nome?: boolean
     area_atuacao?: boolean
     faturamento_anual?: boolean
-    ano_criacao?: boolean
+    data_criacao?: boolean
     fundadores?: boolean
     porte?: boolean
     dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
@@ -7290,12 +7290,12 @@ export namespace Prisma {
     nome?: boolean
     area_atuacao?: boolean
     faturamento_anual?: boolean
-    ano_criacao?: boolean
+    data_criacao?: boolean
     fundadores?: boolean
     porte?: boolean
   }
 
-  export type NegocioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"dimensaoId" | "nome" | "area_atuacao" | "faturamento_anual" | "ano_criacao" | "fundadores" | "porte", ExtArgs["result"]["negocio"]>
+  export type NegocioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"dimensaoId" | "nome" | "area_atuacao" | "faturamento_anual" | "data_criacao" | "fundadores" | "porte", ExtArgs["result"]["negocio"]>
   export type NegocioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dimensao?: boolean | DimensaoDefaultArgs<ExtArgs>
   }
@@ -7316,7 +7316,7 @@ export namespace Prisma {
       nome: string
       area_atuacao: string
       faturamento_anual: number
-      ano_criacao: Date
+      data_criacao: Date
       fundadores: string[]
       porte: string
     }, ExtArgs["result"]["negocio"]>
@@ -7747,7 +7747,7 @@ export namespace Prisma {
     readonly nome: FieldRef<"Negocio", 'String'>
     readonly area_atuacao: FieldRef<"Negocio", 'String'>
     readonly faturamento_anual: FieldRef<"Negocio", 'Float'>
-    readonly ano_criacao: FieldRef<"Negocio", 'DateTime'>
+    readonly data_criacao: FieldRef<"Negocio", 'DateTime'>
     readonly fundadores: FieldRef<"Negocio", 'String[]'>
     readonly porte: FieldRef<"Negocio", 'String'>
   }
@@ -8246,7 +8246,7 @@ export namespace Prisma {
     nome: 'nome',
     area_atuacao: 'area_atuacao',
     faturamento_anual: 'faturamento_anual',
-    ano_criacao: 'ano_criacao',
+    data_criacao: 'data_criacao',
     fundadores: 'fundadores',
     porte: 'porte'
   };
@@ -8605,7 +8605,7 @@ export namespace Prisma {
     descricao?: StringFilter<"Motor"> | string
     projetos?: StringNullableListFilter<"Motor">
     motor_tipo?: StringFilter<"Motor"> | string
-    data_criacao?: StringFilter<"Motor"> | string
+    data_criacao?: DateTimeFilter<"Motor"> | Date | string
     lideres?: StringNullableListFilter<"Motor">
     equipe?: StringNullableListFilter<"Motor">
     qtd_empresas_atendidas?: IntFilter<"Motor"> | number
@@ -8636,7 +8636,7 @@ export namespace Prisma {
     descricao?: StringFilter<"Motor"> | string
     projetos?: StringNullableListFilter<"Motor">
     motor_tipo?: StringFilter<"Motor"> | string
-    data_criacao?: StringFilter<"Motor"> | string
+    data_criacao?: DateTimeFilter<"Motor"> | Date | string
     lideres?: StringNullableListFilter<"Motor">
     equipe?: StringNullableListFilter<"Motor">
     qtd_empresas_atendidas?: IntFilter<"Motor"> | number
@@ -8671,7 +8671,7 @@ export namespace Prisma {
     descricao?: StringWithAggregatesFilter<"Motor"> | string
     projetos?: StringNullableListFilter<"Motor">
     motor_tipo?: StringWithAggregatesFilter<"Motor"> | string
-    data_criacao?: StringWithAggregatesFilter<"Motor"> | string
+    data_criacao?: DateTimeWithAggregatesFilter<"Motor"> | Date | string
     lideres?: StringNullableListFilter<"Motor">
     equipe?: StringNullableListFilter<"Motor">
     qtd_empresas_atendidas?: IntWithAggregatesFilter<"Motor"> | number
@@ -8686,7 +8686,7 @@ export namespace Prisma {
     nome?: StringFilter<"Negocio"> | string
     area_atuacao?: StringFilter<"Negocio"> | string
     faturamento_anual?: FloatFilter<"Negocio"> | number
-    ano_criacao?: DateTimeFilter<"Negocio"> | Date | string
+    data_criacao?: DateTimeFilter<"Negocio"> | Date | string
     fundadores?: StringNullableListFilter<"Negocio">
     porte?: StringFilter<"Negocio"> | string
     dimensao?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
@@ -8697,7 +8697,7 @@ export namespace Prisma {
     nome?: SortOrder
     area_atuacao?: SortOrder
     faturamento_anual?: SortOrder
-    ano_criacao?: SortOrder
+    data_criacao?: SortOrder
     fundadores?: SortOrder
     porte?: SortOrder
     dimensao?: DimensaoOrderByWithRelationInput
@@ -8711,7 +8711,7 @@ export namespace Prisma {
     nome?: StringFilter<"Negocio"> | string
     area_atuacao?: StringFilter<"Negocio"> | string
     faturamento_anual?: FloatFilter<"Negocio"> | number
-    ano_criacao?: DateTimeFilter<"Negocio"> | Date | string
+    data_criacao?: DateTimeFilter<"Negocio"> | Date | string
     fundadores?: StringNullableListFilter<"Negocio">
     porte?: StringFilter<"Negocio"> | string
     dimensao?: XOR<DimensaoScalarRelationFilter, DimensaoWhereInput>
@@ -8722,7 +8722,7 @@ export namespace Prisma {
     nome?: SortOrder
     area_atuacao?: SortOrder
     faturamento_anual?: SortOrder
-    ano_criacao?: SortOrder
+    data_criacao?: SortOrder
     fundadores?: SortOrder
     porte?: SortOrder
     _count?: NegocioCountOrderByAggregateInput
@@ -8740,7 +8740,7 @@ export namespace Prisma {
     nome?: StringWithAggregatesFilter<"Negocio"> | string
     area_atuacao?: StringWithAggregatesFilter<"Negocio"> | string
     faturamento_anual?: FloatWithAggregatesFilter<"Negocio"> | number
-    ano_criacao?: DateTimeWithAggregatesFilter<"Negocio"> | Date | string
+    data_criacao?: DateTimeWithAggregatesFilter<"Negocio"> | Date | string
     fundadores?: StringNullableListFilter<"Negocio">
     porte?: StringWithAggregatesFilter<"Negocio"> | string
   }
@@ -9013,7 +9013,7 @@ export namespace Prisma {
     descricao: string
     projetos?: MotorCreateprojetosInput | string[]
     motor_tipo: string
-    data_criacao: string
+    data_criacao: Date | string
     lideres?: MotorCreatelideresInput | string[]
     equipe?: MotorCreateequipeInput | string[]
     qtd_empresas_atendidas: number
@@ -9027,7 +9027,7 @@ export namespace Prisma {
     descricao: string
     projetos?: MotorCreateprojetosInput | string[]
     motor_tipo: string
-    data_criacao: string
+    data_criacao: Date | string
     lideres?: MotorCreatelideresInput | string[]
     equipe?: MotorCreateequipeInput | string[]
     qtd_empresas_atendidas: number
@@ -9039,7 +9039,7 @@ export namespace Prisma {
     descricao?: StringFieldUpdateOperationsInput | string
     projetos?: MotorUpdateprojetosInput | string[]
     motor_tipo?: StringFieldUpdateOperationsInput | string
-    data_criacao?: StringFieldUpdateOperationsInput | string
+    data_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
     lideres?: MotorUpdatelideresInput | string[]
     equipe?: MotorUpdateequipeInput | string[]
     qtd_empresas_atendidas?: IntFieldUpdateOperationsInput | number
@@ -9053,7 +9053,7 @@ export namespace Prisma {
     descricao?: StringFieldUpdateOperationsInput | string
     projetos?: MotorUpdateprojetosInput | string[]
     motor_tipo?: StringFieldUpdateOperationsInput | string
-    data_criacao?: StringFieldUpdateOperationsInput | string
+    data_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
     lideres?: MotorUpdatelideresInput | string[]
     equipe?: MotorUpdateequipeInput | string[]
     qtd_empresas_atendidas?: IntFieldUpdateOperationsInput | number
@@ -9066,7 +9066,7 @@ export namespace Prisma {
     descricao: string
     projetos?: MotorCreateprojetosInput | string[]
     motor_tipo: string
-    data_criacao: string
+    data_criacao: Date | string
     lideres?: MotorCreatelideresInput | string[]
     equipe?: MotorCreateequipeInput | string[]
     qtd_empresas_atendidas: number
@@ -9078,7 +9078,7 @@ export namespace Prisma {
     descricao?: StringFieldUpdateOperationsInput | string
     projetos?: MotorUpdateprojetosInput | string[]
     motor_tipo?: StringFieldUpdateOperationsInput | string
-    data_criacao?: StringFieldUpdateOperationsInput | string
+    data_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
     lideres?: MotorUpdatelideresInput | string[]
     equipe?: MotorUpdateequipeInput | string[]
     qtd_empresas_atendidas?: IntFieldUpdateOperationsInput | number
@@ -9091,7 +9091,7 @@ export namespace Prisma {
     descricao?: StringFieldUpdateOperationsInput | string
     projetos?: MotorUpdateprojetosInput | string[]
     motor_tipo?: StringFieldUpdateOperationsInput | string
-    data_criacao?: StringFieldUpdateOperationsInput | string
+    data_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
     lideres?: MotorUpdatelideresInput | string[]
     equipe?: MotorUpdateequipeInput | string[]
     qtd_empresas_atendidas?: IntFieldUpdateOperationsInput | number
@@ -9102,7 +9102,7 @@ export namespace Prisma {
     nome: string
     area_atuacao: string
     faturamento_anual: number
-    ano_criacao: Date | string
+    data_criacao: Date | string
     fundadores?: NegocioCreatefundadoresInput | string[]
     porte: string
     dimensao: DimensaoCreateNestedOneWithoutNegocioInput
@@ -9113,7 +9113,7 @@ export namespace Prisma {
     nome: string
     area_atuacao: string
     faturamento_anual: number
-    ano_criacao: Date | string
+    data_criacao: Date | string
     fundadores?: NegocioCreatefundadoresInput | string[]
     porte: string
   }
@@ -9122,7 +9122,7 @@ export namespace Prisma {
     nome?: StringFieldUpdateOperationsInput | string
     area_atuacao?: StringFieldUpdateOperationsInput | string
     faturamento_anual?: FloatFieldUpdateOperationsInput | number
-    ano_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    data_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
     fundadores?: NegocioUpdatefundadoresInput | string[]
     porte?: StringFieldUpdateOperationsInput | string
     dimensao?: DimensaoUpdateOneRequiredWithoutNegocioNestedInput
@@ -9133,7 +9133,7 @@ export namespace Prisma {
     nome?: StringFieldUpdateOperationsInput | string
     area_atuacao?: StringFieldUpdateOperationsInput | string
     faturamento_anual?: FloatFieldUpdateOperationsInput | number
-    ano_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    data_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
     fundadores?: NegocioUpdatefundadoresInput | string[]
     porte?: StringFieldUpdateOperationsInput | string
   }
@@ -9143,7 +9143,7 @@ export namespace Prisma {
     nome: string
     area_atuacao: string
     faturamento_anual: number
-    ano_criacao: Date | string
+    data_criacao: Date | string
     fundadores?: NegocioCreatefundadoresInput | string[]
     porte: string
   }
@@ -9152,7 +9152,7 @@ export namespace Prisma {
     nome?: StringFieldUpdateOperationsInput | string
     area_atuacao?: StringFieldUpdateOperationsInput | string
     faturamento_anual?: FloatFieldUpdateOperationsInput | number
-    ano_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    data_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
     fundadores?: NegocioUpdatefundadoresInput | string[]
     porte?: StringFieldUpdateOperationsInput | string
   }
@@ -9162,7 +9162,7 @@ export namespace Prisma {
     nome?: StringFieldUpdateOperationsInput | string
     area_atuacao?: StringFieldUpdateOperationsInput | string
     faturamento_anual?: FloatFieldUpdateOperationsInput | number
-    ano_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    data_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
     fundadores?: NegocioUpdatefundadoresInput | string[]
     porte?: StringFieldUpdateOperationsInput | string
   }
@@ -9510,7 +9510,7 @@ export namespace Prisma {
     nome?: SortOrder
     area_atuacao?: SortOrder
     faturamento_anual?: SortOrder
-    ano_criacao?: SortOrder
+    data_criacao?: SortOrder
     fundadores?: SortOrder
     porte?: SortOrder
   }
@@ -9525,7 +9525,7 @@ export namespace Prisma {
     nome?: SortOrder
     area_atuacao?: SortOrder
     faturamento_anual?: SortOrder
-    ano_criacao?: SortOrder
+    data_criacao?: SortOrder
     porte?: SortOrder
   }
 
@@ -9534,7 +9534,7 @@ export namespace Prisma {
     nome?: SortOrder
     area_atuacao?: SortOrder
     faturamento_anual?: SortOrder
-    ano_criacao?: SortOrder
+    data_criacao?: SortOrder
     porte?: SortOrder
   }
 
@@ -10160,7 +10160,7 @@ export namespace Prisma {
     descricao: string
     projetos?: MotorCreateprojetosInput | string[]
     motor_tipo: string
-    data_criacao: string
+    data_criacao: Date | string
     lideres?: MotorCreatelideresInput | string[]
     equipe?: MotorCreateequipeInput | string[]
     qtd_empresas_atendidas: number
@@ -10172,7 +10172,7 @@ export namespace Prisma {
     descricao: string
     projetos?: MotorCreateprojetosInput | string[]
     motor_tipo: string
-    data_criacao: string
+    data_criacao: Date | string
     lideres?: MotorCreatelideresInput | string[]
     equipe?: MotorCreateequipeInput | string[]
     qtd_empresas_atendidas: number
@@ -10188,7 +10188,7 @@ export namespace Prisma {
     nome: string
     area_atuacao: string
     faturamento_anual: number
-    ano_criacao: Date | string
+    data_criacao: Date | string
     fundadores?: NegocioCreatefundadoresInput | string[]
     porte: string
   }
@@ -10197,7 +10197,7 @@ export namespace Prisma {
     nome: string
     area_atuacao: string
     faturamento_anual: number
-    ano_criacao: Date | string
+    data_criacao: Date | string
     fundadores?: NegocioCreatefundadoresInput | string[]
     porte: string
   }
@@ -10331,7 +10331,7 @@ export namespace Prisma {
     descricao?: StringFieldUpdateOperationsInput | string
     projetos?: MotorUpdateprojetosInput | string[]
     motor_tipo?: StringFieldUpdateOperationsInput | string
-    data_criacao?: StringFieldUpdateOperationsInput | string
+    data_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
     lideres?: MotorUpdatelideresInput | string[]
     equipe?: MotorUpdateequipeInput | string[]
     qtd_empresas_atendidas?: IntFieldUpdateOperationsInput | number
@@ -10343,7 +10343,7 @@ export namespace Prisma {
     descricao?: StringFieldUpdateOperationsInput | string
     projetos?: MotorUpdateprojetosInput | string[]
     motor_tipo?: StringFieldUpdateOperationsInput | string
-    data_criacao?: StringFieldUpdateOperationsInput | string
+    data_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
     lideres?: MotorUpdatelideresInput | string[]
     equipe?: MotorUpdateequipeInput | string[]
     qtd_empresas_atendidas?: IntFieldUpdateOperationsInput | number
@@ -10365,7 +10365,7 @@ export namespace Prisma {
     nome?: StringFieldUpdateOperationsInput | string
     area_atuacao?: StringFieldUpdateOperationsInput | string
     faturamento_anual?: FloatFieldUpdateOperationsInput | number
-    ano_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    data_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
     fundadores?: NegocioUpdatefundadoresInput | string[]
     porte?: StringFieldUpdateOperationsInput | string
   }
@@ -10374,7 +10374,7 @@ export namespace Prisma {
     nome?: StringFieldUpdateOperationsInput | string
     area_atuacao?: StringFieldUpdateOperationsInput | string
     faturamento_anual?: FloatFieldUpdateOperationsInput | number
-    ano_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    data_criacao?: DateTimeFieldUpdateOperationsInput | Date | string
     fundadores?: NegocioUpdatefundadoresInput | string[]
     porte?: StringFieldUpdateOperationsInput | string
   }

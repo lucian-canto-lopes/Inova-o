@@ -45,30 +45,30 @@ export function Modal({
           <>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
-              <input type="text" id="d-nome" name='nome' placeholder='Nome da disciplina' defaultValue={data.nome} />
+              <input autoComplete='off' type="text" id="d-nome" name='nome' placeholder='Nome da disciplina' defaultValue={data.nome} />
             </div>
             <div className="input-box">
               <label htmlFor="d-coordenador">Coordenador</label>
-              <input type="text" id="d-coordenador" name='coordenador' placeholder='Coordenador da Disciplina' defaultValue={data.coordenador} />
+              <input autoComplete='off' type="text" id="d-coordenador" name='coordenador' placeholder='Coordenador da Disciplina' defaultValue={data.coordenador} />
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-semestre">Semestre</label>
-                <input type="text" id="d-semestre" name='semestre' placeholder='2025.1' defaultValue={data.semestre} />
+                <input autoComplete='off' type="text" id="d-semestre" name='semestre' placeholder='2025.1' defaultValue={data.semestre} />
               </div><div className="input-box">
                 <label htmlFor="d-codigo">Código</label>
-                <input type="text" id="d-codigo" name='codigo' placeholder='Código da disciplina' defaultValue={data.codigo} />
+                <input autoComplete='off' type="text" id="d-codigo" name='codigo' placeholder='Código da disciplina' defaultValue={data.codigo} />
               </div>
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-a-matriculados">Alunos Matriculados</label>
-                <input type="text" id="d-a-matriculados" name='alunos_matriculados' defaultValue={data.alunos_matriculados?.map((aluno: any) => {
+                <input autoComplete='off' type="text" id="d-a-matriculados" name='alunos_matriculados' defaultValue={data.alunos_matriculados?.map((aluno: any) => {
                   return ` ${aluno}`
                 })} />
               </div><div className="input-box">
                 <label htmlFor="d-a-aprovados">Alunos Aprovados</label>
-                <input type="text" id="d-a-aprovados" name='alunos_aprovados' defaultValue={data.alunos_aprovados?.map((aluno: any) => {
+                <input autoComplete='off' type="text" id="d-a-aprovados" name='alunos_aprovados' defaultValue={data.alunos_aprovados?.map((aluno: any) => {
                   return ` ${aluno}`
                 })} />
               </div>
@@ -80,49 +80,49 @@ export function Modal({
           <>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
-              <input type="text" id="d-nome" name='nome' placeholder='Nome do evento' defaultValue={data.nome} />
+              <input autoComplete='off' type="text" id="d-nome" name='nome' placeholder='Nome do evento' defaultValue={data.nome} />
             </div>
             <div className="input-box">
               <label htmlFor="d-descricao">Descrição</label>
-              <input type="text" id="d-descricao" name='descricao' placeholder='Descrição do evento' defaultValue={data.descricao} />
+              <input autoComplete='off' type="text" id="d-descricao" name='descricao' placeholder='Descrição do evento' defaultValue={data.descricao} />
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-data_inicio">Data de Início</label>
-                <input type="date" id="d-data_inicio" name='data_inicio' placeholder='Data de início' defaultValue={data.data_inicio} />
+                <input autoComplete='off' type="date" id="d-data_inicio" name='data_inicio' placeholder='Data de início' defaultValue={data.data_inicio} />
               </div><div className="input-box">
                 <label htmlFor="d-duracao">Duração</label>
-                <input type="text" id="d-duracao" name='duracao' placeholder='Duração do evento' defaultValue={data.duracao} />
+                <input autoComplete='off' type="text" id="d-duracao" name='duracao' placeholder='Duração do evento' defaultValue={data.duracao} />
               </div>
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-custo">Custo</label>
-                <input type="text" id="d-custo" name='custo' placeholder='Custo do evento (Valor em reais (R$))' defaultValue={data.custo} onChange={(event) => formatCurrency(event.target)} />
+                <input autoComplete='off' type="text" id="d-custo" name='custo' placeholder='Custo do evento (Valor em reais (R$))' defaultValue={data.custo} onChange={(event) => formatCurrency(event.target)} />
               </div><div className="input-box">
                 <label htmlFor="d-receita">Receita</label>
-                <input type="text" id="d-receita" name='receita' placeholder='Receita do Evento (Valor em reais (R$))' defaultValue={data.receita} onChange={(event) => formatCurrency(event.target)} />
+                <input autoComplete='off' type="text" id="d-receita" name='receita' placeholder='Receita do Evento (Valor em reais (R$))' defaultValue={data.receita} onChange={(event) => formatCurrency(event.target)} />
               </div>
             </div>
             <div className="input-box">
               <label htmlFor="d-publico_participante">Público Participante</label>
-              <input type="text" id="d-publico_participante" name='publico_participante' placeholder='Pessoas envolvidas no evento' defaultValue={data.publico_participante?.map((publico: any) => ` ${publico}`)} />
+              <input autoComplete='off' type="text" id="d-publico_participante" name='publico_participante' placeholder='Pessoas envolvidas no evento' defaultValue={data.publico_participante?.map((publico: any) => ` ${publico}`)} />
             </div>
             <div className="input-box">
               <label htmlFor="d-qtd_publico">Quandidade de público</label>
-              <input type="number" id="d-qtd_publico" name='qtd_publico' placeholder='Quantidade de público do evento' defaultValue={data.qtd_publico} />
+              <input autoComplete='off' type="number" id="d-qtd_publico" name='qtd_publico' placeholder='Quantidade de público do evento' defaultValue={data.qtd_publico} />
             </div>
             <div className="input-box">
               <label htmlFor="d-equipe">Equipe de organização</label>
-              <input type="text" id="d-equipe" name='equipe' placeholder='Equipe de organização do evento' defaultValue={data.equipe?.map((membro: any) => ` ${membro}`)} />
+              <input autoComplete='off' type="text" id="d-equipe" name='equipe' placeholder='Equipe de organização do evento' defaultValue={data.equipe?.map((membro: any) => ` ${membro}`)} />
             </div>
             <div className="input-box">
               <label htmlFor="d-coordenadores">Coordenadores</label>
-              <input type="text" id="d-coordenadores" name='coordenadores' placeholder='Coordenadores do evento' defaultValue={data.coordenadores?.map((coordenador: any) => ` ${coordenador}`)} />
+              <input autoComplete='off' type="text" id="d-coordenadores" name='coordenadores' placeholder='Coordenadores do evento' defaultValue={data.coordenadores?.map((coordenador: any) => ` ${coordenador}`)} />
             </div>
             <div className="input-box">
               <label htmlFor="d-parceiros">Parceiros</label>
-              <input type="text" id="d-parceiros" name='parceiros' placeholder='Contribuidores do evento' defaultValue={data.parceiros?.map((parceiro: any) => ` ${parceiro}`)} />
+              <input autoComplete='off' type="text" id="d-parceiros" name='parceiros' placeholder='Contribuidores do evento' defaultValue={data.parceiros?.map((parceiro: any) => ` ${parceiro}`)} />
             </div>
           </>
         )
@@ -131,30 +131,28 @@ export function Modal({
           <>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
-              <input type="text" id="d-nome" name='nome' placeholder='Nome do nogócio' defaultValue={data.nome} />
+              <input autoComplete='off' type="text" id="d-nome" name='nome' placeholder='Nome do nogócio' defaultValue={data.nome} />
             </div>
             <div className="input-box">
               <label htmlFor="d-area_atuacao">Área de atuação</label>
-              <input type="text" id="d-area_atuacao" name='area_atuacao' placeholder='Área de atuação do nogócio' defaultValue={data.area_atuacao} />
+              <input autoComplete='off' type="text" id="d-area_atuacao" name='area_atuacao' placeholder='Área de atuação do nogócio' defaultValue={data.area_atuacao} />
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-faturamento_anual">Faturamento anual</label>
-                <input type="text" id="d-faturamento_anual" name='faturamento_anual' placeholder='Faturamento anual do negócio' defaultValue={data.faturamento_anual} />
+                <input autoComplete='off' type="text" id="d-faturamento_anual" name='faturamento_anual' placeholder='Faturamento anual do negócio' defaultValue={data.faturamento_anual} onChange={(event) => formatCurrency(event.target)} />
               </div><div className="input-box">
-                <label htmlFor="d-ano_criacao">Ano de criação</label>
-                <input type="text" id="d-ano_criacao" name='ano_criacao' placeholder='Ano de criação do nogócio' defaultValue={data.ano_criacao} />
+                <label htmlFor="d-data_criacao">Data de criação</label>
+                <input autoComplete='off' type="date" id="d-data_criacao" name='data_criacao' placeholder='Data de criação do nogócio' defaultValue={data.ano_criacao} />
               </div>
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-fundadores">Fundadores</label>
-                <input type="text" id="d-fundadores" name='fundadores' placeholder='Fundadores do nogócio' defaultValue={data.fundadores?.map((fundador: any) => {
-                  return ` ${fundador}`
-                })} />
+                <input autoComplete='off' type="text" id="d-fundadores" name='fundadores' placeholder='Fundadores do nogócio' defaultValue={data.fundadores?.map((fundador: any) => ` ${fundador}`)} />
               </div><div className="input-box">
                 <label htmlFor="d-porte">Porte do nogócio</label>
-                <input type="text" id="d-porte" name='porte' defaultValue={data.porte} />
+                <input autoComplete='off' type="text" id="d-porte" name='porte' placeholder='Ex.: MEI | ME | EPP | etc.' defaultValue={data.porte} />
               </div>
             </div>
           </>
@@ -164,42 +162,42 @@ export function Modal({
           <>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
-              <input type="text" id="d-nome" name='nome' placeholder='Nome do motor' defaultValue={data.nome} />
+              <input autoComplete='off' type="text" id="d-nome" name='nome' placeholder='Nome do motor' defaultValue={data.nome} />
             </div>
             <div className="input-box">
               <label htmlFor="d-descricao">Descrição</label>
-              <input type="text" id="d-descricao" name='descricao' placeholder='Descrição do motor' defaultValue={data.descricao} />
+              <input autoComplete='off' type="text" id="d-descricao" name='descricao' placeholder='Descrição do motor' defaultValue={data.descricao} />
             </div>
             <div className="input-box">
               <label htmlFor="d-projetos">Projetos Executados</label>
-              <input type="text" id="d-projetos" name='projetos' placeholder='Projetos executados pelo motor' defaultValue={data.projetos} />
+              <input autoComplete='off' type="text" id="d-projetos" name='projetos' placeholder='Projetos executados pelo motor' defaultValue={data.projetos?.map((projeto: any) => ` ${projeto}`)} />
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-motor_tipo">Tipo</label>
-                <input type="text" id="d-motor_tipo" name='motor_tipo' placeholder='Tipo do Motor' defaultValue={data.motor_tipo} />
+                <input autoComplete='off' type="text" id="d-motor_tipo" name='motor_tipo' placeholder='Tipo do Motor' defaultValue={data.motor_tipo} />
               </div><div className="input-box">
                 <label htmlFor="d-data_criacao">Data de criação</label>
-                <input type="text" id="d-data_criacao" name='data_criacao' placeholder='Data de criação do motor' defaultValue={data.data_criacao} />
+                <input autoComplete='off' type="date" id="d-data_criacao" name='data_criacao' placeholder='Data de criação do motor' defaultValue={data.data_criacao} />
               </div>
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-lideres">Lideres</label>
-                <input type="text" id="d-lideres" name='lideres' placeholder='Lideres do motor' defaultValue={data.lideres} />
+                <input autoComplete='off' type="text" id="d-lideres" name='lideres' placeholder='Lideres do motor' defaultValue={data.lideres?.map((lider: any) => ` ${lider}`)} />
               </div><div className="input-box">
                 <label htmlFor="d-equipe">Equipe</label>
-                <input type="text" id="d-equipe" name='equipe' placeholder='Equipe participante do motor' defaultValue={data.equipe} />
+                <input autoComplete='off' type="text" id="d-equipe" name='equipe' placeholder='Equipe participante do motor' defaultValue={data.equipe?.map((membro: any) => ` ${membro}`)} />
               </div>
             </div>
             <h3>Financeiro</h3>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-qtd_empresas_atendidas">№ de empresas atendidas</label>
-                <input type="text" id="d-qtd_empresas_atendidas" name='qtd_empresas_atendidas' placeholder='Quantidade de empresas atendidas pelo motor' defaultValue={data.qtd_empresas_atendidas} />
+                <input autoComplete='off' type="number" id="d-qtd_empresas_atendidas" name='qtd_empresas_atendidas' placeholder='Quantidade de empresas atendidas pelo motor' defaultValue={data.qtd_empresas_atendidas} />
               </div><div className="input-box">
                 <label htmlFor="d-faturamento">Faturamento total</label>
-                <input type="text" id="d-faturamento" name='faturamento' placeholder='Faturamento total do motor' defaultValue={data.faturamento} />
+                <input autoComplete='off' type="text" id="d-faturamento" name='faturamento' placeholder='Faturamento total do motor' defaultValue={data.faturamento} onChange={(event) => formatCurrency(event.target)} />
               </div>
             </div>
           </>

@@ -63,7 +63,6 @@ export async function POST(
       });
       
       if (!disciplina) return NextResponse.json({ message: "Não foi possível criar uma Disciplina" }, { status: 500 });
-
       return NextResponse.json({ message: "Sucesso em Disciplinas" }, { status: 201 });
 
     case "eventos":
@@ -90,6 +89,58 @@ export async function POST(
           dimensao: true
         }
       })
+
+      if (!evento) return NextResponse.json({ message: "Não foi possível criar um Evento" }, { status: 500 });
+      return NextResponse.json({ message: "Sucesso em criar Evento" }, { status: 201 });
+
+    case "motores":
+      const motor = await prisma.motor.create({
+        data: {
+          nome: body.nome,
+          data_criacao: new Date(body.data_criacao),
+          descricao: body.descricao,
+          faturamento: toFloat(body.faturamento),
+          motor_tipo: body.motor_tipo,
+          qtd_empresas_atendidas: parseInt(body.qtd_empresas_atendidas),
+          equipe: toArray(body.equipe),
+          lideres: toArray(body.lideres),
+          projetos: toArray(body.projetos),
+          dimensao: {
+            create: {
+              tipo: "motores"
+            }
+          }
+        },
+        include: {
+          dimensao: true
+        }
+      });
+
+      if (!motor) return NextResponse.json({ message: "Não foi possível criar um Motor" }, { status: 500 });
+      return NextResponse.json({ message: "Sucesso em criar Motor" }, {status: 201});
+
+    case "negocios":
+      const negocio = await prisma.negocio.create({
+        data: {
+          nome: body.nome,
+          area_atuacao: body.area_atuacao,
+          faturamento_anual: toFloat(body.faturamento_anual),
+          data_criacao: new Date(body.data_criacao),
+          fundadores: toArray(body.fundadores),
+          porte: body.porte,
+          dimensao: {
+            create: {
+              tipo: "negocios"
+            }
+          }
+        },
+        include: {
+          dimensao: true
+        }
+      });
+
+      if (!negocio) return NextResponse.json({ message: "Não foi possível criar um Negócio" }, { status: 500 });
+      return NextResponse.json({ message: "Sucesso ao criar Negócio "}, { status: 201 });
     
     default:
       console.log(`Default Case: ${body}`);

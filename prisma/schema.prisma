@@ -68,7 +68,7 @@ model Motor {
   descricao              String
   projetos               String[]
   motor_tipo             String
-  data_criacao           String
+  data_criacao           DateTime
   lideres                String[]
   equipe                 String[]
   qtd_empresas_atendidas Int
@@ -81,7 +81,7 @@ model Negocio {
   nome              String
   area_atuacao      String
   faturamento_anual Float
-  ano_criacao       DateTime
+  data_criacao       DateTime
   fundadores        String[]
   porte             String
 }
