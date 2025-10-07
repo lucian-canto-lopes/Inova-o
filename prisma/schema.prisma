@@ -81,7 +81,7 @@ model Negocio {
   nome              String
   area_atuacao      String
   faturamento_anual Float
-  data_criacao       DateTime
+  data_criacao      DateTime
   fundadores        String[]
   porte             String
 }

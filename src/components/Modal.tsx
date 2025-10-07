@@ -29,12 +29,12 @@ export function Modal({
   value,
   onChange,
 }: Props) {
-  const formatCurrency= (input: HTMLInputElement) => {
-    input.value = input.value.replace(/\D/g,"");
+  const formatCurrency = (input: HTMLInputElement) => {
+    input.value = input.value.replace(/\D/g, "");
     if (input.value.length < 3) {
       input.value = "00" + input.value;
     }
-    input.value = input.value.slice(0, input.value.length -2) + "," + input.value.slice(input.value.length -2, input.value.length);
+    input.value = input.value.slice(0, input.value.length - 2) + "," + input.value.slice(input.value.length - 2, input.value.length);
     if (input.value.startsWith("0") && input.value.length > 4) input.value = input.value.slice(1, input.value.length);
   }
 
@@ -89,7 +89,7 @@ export function Modal({
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-data_inicio">Data de Início</label>
-                <input autoComplete='off' type="date" id="d-data_inicio" name='data_inicio' placeholder='Data de início' defaultValue={data.data_inicio} />
+                <input autoComplete='off' type="date" id="d-data_inicio" name='data_inicio' placeholder='Data de início' defaultValue={data.data_inicio.slice(0, 10)} />
               </div><div className="input-box">
                 <label htmlFor="d-duracao">Duração</label>
                 <input autoComplete='off' type="text" id="d-duracao" name='duracao' placeholder='Duração do evento' defaultValue={data.duracao} />
@@ -126,7 +126,7 @@ export function Modal({
             </div>
           </>
         )
-        case "negocios":
+      case "negocios":
         return (
           <>
             <div className="input-box">
@@ -213,15 +213,26 @@ export function Modal({
 
     const formData = new FormData(formRef.current);
     const data = Object.fromEntries(formData.entries());
-    
-    await fetch(`http://localhost:3000/api/dimensoes/${modalType}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-    .then(async response => await response.json()).then(data => console.log(data)).catch(error => console.error(error));
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Erro ${response.status}: ${text}`);
+      }
+
+      const result = await response.json();
+      console.log("Sucesso: ", result);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

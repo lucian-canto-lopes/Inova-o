@@ -11,7 +11,7 @@ interface Params {
 // Tem que fazer uma toFloat
 function toFloat(value: any): number {
   if (!value) return 0.0;
-  if (Number(value)) return value;
+  if (Number(value)) return parseFloat(value);
   value = value.replace(",", ".");
   return parseFloat(value);
 }
@@ -29,9 +29,30 @@ export async function GET(
   request: Request,
   { params }: Params
 ) {
-  const { dimensao } = params;
+  const { dimensao } = await params;
 
-  return NextResponse.json({ message: dimensao });
+  let data: any = {}
+
+  switch (dimensao) {
+    case "disciplinas":
+      data = await prisma.disciplina.findMany();
+      return NextResponse.json({ data: data}, { status: 200});
+    
+    case "eventos":
+      data = await prisma.evento.findMany();
+      return NextResponse.json({ data: data }, { status: 200 });
+
+    case "motores":
+      data = await prisma.motor.findMany();
+      return NextResponse.json({ data: data }, { status: 200 });
+      
+    case "negocios":
+      data = await prisma.negocio.findMany();
+      return NextResponse.json({ data: data }, { status: 200 });
+    
+    default:
+      return NextResponse.json({ message: "Bad Request", data: {} }, { status: 400 });
+  }
 };
 
 export async function POST(

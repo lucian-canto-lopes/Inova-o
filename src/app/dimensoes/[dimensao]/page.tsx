@@ -1,9 +1,8 @@
-'use client'
-import { Modal } from "@/src/components/Modal";
+import Card from "@/src/components/Card";
+import CardDeck from "@/src/components/CardDeck";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { use, useState } from "react";
-import { FaPlus } from "react-icons/fa6";
+import { DimensaoClientHeader, DimesaoClientCardDeck } from "./DimensaoClient";
 
 enum DimensaoEnum {
   disciplinas = "Disciplinas",
@@ -14,42 +13,35 @@ enum DimensaoEnum {
 type DimensaoTipo = keyof typeof DimensaoEnum;
 const dimensoesTipos = Object.keys(DimensaoEnum) as DimensaoTipo[];
 
-export default function DimensaoPage({
+async function getDimensaoData(dimensao: DimensaoTipo) {
+  const response = await fetch(`http://localhost:3000/api/dimensoes/${dimensao}`, {
+    cache: "no-store",
+  });
+  if (!response.ok) throw new Error("Erro ao buscar dimensão");
+  return response.json();
+}
+
+export default async function DimensaoPage({
   params,
 }: {
   params: Promise<{ dimensao: DimensaoTipo }>;
 }) {
-  const { dimensao } = use(params);
+  const { dimensao } = await params;
   if (!dimensoesTipos.includes(dimensao)) notFound();
 
-  const [isModalOpen, setModalOpen] = useState(false);
-  const handleModalOpen = () => {
-    setModalOpen(!isModalOpen);
-  };
-
-  const [textContent, setTextContent] = useState("");
-
-  const data = async () => {
-    try {
-      const response = await fetch(`/api/dimensoes/${dimensao}`);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  }
+  const data = await getDimensaoData(dimensao);
+  console.log(data)
 
   return (
     <>
-      {isModalOpen && <Modal closeModal={() => { setModalOpen(false) }} modalType={dimensao} data={{}} value={textContent} onChange={setTextContent} ></Modal>}
       <span>
         <Link href={"/dimensoes"}>Dimensões</Link> → {DimensaoEnum[dimensao]}
       </span>
       <header>
         <div>{DimensaoEnum[dimensao]}</div>
-        <button onClick={() => { setModalOpen(true) }}>Adicionar <FaPlus /></button>
+        <DimensaoClientHeader dimensao={dimensao} />
       </header>
+      <DimesaoClientCardDeck title="Recentes" cards={data.data} dimensao={dimensao} />
     </>
   );
 }
