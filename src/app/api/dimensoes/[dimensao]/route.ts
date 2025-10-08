@@ -8,7 +8,6 @@ interface Params {
   params: { dimensao: dimensaoTipo }
 };
 
-// Tem que fazer uma toFloat
 function toFloat(value: any): number {
   if (!value) return 0.0;
   if (Number(value)) return parseFloat(value);

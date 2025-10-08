@@ -1,9 +1,9 @@
 
-import { FaX } from 'react-icons/fa6';
+import { FaPlus, FaX } from 'react-icons/fa6';
 import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import '../css/Modal.css';
 import { TextEditor } from "./TextEditor";
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 enum DimensaoEnum {
@@ -90,7 +90,7 @@ export function Modal({
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-data_inicio">Data de Início</label>
-                <input autoComplete='off' type="date" id="d-data_inicio" name='data_inicio' placeholder='Data de início' defaultValue={data?.data_inicio.slice(0, 10) || ""} />
+                <input autoComplete='off' type="date" id="d-data_inicio" name='data_inicio' placeholder='Data de início' defaultValue={data?.data_inicio?.slice(0, 10) || ""} />
               </div><div className="input-box">
                 <label htmlFor="d-duracao">Duração</label>
                 <input autoComplete='off' type="text" id="d-duracao" name='duracao' placeholder='Duração do evento' defaultValue={data?.duracao || ""} />
@@ -271,6 +271,9 @@ export function Modal({
     router.refresh();
   }
 
+  const [isRelationCLOpen, setRelationCLOpen] = useState(false);
+
+
   return (
     <section className="modal-bg">
       <div className="modal">
@@ -282,9 +285,34 @@ export function Modal({
         <section className="modal-content">
           <div className='left-div'>
             <h2>{`Modal de ${DimensaoEnum[modalType]}`}</h2>
-            <form ref={formRef} className='modal-form'>
-              {renderSwitch(modalType)}
-            </form>
+            <div>
+              <form ref={formRef} className='modal-form'>
+                {renderSwitch(modalType)}
+              </form>
+              <div className="relacoes-div">
+                <span>Relações</span>
+                <div>
+                  <div className="relacoes-item">Curso 1</div>
+                  <div className="relacoes-item">Curso 2</div>
+                  <div style={{ position: "relative" }}>
+                    <section onClick={!isRelationCLOpen ? () => setRelationCLOpen(true) : undefined} className={isRelationCLOpen ? "relation-section" : ""}>
+                      <div>
+                        <input type="text" name="search-relation" id="search-relation" placeholder='Procurar...' />
+                        <FaPlus onClick={isRelationCLOpen ? () => setRelationCLOpen(false) : undefined}/>
+                      </div>
+                      {isRelationCLOpen && (
+                        <ul>
+                          <li><input type="checkbox" id='cb-1' /><label htmlFor="cb-1">Curso 1</label></li>
+                          <li><input type="checkbox" id='cb-2' /><label htmlFor="cb-2">Curso 2</label></li>
+                          <li><input type="checkbox" id='cb-3' /><label htmlFor="cb-3">Curso 3</label></li>
+                          <li><input type="checkbox" id='cb-4' /><label htmlFor="cb-4">Curso 4</label></li>
+                        </ul>
+                      )}
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <TextEditor value={value} onChange={onChange} />
         </section>
