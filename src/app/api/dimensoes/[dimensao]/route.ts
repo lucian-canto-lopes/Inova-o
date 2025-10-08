@@ -36,8 +36,8 @@ export async function GET(
   switch (dimensao) {
     case "disciplinas":
       data = await prisma.disciplina.findMany();
-      return NextResponse.json({ data: data}, { status: 200});
-    
+      return NextResponse.json({ data: data }, { status: 200 });
+
     case "eventos":
       data = await prisma.evento.findMany();
       return NextResponse.json({ data: data }, { status: 200 });
@@ -45,11 +45,11 @@ export async function GET(
     case "motores":
       data = await prisma.motor.findMany();
       return NextResponse.json({ data: data }, { status: 200 });
-      
+
     case "negocios":
       data = await prisma.negocio.findMany();
       return NextResponse.json({ data: data }, { status: 200 });
-    
+
     default:
       return NextResponse.json({ message: "Bad Request", data: {} }, { status: 400 });
   }
@@ -64,107 +64,223 @@ export async function POST(
 
   switch (dimensao) {
     case "disciplinas":
-      const disciplina = await prisma.disciplina.create({
-        data: {
-          nome: body.nome,
-          coordenador: body.coordenador,
-          semestre: body.semestre,
-          codigo: body.codigo,
-          alunos_matriculados: toArray(body.alunos_matriculados),
-          alunos_aprovados: toArray(body.alunos_aprovados),
-          dimensao: {
-            create: {
-              tipo: "disciplinas"
+      if (body.dimensaoId != null) {
+        try {
+          await prisma.disciplina.update({
+            where: {
+              dimensaoId: body.dimensaoId
+            },
+            data: {
+              nome: body.nome,
+              coordenador: body.coordenador,
+              semestre: body.semestre,
+              codigo: body.codigo,
+              alunos_matriculados: toArray(body.alunos_matriculados),
+              alunos_aprovados: toArray(body.alunos_aprovados),
             }
-          },
-        },
-        include: {
-          dimensao: true
+          });
+
+          return NextResponse.json({ message: "Disciplina atualizada com sucesso!" }, { status: 200 });
+        } catch (error) {
+          return NextResponse.json({ message: error }, { status: 500 });
         }
-      });
-      
-      if (!disciplina) return NextResponse.json({ message: "Não foi possível criar uma Disciplina" }, { status: 500 });
-      return NextResponse.json({ message: "Sucesso em Disciplinas" }, { status: 201 });
+      } else {
+        const disciplina = await prisma.disciplina.create({
+          data: {
+            nome: body.nome,
+            coordenador: body.coordenador,
+            semestre: body.semestre,
+            codigo: body.codigo,
+            alunos_matriculados: toArray(body.alunos_matriculados),
+            alunos_aprovados: toArray(body.alunos_aprovados),
+            dimensao: {
+              create: {
+                tipo: "disciplinas"
+              }
+            },
+          },
+          include: {
+            dimensao: true
+          }
+        });
+
+        if (!disciplina) return NextResponse.json({ message: "Não foi possível criar uma Disciplina" }, { status: 500 });
+        return NextResponse.json({ message: "Sucesso em Disciplinas" }, { status: 201 });
+      };
 
     case "eventos":
-      const evento = await prisma.evento.create({
-        data: {
-          nome: body.nome,
-          descricao: body.descricao,
-          data_inicio: new Date(body.data_inicio),
-          duracao: body.duracao,
-          custo: toFloat(body.custo), // tem que ser float
-          receita: toFloat(body.receita), // tem que ser float
-          publico_participante: toArray(body.publico_participante),
-          qtd_publico: parseInt(body.qtd_publico),
-          equipe: toArray(body.equipe),
-          coordenadores: toArray(body.coordenadores),
-          parceiros: toArray(body.parceiros),
-          dimensao: {
-            create: {
-              tipo: "eventos"
+      if (body.dimensaoId != null) {
+        try {
+          await prisma.evento.update({
+            where: {
+              dimensaoId: body.dimensaoId
+            },
+            data: {
+              nome: body.nome,
+              descricao: body.descricao,
+              data_inicio: new Date(body.data_inicio),
+              duracao: body.duracao,
+              custo: toFloat(body.custo),
+              receita: toFloat(body.receita),
+              publico_participante: toArray(body.publico_participante),
+              qtd_publico: parseInt(body.qtd_publico),
+              equipe: toArray(body.equipe),
+              coordenadores: toArray(body.coordenadores),
+              parceiros: toArray(body.parceiros),
             }
-          }
-        },
-        include: {
-          dimensao: true
-        }
-      })
+          });
 
-      if (!evento) return NextResponse.json({ message: "Não foi possível criar um Evento" }, { status: 500 });
-      return NextResponse.json({ message: "Sucesso em criar Evento" }, { status: 201 });
+          return NextResponse.json({ message: "Evento atualizado com sucesso!" }, { status: 200 });
+        } catch (error) {
+          return NextResponse.json({ message: error }, { status: 500 });
+        }
+      } else {
+        const evento = await prisma.evento.create({
+          data: {
+            nome: body.nome,
+            descricao: body.descricao,
+            data_inicio: new Date(body.data_inicio),
+            duracao: body.duracao,
+            custo: toFloat(body.custo), // tem que ser float
+            receita: toFloat(body.receita), // tem que ser float
+            publico_participante: toArray(body.publico_participante),
+            qtd_publico: parseInt(body.qtd_publico),
+            equipe: toArray(body.equipe),
+            coordenadores: toArray(body.coordenadores),
+            parceiros: toArray(body.parceiros),
+            dimensao: {
+              create: {
+                tipo: "eventos"
+              }
+            }
+          },
+          include: {
+            dimensao: true
+          }
+        });
+
+        if (!evento) return NextResponse.json({ message: "Não foi possível criar um Evento" }, { status: 500 });
+        return NextResponse.json({ message: "Sucesso em criar Evento" }, { status: 201 });
+      };
 
     case "motores":
-      const motor = await prisma.motor.create({
-        data: {
-          nome: body.nome,
-          data_criacao: new Date(body.data_criacao),
-          descricao: body.descricao,
-          faturamento: toFloat(body.faturamento),
-          motor_tipo: body.motor_tipo,
-          qtd_empresas_atendidas: parseInt(body.qtd_empresas_atendidas),
-          equipe: toArray(body.equipe),
-          lideres: toArray(body.lideres),
-          projetos: toArray(body.projetos),
-          dimensao: {
-            create: {
-              tipo: "motores"
+      if (body.dimensaoId != null) {
+        try {
+          await prisma.motor.update({
+            where: {
+              dimensaoId: body.dimensaoId
+            },
+            data: {
+              nome: body.nome,
+              data_criacao: new Date(body.data_criacao),
+              descricao: body.descricao,
+              faturamento: toFloat(body.faturamento),
+              motor_tipo: body.motor_tipo,
+              qtd_empresas_atendidas: parseInt(body.qtd_empresas_atendidas),
+              equipe: toArray(body.equipe),
+              lideres: toArray(body.lideres),
+              projetos: toArray(body.projetos),
             }
-          }
-        },
-        include: {
-          dimensao: true
-        }
-      });
+          });
 
-      if (!motor) return NextResponse.json({ message: "Não foi possível criar um Motor" }, { status: 500 });
-      return NextResponse.json({ message: "Sucesso em criar Motor" }, {status: 201});
+          return NextResponse.json({ message: "Motor atualizado com sucesso!" }, { status: 200 });
+        } catch (error) {
+          return NextResponse.json({ message: error }, { status: 500 });
+        }
+      } else {
+        const motor = await prisma.motor.create({
+          data: {
+            nome: body.nome,
+            data_criacao: new Date(body.data_criacao),
+            descricao: body.descricao,
+            faturamento: toFloat(body.faturamento),
+            motor_tipo: body.motor_tipo,
+            qtd_empresas_atendidas: parseInt(body.qtd_empresas_atendidas),
+            equipe: toArray(body.equipe),
+            lideres: toArray(body.lideres),
+            projetos: toArray(body.projetos),
+            dimensao: {
+              create: {
+                tipo: "motores"
+              }
+            }
+          },
+          include: {
+            dimensao: true
+          }
+        });
+
+        if (!motor) return NextResponse.json({ message: "Não foi possível criar um Motor" }, { status: 500 });
+        return NextResponse.json({ message: "Sucesso em criar Motor" }, { status: 201 });
+      };
 
     case "negocios":
-      const negocio = await prisma.negocio.create({
-        data: {
-          nome: body.nome,
-          area_atuacao: body.area_atuacao,
-          faturamento_anual: toFloat(body.faturamento_anual),
-          data_criacao: new Date(body.data_criacao),
-          fundadores: toArray(body.fundadores),
-          porte: body.porte,
-          dimensao: {
-            create: {
-              tipo: "negocios"
+      if (body.dimensaoId != null) {
+        try {
+          await prisma.negocio.update({
+            where: {
+              dimensaoId: body.dimensaoId
+            },
+            data: {
+              nome: body.nome,
+              area_atuacao: body.area_atuacao,
+              faturamento_anual: toFloat(body.faturamento_anual),
+              data_criacao: new Date(body.data_criacao),
+              fundadores: toArray(body.fundadores),
+              porte: body.porte,
             }
-          }
-        },
-        include: {
-          dimensao: true
-        }
-      });
+          });
 
-      if (!negocio) return NextResponse.json({ message: "Não foi possível criar um Negócio" }, { status: 500 });
-      return NextResponse.json({ message: "Sucesso ao criar Negócio "}, { status: 201 });
-    
+          return NextResponse.json({ message: "Disciplina atualizada com sucesso!" }, { status: 200 });
+        } catch (error) {
+          return NextResponse.json({ message: error }, { status: 500 });
+        }
+      } else {
+        const negocio = await prisma.negocio.create({
+          data: {
+            nome: body.nome,
+            area_atuacao: body.area_atuacao,
+            faturamento_anual: toFloat(body.faturamento_anual),
+            data_criacao: new Date(body.data_criacao),
+            fundadores: toArray(body.fundadores),
+            porte: body.porte,
+            dimensao: {
+              create: {
+                tipo: "negocios"
+              }
+            }
+          },
+          include: {
+            dimensao: true
+          }
+        });
+
+        if (!negocio) return NextResponse.json({ message: "Não foi possível criar um Negócio" }, { status: 500 });
+        return NextResponse.json({ message: "Sucesso ao criar Negócio " }, { status: 201 });
+      };
+
     default:
       console.log(`Default Case: ${body}`);
-      return NextResponse.json({ message: "Sucesso em Default" }, { status: 201 });
+      return NextResponse.json({ message: "Bad Request" }, { status: 400 });
   };
 };
+
+export async function DELETE(
+  request: Request,
+  { params }: Params
+) {
+  const { dimensao } = await params
+  const body = await request.json();
+
+  try {
+    await prisma.dimensao.delete({
+      where: {
+        id: body.dimensaoId,
+      },
+    });
+  } catch (error) {
+    return NextResponse.json({ message: `Não foi possível deletar a dimensão de id ${body.dimensaoId}`, error: error }, { status: 500 });
+  }
+
+  return NextResponse.json({ message: `Sucesso ao deletar dimensão de id ${body.dimensaoId}` }, { status: 200 });
+}

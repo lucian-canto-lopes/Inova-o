@@ -1,5 +1,3 @@
-import Card from "@/src/components/Card";
-import CardDeck from "@/src/components/CardDeck";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DimensaoClientHeader, DimesaoClientCardDeck } from "./DimensaoClient";
@@ -30,7 +28,6 @@ export default async function DimensaoPage({
   if (!dimensoesTipos.includes(dimensao)) notFound();
 
   const data = await getDimensaoData(dimensao);
-  console.log(data)
 
   return (
     <>

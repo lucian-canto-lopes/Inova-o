@@ -44,7 +44,7 @@ export function DimesaoClientCardDeck({
     <>
       <CardDeck title={title} >
         {cards.map((card: any, index) => {
-          return <Card title={card.nome} key={card.nome} onClick={() => {
+          return <Card title={card.nome} key={card.dimensaoId} onClick={() => {
             setModalOpen(true);
             setCardIndex(index);
           }}/>
