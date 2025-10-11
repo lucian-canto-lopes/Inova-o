@@ -25,7 +25,7 @@ export function DimensaoClientHeader({
     <>
       <button onClick={() => { setModalOpen(true) }}>Adicionar <FaPlus /></button>
       {isModalOpen && (
-        <Modal closeModal={() => setModalOpen(false)} modalType={dimensao} data={{}} value={textContent} onChange={setTextContent} />
+        <Modal closeModal={() => setModalOpen(false)} modalType={dimensao} modalData={{}} value={textContent} onChange={setTextContent} />
       )}
     </>
   )
@@ -37,21 +37,32 @@ export function DimesaoClientCardDeck({
   cards,
 }: CardDeckProps) {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [cardIndex, setCardIndex] = useState(-1);
   const [textContent, setTextContent] = useState("");
+  const [modalData, setModalData] = useState<any>(null);
+
+  // Pega os dados do card selecionado
+  const getCardData = async (id: number) => {
+    const response = await fetch(`/api/dimensoes/${dimensao}/${id}`, {
+      cache: "no-cache",
+    });
+    if (!response.ok) return console.log(`Erro ao obter dados de ${dimensao} id ${id}`);
+    const result = await response.json();
+    console.log(result)
+    return setModalData(result.data);
+  }
 
   return (
     <>
       <CardDeck title={title} >
-        {cards.map((card: any, index) => {
-          return <Card title={card.nome} key={card.dimensaoId} onClick={() => {
+        {cards?.map((card: any) => {
+          return <Card title={card.nome} key={card.dimensaoId} onClick={async () => {
+            await getCardData(card.dimensaoId);
             setModalOpen(true);
-            setCardIndex(index);
           }}/>
         })}
       </CardDeck>
       {isModalOpen && (
-        <Modal closeModal={() => setModalOpen(false)} modalType={dimensao} data={cards[cardIndex]} value={textContent} onChange={setTextContent} />
+        <Modal closeModal={() => setModalOpen(false)} modalType={dimensao} modalData={modalData} value={textContent} onChange={setTextContent} />
       )}
     </>
   )

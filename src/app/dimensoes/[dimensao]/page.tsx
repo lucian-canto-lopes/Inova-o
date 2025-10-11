@@ -15,7 +15,12 @@ async function getDimensaoData(dimensao: DimensaoTipo) {
   const response = await fetch(`http://localhost:3000/api/dimensoes/${dimensao}`, {
     cache: "no-store",
   });
-  if (!response.ok) throw new Error("Erro ao buscar dimensão");
+  if (!response.ok) {
+    console.log("Erro ao buscar dimensões");
+    return {
+      data: []
+    };
+  };
   return response.json();
 }
 

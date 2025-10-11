@@ -132,6 +132,7 @@
       cursor: pointer;
     }
 
+    /* Quando o + das relações não está clicado */
     & section {
       background-color: white;
       border: 3px solid var(--dark-green);
@@ -147,9 +148,10 @@
         display: flex;
 
         & input {
-          transition: width ease-in-out .5s;
+          transition: width ease-in-out .25s;
           width: 0px;
           border: none;
+          outline: none;
         }
 
         & svg {
@@ -159,12 +161,9 @@
           stroke-width: 1rem;
         }
       }
-
-      &>ul {
-        font-size: 1rem;
-      }
     }
 
+    /* Quando o + das relações está clicado */
     & section.relation-section {
       position: sticky;
       flex-direction: column;
@@ -172,10 +171,16 @@
       justify-content: flex-start;
       align-items: flex-start;
       cursor: auto;
+      padding: 5px;
+      max-width: 300px;
+      width: 100%;
 
       &>div {
+        margin-bottom: 5px;
+        width: 100%;
+
         & input {
-          width: 120px;
+          width: 100%;
           display: inline-block;
         }
 
@@ -183,6 +188,57 @@
           transform: rotate(-45deg);
           color: red;
           cursor: pointer;
+        }
+      }
+
+      &>ul {
+        font-size: 1rem;
+
+        & input[type="checkbox"] {
+          appearance: none;
+          position: relative;
+          height: 100%;
+          height: 1rem;
+          aspect-ratio: 1;
+          background-color: #fff;
+          border: 0.125rem solid var(--light-green);
+          border-radius: 50%;
+          margin-right: 5px;
+
+          &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0.75rem;
+            height: 0.75rem;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+            transform: translate(-50%, -50%) scale(0);
+            transform-origin: center;
+            transition: 0.125s transform ease-in-out;
+            box-shadow: inset 1rem 1rem #fff;
+          }
+
+          &:checked {
+            background-color: var(--dark-green);
+            border-color: var(--dark-green);
+
+            &::before {
+              transform: translate(-50%, -50%) scale(.7);
+            }
+          }
+
+          &:disabled {
+            opacity: 0.25;
+          }
+
+          &:focus {
+            border-color: var(--dark-green);
+
+            &+label {
+              color: var(--dark-green);
+            }
+          }
         }
       }
     }

@@ -3,7 +3,7 @@ import { PrismaClient } from "@/src/generated/prisma";
 
 const prisma = new PrismaClient();
 
-type dimensaoTipo = "disciplinas" | "eventos" | "motores" | "negocios";
+export type dimensaoTipo = "disciplinas" | "eventos" | "motores" | "negocios";
 interface Params {
   params: { dimensao: dimensaoTipo }
 };
@@ -24,6 +24,7 @@ function toArray(value: any): string[] {
     .filter((s: string) => s.trim());
 }
 
+// Devolve os nomes e ids das 8 últimas disciplinas
 export async function GET(
   request: Request,
   { params }: Params
@@ -34,19 +35,19 @@ export async function GET(
 
   switch (dimensao) {
     case "disciplinas":
-      data = await prisma.disciplina.findMany();
+      data = await prisma.disciplina.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
       return NextResponse.json({ data: data }, { status: 200 });
 
     case "eventos":
-      data = await prisma.evento.findMany();
+      data = await prisma.evento.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
       return NextResponse.json({ data: data }, { status: 200 });
 
     case "motores":
-      data = await prisma.motor.findMany();
+      data = await prisma.motor.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
       return NextResponse.json({ data: data }, { status: 200 });
 
     case "negocios":
-      data = await prisma.negocio.findMany();
+      data = await prisma.negocio.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
       return NextResponse.json({ data: data }, { status: 200 });
 
     default:
