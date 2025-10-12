@@ -240,11 +240,31 @@ export function Modal({
 
       const result = await response.json();
       console.log("Sucesso: ", result);
-      closeModal();
     } catch (error) {
       console.error(error);
     };
-
+    
+    try {
+      const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${modalData.dimensaoId}/relations`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(relations.relations || []),
+      });
+      
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Erro ${response.status}: ${text}`);
+      }
+      
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+    
+    closeModal();
     router.refresh();
   }
 
@@ -318,7 +338,7 @@ export function Modal({
                 <span>Relações</span>
                 <div>
                   {relations?.relations.map((relation: any) => {
-                    return <div className="relacoes-item">{relation}</div>
+                    return <div className="relacoes-item" key={`relation-${relation.id}`}>{relation.nome}</div>
                   })}
                   <div style={{ position: "relative" }}>
                     <section onClick={!isRelationCLOpen ? () => setRelationCLOpen(true) : undefined} className={isRelationCLOpen ? "relation-section" : ""}>
@@ -329,7 +349,21 @@ export function Modal({
                       {isRelationCLOpen && (
                         <ul>
                           {relations?.available.map((relation: any) => {
-                            return <li key={`li-${relation.id}`}><input type="checkbox" id={`cb-${relation.id}`} /><label htmlFor={`cb-${relation.id}`}>{relation.nome}</label></li>
+                            const isChecked = relations.relations.some((r: any) => r.id === relation.id);
+
+                            return <li key={`li-${relation.id}`}><input type="checkbox" id={`cb-${relation.id}`} checked={isChecked} onChange={(e) => {
+                              if (e.target.checked) {
+                                setRelations((prev: any) => ({
+                                  ...prev,
+                                  relations: [...prev.relations, { id: relation.id, nome: relation.nome }],
+                                }));
+                              } else {
+                                setRelations((prev: any) => ({
+                                  ...prev,
+                                  relations: prev.relations.filter((r: any) => r.id !== relation.id),
+                                }));
+                              }
+                            }} /><label htmlFor={`cb-${relation.id}`}>{relation.nome}</label></li>
                           })}
                         </ul>
                       )}

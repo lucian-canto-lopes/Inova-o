@@ -42,12 +42,10 @@ export async function GET(
     nome: r.Disciplina?.nome || r.Evento?.nome || r.Motor?.nome || r.Negocio?.nome, 
   }));
 
-  const relatedIds = relations.map(r => r.id);
-
   const available = await prisma.dimensao.findMany({
     where: {
       id: {
-        notIn: [parseInt(id), ...relatedIds],
+        notIn: [parseInt(id)],
       },
     },
     select: {
@@ -65,4 +63,42 @@ export async function GET(
   })));
 
   return NextResponse.json({ relations, available }, { status: 200 });
+}
+
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ dimensao: dimensaoTipo; id: string }>},
+) {
+  try {
+    const { id } = await params;
+    const idInt = parseInt(id);
+    const body = await request.json();
+    const { relations }: { relations: number[] } = body;
+
+    const uniqueRelations = [...new Set(relations)].filter(r => r !== idInt);
+
+    await prisma.dimensao_Dimensao.deleteMany({
+      where: {
+        OR: [{ dimensaoAId: idInt }, { dimensaoBId: idInt }], 
+      },
+    });
+
+    const createData = uniqueRelations.map(relId => {
+      const a = Math.min(idInt, relId);
+      const b = Math.max(idInt, relId);
+      return { dimensaoAId: a, dimensaoBId: b };
+    });
+
+    await prisma.dimensao_Dimensao.createMany({
+      data: createData,
+      skipDuplicates: true,
+    });
+
+    return NextResponse.json({ message: "Relações atualizadas com sucesso", total: createData.length }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Erro ao atualizar relações" }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
 }
