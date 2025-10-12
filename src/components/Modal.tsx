@@ -245,12 +245,13 @@ export function Modal({
     };
     
     try {
+      const relationsIds = relations.relations.map((r: any) => parseInt(r.id));
       const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${modalData.dimensaoId}/relations`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(relations.relations || []),
+        body: JSON.stringify({ relations: relationsIds }),
       });
       
       if (!response.ok) {

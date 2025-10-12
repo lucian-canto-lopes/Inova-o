@@ -74,6 +74,7 @@ export async function PUT(
     const idInt = parseInt(id);
     const body = await request.json();
     const { relations }: { relations: number[] } = body;
+    console.log(relations)
 
     const uniqueRelations = [...new Set(relations)].filter(r => r !== idInt);
 
