@@ -47,7 +47,6 @@ export function DimesaoClientCardDeck({
     });
     if (!response.ok) return console.log(`Erro ao obter dados de ${dimensao} id ${id}`);
     const result = await response.json();
-    console.log(result)
     return setModalData(result.data);
   }
 
