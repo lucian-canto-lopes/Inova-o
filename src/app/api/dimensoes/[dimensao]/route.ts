@@ -3,20 +3,19 @@ import { PrismaClient } from "@/src/generated/prisma";
 
 const prisma = new PrismaClient();
 
-type dimensaoTipo = "disciplinas" | "eventos" | "motores" | "negocios";
+export type dimensaoTipo = "disciplinas" | "eventos" | "motores" | "negocios";
 interface Params {
   params: { dimensao: dimensaoTipo }
 };
 
-// Tem que fazer uma toFloat
-function toFloat(value: any): number {
+export function toFloat(value: any): number {
   if (!value) return 0.0;
-  if (Number(value)) return value;
+  if (Number(value)) return parseFloat(value);
   value = value.replace(",", ".");
   return parseFloat(value);
 }
 
-function toArray(value: any): string[] {
+export function toArray(value: any): string[] {
   if (!value) return [];
   if (Array.isArray(value)) return value;
   return value
@@ -25,13 +24,35 @@ function toArray(value: any): string[] {
     .filter((s: string) => s.trim());
 }
 
+// Devolve os nomes e ids das 8 últimas disciplinas
 export async function GET(
   request: Request,
   { params }: Params
 ) {
-  const { dimensao } = params;
+  const { dimensao } = await params;
 
-  return NextResponse.json({ message: dimensao });
+  let data: any = {}
+
+  switch (dimensao) {
+    case "disciplinas":
+      data = await prisma.disciplina.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
+      return NextResponse.json({ data: data }, { status: 200 });
+
+    case "eventos":
+      data = await prisma.evento.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
+      return NextResponse.json({ data: data }, { status: 200 });
+
+    case "motores":
+      data = await prisma.motor.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
+      return NextResponse.json({ data: data }, { status: 200 });
+
+    case "negocios":
+      data = await prisma.negocio.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
+      return NextResponse.json({ data: data }, { status: 200 });
+
+    default:
+      return NextResponse.json({ message: "Bad Request", data: {} }, { status: 400 });
+  }
 };
 
 export async function POST(
@@ -61,7 +82,7 @@ export async function POST(
           dimensao: true
         }
       });
-      
+
       if (!disciplina) return NextResponse.json({ message: "Não foi possível criar uma Disciplina" }, { status: 500 });
       return NextResponse.json({ message: "Sucesso em Disciplinas" }, { status: 201 });
 
@@ -88,7 +109,7 @@ export async function POST(
         include: {
           dimensao: true
         }
-      })
+      });
 
       if (!evento) return NextResponse.json({ message: "Não foi possível criar um Evento" }, { status: 500 });
       return NextResponse.json({ message: "Sucesso em criar Evento" }, { status: 201 });
@@ -117,7 +138,7 @@ export async function POST(
       });
 
       if (!motor) return NextResponse.json({ message: "Não foi possível criar um Motor" }, { status: 500 });
-      return NextResponse.json({ message: "Sucesso em criar Motor" }, {status: 201});
+      return NextResponse.json({ message: "Sucesso em criar Motor" }, { status: 201 });
 
     case "negocios":
       const negocio = await prisma.negocio.create({
@@ -140,10 +161,27 @@ export async function POST(
       });
 
       if (!negocio) return NextResponse.json({ message: "Não foi possível criar um Negócio" }, { status: 500 });
-      return NextResponse.json({ message: "Sucesso ao criar Negócio "}, { status: 201 });
-    
+      return NextResponse.json({ message: "Sucesso ao criar Negócio " }, { status: 201 });
+
     default:
-      console.log(`Default Case: ${body}`);
-      return NextResponse.json({ message: "Sucesso em Default" }, { status: 201 });
+      return NextResponse.json({ message: "Bad Request" }, { status: 400 });
   };
 };
+
+export async function DELETE(
+  request: Request,
+) {
+  const body = await request.json();
+
+  try {
+    await prisma.dimensao.delete({
+      where: {
+        id: body.dimensaoId,
+      },
+    });
+  } catch (error) {
+    return NextResponse.json({ message: `Não foi possível deletar a dimensão de id ${body.dimensaoId}`, error: error }, { status: 500 });
+  }
+
+  return NextResponse.json({ message: `Sucesso ao deletar dimensão de id ${body.dimensaoId}` }, { status: 200 });
+}

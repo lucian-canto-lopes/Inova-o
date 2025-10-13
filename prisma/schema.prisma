@@ -26,16 +26,16 @@ model Dimensao {
 }
 
 model Dimensao_Dimensao {
-  dimensaoA   Dimensao @relation("DimensaoA", fields: [dimensaoAId], references: [id])
+  dimensaoA   Dimensao @relation("DimensaoA", fields: [dimensaoAId], references: [id], onDelete: Cascade)
   dimensaoAId Int
-  dimensaoB   Dimensao @relation("DimensaoB", fields: [dimensaoBId], references: [id])
+  dimensaoB   Dimensao @relation("DimensaoB", fields: [dimensaoBId], references: [id], onDelete: Cascade)
   dimensaoBId Int
 
   @@id([dimensaoAId, dimensaoBId])
 }
 
 model Disciplina {
-  dimensao            Dimensao @relation(fields: [dimensaoId], references: [id])
+  dimensao            Dimensao @relation(fields: [dimensaoId], references: [id], onDelete: Cascade)
   dimensaoId          Int      @id @unique
   nome                String
   coordenador         String
@@ -46,7 +46,7 @@ model Disciplina {
 }
 
 model Evento {
-  dimensao             Dimensao @relation(fields: [dimensaoId], references: [id])
+  dimensao             Dimensao @relation(fields: [dimensaoId], references: [id], onDelete: Cascade)
   dimensaoId           Int      @id @unique
   nome                 String
   descricao            String
@@ -62,7 +62,7 @@ model Evento {
 }
 
 model Motor {
-  dimensao               Dimensao @relation(fields: [dimensaoId], references: [id])
+  dimensao               Dimensao @relation(fields: [dimensaoId], references: [id], onDelete: Cascade)
   dimensaoId             Int      @id @unique
   nome                   String
   descricao              String
@@ -76,12 +76,12 @@ model Motor {
 }
 
 model Negocio {
-  dimensao          Dimensao @relation(fields: [dimensaoId], references: [id])
+  dimensao          Dimensao @relation(fields: [dimensaoId], references: [id], onDelete: Cascade)
   dimensaoId        Int      @id @unique
   nome              String
   area_atuacao      String
   faturamento_anual Float
-  data_criacao       DateTime
+  data_criacao      DateTime
   fundadores        String[]
   porte             String
 }

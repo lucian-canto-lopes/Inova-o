@@ -1,11 +1,20 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardDeck from "../../components/CardDeck";
 import Card from "../../components/Card";
 import { Modal, DimensaoTipo } from "../../components/Modal";
 
-export default function DimensoesPage() {
+async function getDimentions(limit: number, order: ("cres" | "decres" | "data")) {
+  const res = await fetch(`/api/dimensoes?limit=${limit}&order=${order}`);
+  if (!res.ok) {
+    const text = await res.text();
+    return console.error("Erro ao pegar dimensões: " + text);
+  }
+  const data = await res.json();
+  return data;
+}
 
+export default function DimensoesPage() {
   // Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleModalOpen = () => {
@@ -20,91 +29,34 @@ export default function DimensoesPage() {
     setModalObjIndex(index);
   }
 
-  interface modalInterface {
-    tipo: DimensaoTipo,
-    data: any
-  }
-
-  const recentes: modalInterface[] = [
-    {
-      tipo: "disciplinas",
-      data: {
-        id: 0,
-        nome: 'Cálculo Númerico',
-        coordenador: 'Helaine',
-        semestre: '2025.2',
-        codigo: 'SBCC0017',
-        alunos_matriculados: [
-          'Aluno 1', 'Aluno 2', 'Aluno 3', 'Aluno 4', 'Aluno 5', 'Aluno 6', 'Aluno 7', 'Aluno 8',
-        ],
-        alunos_aprovados: [
-          'Aluno 1', 'Aluno 2', 'Aluno 3', 'Aluno 4', 'Aluno 5', 'Aluno 6', 'Aluno 7', 'Aluno 8',
-        ]
-      }
-    },
-    {
-      tipo: "eventos",
-      data: {
-        id: 1,
-        nome: "JINO",
-        descricao: "DESCRICAO",
-        data_inicio: "string",
-        duracao: "string",
-        custo: 0,
-        receita: 0,
-        publico_participante: ["Pessoa 1", "Pessoa 2"],
-        qtd_publico: 2,
-        equipe: ["Pessoa 3", "Pessoa 4"],
-        coordenadores: ["Pessoa 5", "Pessoa 6"],
-        parceiros: ["Parceiro 1", "Parceiro 2"]
-      }
-    },
-    {
-      tipo: 'motores',
-      data: {
-        id: 2,
-        nome: 'InTap',
-        descricao: "string",
-        projetos: ["Projeto 1", "Projeto 2"],
-        motor_tipo: "string",
-        data_criacao: "string",
-        lideres: ["Lider 1", "Lider 2"],
-        equipe: ["Participante 1", "Participante 2"],
-        qtd_empresas_atendidas: 0,
-        faturamento: 0
-      }
-    },
-    {
-      tipo: 'negocios',
-      data: {
-        id: 3,
-        nome: 'Negócio Generico',
-        area_atuacao: "string",
-        faturamento_anual: 0,
-        ano_criacao: "string",
-        fundadores: ["Fundador 1", "Fundador 2"],
-        porte: "string"
-      }
-    },
-  ];
-  const todos = ['Displina 2', 'Evento 2', 'Motor 2', 'Negócio 2', 'Displina 1', 'Evento 1', 'Motor 1', 'Negócio 1'];
-
   const [content, setContent] = useState("");
+
+  const [recentes, setRecentes] = useState<any[]>([]);
+  const [todos, setTodos] = useState<any[]>([]);
+
+  useEffect(() => {
+    try {
+      getDimentions(4, "data").then(result => setRecentes(result));
+      getDimentions(8, "cres").then(result => setTodos(result));
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   return (
     <>
-      {isModalOpen && <Modal closeModal={handleModalClose} modalType={recentes[modalObjIndex].tipo} data={recentes[modalObjIndex]} value={content} onChange={setContent} />}
+      {isModalOpen && <Modal closeModal={handleModalClose} modalType={recentes[modalObjIndex]?.tipo} modalData={recentes[modalObjIndex].data} value={content} onChange={setContent} />}
       <CardDeck title={"Recentes"}>
-        {recentes.map(item => {
-          return <Card title={item.data.nome} key={item.data.id} onClick={() => {
-            handleModalObjIndex(item.data.id);
+        {recentes.map((item: any, index) => {
+          return <Card title={item.data.nome} key={`r-${item.id}`} onClick={() => {
+            setModalObjIndex(index);
             handleModalOpen();
           }} />
         })}
       </CardDeck>
       <CardDeck title={"Todos"} hasFilter>
-        {todos.map(item => {
-          return <Card title={item} key={item} />
+        {todos.map((item: any) => {
+          return <Card title={item.data.nome} key={`t-${item.id}`} />
         })}
       </CardDeck>
     </>
