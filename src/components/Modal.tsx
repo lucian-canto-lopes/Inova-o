@@ -221,12 +221,10 @@ export function Modal({
 
     const formData = new FormData(formRef.current);
     const body = Object.fromEntries(formData.entries());
-    body.dimensaoId = modalData?.dimensaoId ?? null;
-    console.log(body)
 
     try {
-      const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}`, {
-        method: "POST",
+      const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}` + (modalData.dimensaoId ? `/${modalData.dimensaoId}` : ''), {
+        method: modalData.dimensaoId ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -241,7 +239,7 @@ export function Modal({
       const result = await response.json();
       console.log("Sucesso: ", result);
     } catch (error) {
-      console.error(error);
+      console.log(`[ERROR]: ${error}`);
     };
     
     try {
