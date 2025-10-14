@@ -11,6 +11,7 @@ async function getDimentions(limit: number, order: ("cres" | "decres" | "data"))
     return console.error("Erro ao pegar dimensões: " + text);
   }
   const data = await res.json();
+  console.log(data)
   return data;
 }
 
@@ -45,7 +46,7 @@ export default function DimensoesPage() {
 
   return (
     <>
-      {isModalOpen && <Modal closeModal={handleModalClose} modalType={recentes[modalObjIndex]?.tipo} modalData={recentes[modalObjIndex].data} value={content} onChange={setContent} />}
+      {isModalOpen && <Modal closeModal={handleModalClose} modalType={recentes[modalObjIndex]?.tipo} modalData={recentes[modalObjIndex].data} modalContent={recentes[modalObjIndex].conteudo} />}
       <CardDeck title={"Recentes"}>
         {recentes.map((item: any, index) => {
           return <Card title={item.data.nome} key={`r-${item.id}`} onClick={() => {

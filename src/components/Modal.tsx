@@ -1,9 +1,11 @@
 import { FaPlus, FaX } from 'react-icons/fa6';
 import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import '../css/Modal.css';
-import { TextEditor } from "./TextEditor";
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
+
+const TextEditor = dynamic(() => import("./TextEditor"), { ssr: false })
 
 enum DimensaoEnum {
   disciplinas = "Disciplinas",
@@ -18,8 +20,7 @@ interface Props {
   closeModal: () => void;
   modalType: DimensaoTipo;
   modalData: any,
-  value: string;
-  onChange: (value: string) => void;
+  modalContent: any,
 }
 
 const formatCurrency = (input: HTMLInputElement) => {
@@ -40,8 +41,7 @@ export function Modal({
   closeModal,
   modalType,
   modalData,
-  value,
-  onChange,
+  modalContent,
 }: Props) {
 
   const renderSwitch = (modalType: DimensaoTipo) => {
@@ -213,6 +213,8 @@ export function Modal({
     }
   }
 
+  const [textValue, setTextValue] = useState<string>(modalContent ?? "");
+
   const router = useRouter();
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -221,6 +223,7 @@ export function Modal({
 
     const formData = new FormData(formRef.current);
     const body = Object.fromEntries(formData.entries());
+    body["conteudo"] = textValue;
 
     try {
       const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}` + (modalData.dimensaoId ? `/${modalData.dimensaoId}` : ''), {
@@ -372,7 +375,7 @@ export function Modal({
               </div>
             </div>
           </div>
-          <TextEditor value={value} onChange={onChange} />
+          <TextEditor value={textValue} onChange={(value) => setTextValue(value)} />
         </section>
       </div>
     </section>

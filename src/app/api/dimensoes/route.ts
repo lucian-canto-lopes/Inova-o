@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
     id: q.id,
     tipo: q.tipo,
     data: q.Disciplina || q.Evento || q.Motor || q.Negocio,
+    conteudo: q.conteudo
   }));
 
   const sortedResponse = response.sort((a, b) => {

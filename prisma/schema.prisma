@@ -17,6 +17,7 @@ datasource db {
 model Dimensao {
   id                 Int                 @id @default(autoincrement())
   tipo               String
+  conteudo           String?
   Dimensao_DimensaoA Dimensao_Dimensao[] @relation("DimensaoA")
   Dimensao_DimensaoB Dimensao_Dimensao[] @relation("DimensaoB")
   Disciplina         Disciplina?

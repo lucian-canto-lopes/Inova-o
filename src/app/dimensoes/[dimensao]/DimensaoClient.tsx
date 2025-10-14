@@ -19,13 +19,12 @@ export function DimensaoClientHeader({
   dimensao,
 }: HeaderProps) {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [textContent, setTextContent] = useState("");
 
   return (
     <>
       <button onClick={() => { setModalOpen(true) }}>Adicionar <FaPlus /></button>
       {isModalOpen && (
-        <Modal closeModal={() => setModalOpen(false)} modalType={dimensao} modalData={{}} value={textContent} onChange={setTextContent} />
+        <Modal closeModal={() => setModalOpen(false)} modalType={dimensao} modalData={{}} modalContent={""} />
       )}
     </>
   )
@@ -37,7 +36,6 @@ export function DimesaoClientCardDeck({
   cards,
 }: CardDeckProps) {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [textContent, setTextContent] = useState("");
   const [modalData, setModalData] = useState<any>(null);
 
   // Pega os dados do card selecionado
@@ -47,7 +45,7 @@ export function DimesaoClientCardDeck({
     });
     if (!response.ok) return console.log(`Erro ao obter dados de ${dimensao} id ${id}`);
     const result = await response.json();
-    return setModalData(result.data);
+    return setModalData(result);
   }
 
   return (
@@ -56,12 +54,13 @@ export function DimesaoClientCardDeck({
         {cards?.map((card: any) => {
           return <Card title={card.nome} key={card.dimensaoId} onClick={async () => {
             await getCardData(card.dimensaoId);
+            console.log(modalData)
             setModalOpen(true);
           }}/>
         })}
       </CardDeck>
       {isModalOpen && (
-        <Modal closeModal={() => setModalOpen(false)} modalType={dimensao} modalData={modalData} value={textContent} onChange={setTextContent} />
+        <Modal closeModal={() => setModalOpen(false)} modalType={dimensao} modalData={modalData.data} modalContent={modalData.conteudo} />
       )}
     </>
   )
