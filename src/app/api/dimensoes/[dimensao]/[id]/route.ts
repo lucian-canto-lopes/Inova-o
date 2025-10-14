@@ -27,8 +27,9 @@ export async function GET(
 
   const formattedQ = {
     data: rawQ.Disciplina ?? rawQ.Evento ?? rawQ.Motor ?? rawQ.Negocio ?? null,
+    conteudo: rawQ.conteudo,
   };
-
+  console.log(formattedQ)
   return NextResponse.json(formattedQ, { status: 200 });
 }
 
@@ -38,6 +39,15 @@ export async function PUT(
 ) {
   const { dimensao, id } = await params;
   const body = await request.json();
+
+  await prisma.dimensao.update({
+    where: {
+      id: parseInt(id),
+    },
+    data: {
+      conteudo: body.conteudo,
+    }
+  })
 
   switch (dimensao) {
     case "disciplinas":

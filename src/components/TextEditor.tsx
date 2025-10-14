@@ -1,36 +1,81 @@
 'use client';
 
-import dynamic from "next/dynamic";
+import { useEffect, useRef } from "react";
+import { Quill } from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 
-// Importa dinamicamente o ReactQuill para evitar problemas com SSR
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
-
 interface Props {
-  value: string;
+  value: string,
   onChange: (value: string) => void;
 }
 
-export function TextEditor({
-  value,
+export default function TextEditor({
+  value = "",
   onChange
 }: Props) {
-  const modules = {
-    toolbar: [
-      [{ 'header': [1, 2, false]}],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "image"],
-      ["clean"],
-    ],
-  };
+  const editorRef = useRef<HTMLDivElement>(null);
+  const quillRef = useRef<Quill | null>(null);
+
+  useEffect(() => {
+    if (editorRef.current && !quillRef.current) {
+      const quill = new Quill(editorRef.current, {
+        theme: "snow",
+        modules: {
+          toolbar: {
+            container: [
+              [{ 'header': [1, 2, false] }],
+              ["bold", "italic", "underline", "strike", "blockquote"],
+              [{ list: "ordered" }, { list: "bullet" }],
+              ["link", "image"],
+              ["clean"],
+            ],
+            handlers: {
+              image: imageHandler,
+            }
+          },
+        },
+      });
+
+      quillRef.current = quill;
+
+      quill.on("text-change", () => {
+        onChange(quill.root.innerHTML);
+      });
+
+      if (value) {
+        quill.root.innerHTML = value;
+      }
+      
+      function imageHandler() {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.click();
+        
+        input.onchange = async () => {
+          const file = input.files?.[0];
+          if (!file) return;
+          
+          const formData = new FormData();
+          formData.append("file", file);
+          
+          const res = await fetch("api/upload", {
+            method: "POST",
+            body: formData,
+          });
+          if (!res.ok) return console.error("Erro ao enviar imagem");
+          
+          const data = await res.json();
+          const range = quill.getSelection(true);
+          quill.insertEmbed(range.index, "image", data.url);
+        };
+      }
+    }
+  }, [value, onChange]);
 
   return (
-    <ReactQuill
-      value={value}
-      onChange={onChange}
-      modules={modules}
-      theme="snow"
-    />
+    <div className="quill">
+      <div ref={editorRef} />
+    </div>
   );
 }

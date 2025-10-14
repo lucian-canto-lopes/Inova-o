@@ -74,7 +74,8 @@ export async function POST(
           alunos_aprovados: toArray(body.alunos_aprovados),
           dimensao: {
             create: {
-              tipo: "disciplinas"
+              tipo: "disciplinas",
+              conteudo: body.conteudo
             }
           },
         },
@@ -102,7 +103,8 @@ export async function POST(
           parceiros: toArray(body.parceiros),
           dimensao: {
             create: {
-              tipo: "eventos"
+              tipo: "eventos",
+              conteudo: body.conteudo
             }
           }
         },
@@ -128,7 +130,8 @@ export async function POST(
           projetos: toArray(body.projetos),
           dimensao: {
             create: {
-              tipo: "motores"
+              tipo: "motores",
+              conteudo: body.conteudo,
             }
           }
         },
@@ -151,7 +154,8 @@ export async function POST(
           porte: body.porte,
           dimensao: {
             create: {
-              tipo: "negocios"
+              tipo: "negocios",
+              conteudo: body.conteudo,
             }
           }
         },
