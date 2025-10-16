@@ -36,19 +36,19 @@ export async function GET(
   switch (dimensao) {
     case "disciplinas":
       data = await prisma.disciplina.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
-      return NextResponse.json({ data: data }, { status: 200 });
+      return NextResponse.json(data, { status: 200 });
 
     case "eventos":
       data = await prisma.evento.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
-      return NextResponse.json({ data: data }, { status: 200 });
+      return NextResponse.json(data, { status: 200 });
 
     case "motores":
       data = await prisma.motor.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
-      return NextResponse.json({ data: data }, { status: 200 });
+      return NextResponse.json(data, { status: 200 });
 
     case "negocios":
       data = await prisma.negocio.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
-      return NextResponse.json({ data: data }, { status: 200 });
+      return NextResponse.json(data, { status: 200 });
 
     default:
       return NextResponse.json({ message: "Bad Request", data: {} }, { status: 400 });

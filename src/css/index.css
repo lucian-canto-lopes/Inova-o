@@ -30,7 +30,7 @@ section.workspace {
   width: 100%;
   padding: 20px 80px;
 
-  span {
+  &>span {
     color: var(--dark-green);
     font-size: 1.1rem;
 

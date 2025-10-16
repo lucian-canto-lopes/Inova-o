@@ -1,8 +1,7 @@
 "use client"
 import { useEffect, useState } from "react";
 import CardDeck from "../../components/CardDeck";
-import Card from "../../components/Card";
-import { Modal, DimensaoTipo } from "../../components/Modal";
+import { Modal, DimensaoTipo } from "@/src/components/Modal";
 
 async function getDimentions(limit: number, order: ("cres" | "decres" | "data")) {
   const res = await fetch(`/api/dimensoes?limit=${limit}&order=${order}`);
@@ -11,26 +10,18 @@ async function getDimentions(limit: number, order: ("cres" | "decres" | "data"))
     return console.error("Erro ao pegar dimensões: " + text);
   }
   const data = await res.json();
-  console.log(data)
   return data;
 }
 
 export default function DimensoesPage() {
   // Modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
-  }
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  }
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalData, setModalData] = useState<any>({});
 
-  const [modalObjIndex, setModalObjIndex] = useState(-1);
-  const handleModalObjIndex = (index: number) => {
-    setModalObjIndex(index);
+  const openModal = (dimensao: any) => {
+    setModalOpen(true);
+    setModalData(dimensao);
   }
-
-  const [content, setContent] = useState("");
 
   const [recentes, setRecentes] = useState<any[]>([]);
   const [todos, setTodos] = useState<any[]>([]);
@@ -46,20 +37,11 @@ export default function DimensoesPage() {
 
   return (
     <>
-      {isModalOpen && <Modal closeModal={handleModalClose} modalType={recentes[modalObjIndex]?.tipo} modalData={recentes[modalObjIndex].data} modalContent={recentes[modalObjIndex].conteudo} />}
-      <CardDeck title={"Recentes"}>
-        {recentes.map((item: any, index) => {
-          return <Card title={item.data.nome} key={`r-${item.id}`} onClick={() => {
-            setModalObjIndex(index);
-            handleModalOpen();
-          }} />
-        })}
-      </CardDeck>
-      <CardDeck title={"Todos"} hasFilter>
-        {todos.map((item: any) => {
-          return <Card title={item.data.nome} key={`t-${item.id}`} />
-        })}
-      </CardDeck>
+      <CardDeck title={"Recentes"} data={recentes} onCardClick={openModal} />
+      <CardDeck title={"Todos"} hasFilter data={todos} onCardClick={openModal} />
+      {isModalOpen && (
+        <Modal modalData={modalData?.data || {}} modalContent={modalData?.conteudo || ""} modalType={modalData?.tipo || "disciplinas"} closeModal={() => setModalOpen(false)} />
+      )}
     </>
   );
 }

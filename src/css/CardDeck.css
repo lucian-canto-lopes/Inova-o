@@ -8,16 +8,52 @@
     font-size: 1.5rem;
     align-items: center;
     color: var(--dark-green);
+    position: relative;
 
     & svg {
       cursor: pointer;
     }
   }
 
-  & > div {
-    display: grid;
-    grid-template-columns: repeat(4, 300px);
-    justify-content: space-between;
+  &>div {
+    display: flex;
+    column-gap: 60px;
     row-gap: 40px;
+    flex-wrap: wrap;
+  }
+}
+
+.filter-box {
+  background-color: var(--dark-green);
+  color: white;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  row-gap: 8px;
+  min-width: 200px;
+
+  &>div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &>.filter-sort {
+      background-color: var(--light-green);
+      border-radius: 5px;
+      padding: 3px 6px;
+    }
+
+    &>span {
+      display: flex;
+
+      & svg {
+        margin-right: 5px;
+      }
+    }
   }
 }

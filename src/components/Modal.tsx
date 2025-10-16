@@ -1,3 +1,4 @@
+'use client'
 import { FaPlus, FaX } from 'react-icons/fa6';
 import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import '../css/Modal.css';
@@ -7,14 +8,13 @@ import dynamic from 'next/dynamic';
 
 const TextEditor = dynamic(() => import("./TextEditor"), { ssr: false })
 
-enum DimensaoEnum {
+export enum DimensaoEnum {
   disciplinas = "Disciplinas",
   eventos = "Eventos",
   motores = "Motores",
   negocios = "Negócios"
 }
 export type DimensaoTipo = keyof typeof DimensaoEnum;
-const dimensoesTipos = Object.keys(DimensaoEnum) as DimensaoTipo[];
 
 interface Props {
   closeModal: () => void;
@@ -43,7 +43,6 @@ export function Modal({
   modalData,
   modalContent,
 }: Props) {
-
   const renderSwitch = (modalType: DimensaoTipo) => {
     switch (modalType) {
       case 'disciplinas':
@@ -261,7 +260,6 @@ export function Modal({
       }
       
       const result = await response.json();
-      console.log(result);
     } catch (error) {
       console.error(error);
     }
