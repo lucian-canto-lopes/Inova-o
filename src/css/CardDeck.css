@@ -34,13 +34,21 @@
   display: flex;
   flex-direction: column;
   padding: 10px;
-  row-gap: 8px;
+  row-gap: 4px;
   min-width: 200px;
 
   &>div {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px;
+
+    &:hover {
+      background-color: var(--light-green);
+      color: black;
+    }
 
     &>.filter-sort {
       background-color: var(--light-green);
