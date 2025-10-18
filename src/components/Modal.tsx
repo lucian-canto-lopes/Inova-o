@@ -243,7 +243,7 @@ export function Modal({
     } catch (error) {
       console.log(`[ERROR]: ${error}`);
     };
-    
+
     try {
       const relationsIds = relations.relations.map((r: any) => parseInt(r.id));
       const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${modalData.dimensaoId}/relations`, {
@@ -253,17 +253,17 @@ export function Modal({
         },
         body: JSON.stringify({ relations: relationsIds }),
       });
-      
+
       if (!response.ok) {
         const text = await response.text();
         throw new Error(`Erro ${response.status}: ${text}`);
       }
-      
+
       const result = await response.json();
     } catch (error) {
       console.error(error);
     }
-    
+
     closeModal();
     router.refresh();
   }
@@ -297,8 +297,9 @@ export function Modal({
     router.refresh();
   }
 
-  const [relations, setRelations] = useState<any>(null);
+  const [relations, setRelations] = useState<any>([]);
   const [isRelationCLOpen, setRelationCLOpen] = useState(false);
+  const [filteredRelations, setFilteredRelations] = useState<any>([]);
 
   const fetchRelations = async () => {
     if (!modalData?.dimensaoId) return;
@@ -310,6 +311,8 @@ export function Modal({
       if (!res.ok) throw new Error("Erro ao buscar relações");
       const data = await res.json();
       setRelations(data || []);
+      setFilteredRelations(data || [])
+      console.log(data)
     } catch (err) {
       console.error(err);
     }
@@ -337,32 +340,36 @@ export function Modal({
               <div className="relacoes-div">
                 <span>Relações</span>
                 <div>
-                  {relations?.relations.map((relation: any) => {
+                  {relations.filter((r: any) => r.related).map((relation: any) => {
                     return <div className="relacoes-item" key={`relation-${relation.id}`}>{relation.nome}</div>
                   })}
                   <div style={{ position: "relative" }}>
                     <section onClick={!isRelationCLOpen ? () => setRelationCLOpen(true) : undefined} className={isRelationCLOpen ? "relation-section" : ""}>
                       <div>
-                        <input type="text" name="search-relation" id="search-relation" placeholder='Procurar...' />
+                        <input type="text" name="search-relation" id="search-relation" placeholder='Procurar...' autoComplete='off' onChange={(e) => {
+                          // filtro por nome
+                          const filtered = relations.filter((r: any) => r.nome.toLowerCase().includes(e.target.value.toLowerCase()));
+                          setFilteredRelations(filtered);
+                        }} />
                         <FaPlus onClick={isRelationCLOpen ? () => setRelationCLOpen(false) : undefined} />
                       </div>
                       {isRelationCLOpen && (
                         <ul>
-                          {relations?.available.map((relation: any) => {
-                            const isChecked = relations.relations.some((r: any) => r.id === relation.id);
+                          {filteredRelations.map((relation: any) => {
+                            // Se há relações, o checkbox fica marcado
+                            return <li key={`li-${relation.id}`}><input type="checkbox" id={`cb-${relation.id}`} checked={relation.related} onChange={(e) => {
+                              const isChecked = e.target.checked;
+                              
+                              setFilteredRelations((prev: any) => {
+                                const updated = prev.map((r: any) => r.id === relation.id ? { ...r, related: isChecked } : r);
 
-                            return <li key={`li-${relation.id}`}><input type="checkbox" id={`cb-${relation.id}`} checked={isChecked} onChange={(e) => {
-                              if (e.target.checked) {
-                                setRelations((prev: any) => ({
-                                  ...prev,
-                                  relations: [...prev.relations, { id: relation.id, nome: relation.nome }],
-                                }));
-                              } else {
-                                setRelations((prev: any) => ({
-                                  ...prev,
-                                  relations: prev.relations.filter((r: any) => r.id !== relation.id),
-                                }));
-                              }
+                                return updated;
+                              })
+                              setRelations((prev: any) => {
+                                const updated = prev.map((r: any) => r.id === relation.id ? { ...r, related: isChecked } : r);
+
+                                return updated;
+                              })
                             }} /><label htmlFor={`cb-${relation.id}`}>{relation.nome}</label></li>
                           })}
                         </ul>
