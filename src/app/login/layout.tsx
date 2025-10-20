@@ -1,9 +1,9 @@
-export default function Layout({ children }: { children: React.ReactNode }) {
+import "../globals.css";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html>
-      <body>
-        { children }
-      </body>
+    <html lang="pt-br">
+      <body>{children}</body>
     </html>
   );
 }
