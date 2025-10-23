@@ -10,8 +10,13 @@ export async function GET(request: NextRequest) {
 
   const queue = await prisma.dimensao.findMany({
     take: parseInt(limit) > 0 ? parseInt(limit) : undefined,
-    include: {
-      Disciplina: true, Evento: true, Motor: true, Negocio: true,
+    select: {
+      id: true,
+      tipo: true,
+      Disciplina: { select: { dimensaoId: true, nome: true } },
+      Evento: { select: { dimensaoId: true, nome: true } },
+      Motor: { select: { dimensaoId: true, nome: true } },
+      Negocio: { select: { dimensaoId: true, nome: true } }
     }
   });
 
@@ -19,7 +24,6 @@ export async function GET(request: NextRequest) {
     id: q.id,
     tipo: q.tipo,
     data: q.Disciplina || q.Evento || q.Motor || q.Negocio,
-    conteudo: q.conteudo
   }));
 
   const sortedResponse = response.sort((a, b) => {
