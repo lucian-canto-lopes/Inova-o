@@ -21,7 +21,8 @@ async function getDimensaoData(dimensao: DimensaoTipo) {
       data: []
     };
   };
-  return response.json();
+  const data = await response.json();
+  return data
 }
 
 export default async function DimensaoPage({
@@ -43,7 +44,7 @@ export default async function DimensaoPage({
         <div>{DimensaoEnum[dimensao]}</div>
         <DimensaoClientHeader dimensao={dimensao} />
       </header>
-      <DimesaoClientCardDeck title="Recentes" cards={data.data} dimensao={dimensao} />
+      <DimesaoClientCardDeck title="Recentes" data={data} dimensao={dimensao} />
     </>
   );
 }

@@ -28,8 +28,8 @@ export async function GET(
   const formattedQ = {
     data: rawQ.Disciplina ?? rawQ.Evento ?? rawQ.Motor ?? rawQ.Negocio ?? null,
     conteudo: rawQ.conteudo,
+    tipo: rawQ.tipo,
   };
-  console.log(formattedQ)
   return NextResponse.json(formattedQ, { status: 200 });
 }
 
