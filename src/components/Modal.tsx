@@ -1,10 +1,11 @@
 'use client'
-import { FaPlus, FaX } from 'react-icons/fa6';
+import { FaList, FaPlus, FaX } from 'react-icons/fa6';
 import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import '../css/Modal.css';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import SubModal from './SubModal';
 
 const TextEditor = dynamic(() => import("./TextEditor"), { ssr: false })
 
@@ -48,41 +49,44 @@ export function Modal({
       case 'disciplinas':
         return (
           <>
-            <div className="input-box">
-              <label htmlFor="d-nome">Nome</label>
-              <input autoComplete='off' type="text" id="d-nome" name='nome' placeholder='Nome da disciplina' defaultValue={modalData?.nome || ""} />
-            </div>
-            <div className="input-box">
-              <label htmlFor="d-coordenador">Coordenador</label>
-              <input autoComplete='off' type="text" id="d-coordenador" name='coordenador' placeholder='Coordenador da Disciplina' defaultValue={modalData?.coordenador || ""} />
-            </div>
-            <div className="columns">
+            <form ref={formRef} className='modal-form'>
               <div className="input-box">
-                <label htmlFor="d-semestre">Semestre</label>
-                <input autoComplete='off' type="text" id="d-semestre" name='semestre' placeholder='2025.1' defaultValue={modalData?.semestre || ""} />
-              </div><div className="input-box">
-                <label htmlFor="d-codigo">Código</label>
-                <input autoComplete='off' type="text" id="d-codigo" name='codigo' placeholder='Código da disciplina' defaultValue={modalData?.codigo || ""} />
+                <label htmlFor="d-nome">Nome</label>
+                <input autoComplete='off' type="text" id="d-nome" name='nome' placeholder='Nome da disciplina' defaultValue={modalData?.nome || ""} />
               </div>
-            </div>
-            <div className="columns">
               <div className="input-box">
-                <label htmlFor="d-a-matriculados">Alunos Matriculados</label>
-                <input autoComplete='off' type="text" id="d-a-matriculados" name='alunos_matriculados' defaultValue={modalData?.alunos_matriculados?.map((aluno: any) => {
-                  return ` ${aluno}`
-                })} />
-              </div><div className="input-box">
-                <label htmlFor="d-a-aprovados">Alunos Aprovados</label>
-                <input autoComplete='off' type="text" id="d-a-aprovados" name='alunos_aprovados' defaultValue={modalData?.alunos_aprovados?.map((aluno: any) => {
-                  return ` ${aluno}`
-                })} />
+                <label htmlFor="d-coordenador">Coordenador</label>
+                <input autoComplete='off' type="text" id="d-coordenador" name='coordenador' placeholder='Coordenador da Disciplina' defaultValue={modalData?.coordenador || ""} />
               </div>
-            </div>
+              <div className="columns">
+                <div className="input-box">
+                  <label htmlFor="d-semestre">Semestre</label>
+                  <input autoComplete='off' type="text" id="d-semestre" name='semestre' placeholder='2025.1' defaultValue={modalData?.semestre || ""} />
+                </div><div className="input-box">
+                  <label htmlFor="d-codigo">Código</label>
+                  <input autoComplete='off' type="text" id="d-codigo" name='codigo' placeholder='Código da disciplina' defaultValue={modalData?.codigo || ""} />
+                </div>
+              </div>
+              <div className="columns">
+                <div className="input-box">
+                  <label htmlFor="d-a-matriculados">Alunos Matriculados</label>
+                  <input autoComplete='off' type="text" id="d-a-matriculados" name='alunos_matriculados' defaultValue={modalData?.alunos_matriculados?.map((aluno: any) => {
+                    return ` ${aluno}`
+                  })} />
+                </div><div className="input-box">
+                  <label htmlFor="d-a-aprovados">Alunos Aprovados</label>
+                  <input autoComplete='off' type="text" id="d-a-aprovados" name='alunos_aprovados' defaultValue={modalData?.alunos_aprovados?.map((aluno: any) => {
+                    return ` ${aluno}`
+                  })} />
+                </div>
+              </div>
+            </form>
+            <button onClick={() => setSubModalOpen(true)}><span>Editais</span><FaList /></button>
           </>
         )
       case "eventos":
         return (
-          <>
+          <form ref={formRef} className='modal-form'>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
               <input autoComplete='off' type="text" id="d-nome" name='nome' placeholder='Nome do evento' defaultValue={modalData?.nome || ""} />
@@ -129,11 +133,11 @@ export function Modal({
               <label htmlFor="d-parceiros">Parceiros</label>
               <input autoComplete='off' type="text" id="d-parceiros" name='parceiros' placeholder='Contribuidores do evento' defaultValue={modalData?.parceiros?.map((parceiro: any) => ` ${parceiro}`)} />
             </div>
-          </>
+          </form>
         )
       case "negocios":
         return (
-          <>
+          <form ref={formRef} className='modal-form'>
             <div className="input-box">
               <label htmlFor="d-nome">Nome</label>
               <input autoComplete='off' type="text" id="d-nome" name='nome' placeholder='Nome do nogócio' defaultValue={modalData?.nome || ""} />
@@ -160,51 +164,54 @@ export function Modal({
                 <input autoComplete='off' type="text" id="d-porte" name='porte' placeholder='Ex.: MEI | ME | EPP | etc.' defaultValue={modalData?.porte || ""} />
               </div>
             </div>
-          </>
+          </form>
         )
       case "motores":
         return (
           <>
-            <div className="input-box">
-              <label htmlFor="d-nome">Nome</label>
-              <input autoComplete='off' type="text" id="d-nome" name='nome' placeholder='Nome do motor' defaultValue={modalData?.nome || ""} />
-            </div>
-            <div className="input-box">
-              <label htmlFor="d-descricao">Descrição</label>
-              <input autoComplete='off' type="text" id="d-descricao" name='descricao' placeholder='Descrição do motor' defaultValue={modalData?.descricao || ""} />
-            </div>
-            <div className="input-box">
-              <label htmlFor="d-projetos">Projetos Executados</label>
-              <input autoComplete='off' type="text" id="d-projetos" name='projetos' placeholder='Projetos executados pelo motor' defaultValue={modalData?.projetos?.map((projeto: any) => ` ${projeto}`)} />
-            </div>
-            <div className="columns">
+            <form ref={formRef} className='modal-form'>
               <div className="input-box">
-                <label htmlFor="d-motor_tipo">Tipo</label>
-                <input autoComplete='off' type="text" id="d-motor_tipo" name='motor_tipo' placeholder='Tipo do Motor' defaultValue={modalData?.motor_tipo || ""} />
-              </div><div className="input-box">
-                <label htmlFor="d-data_criacao">Data de criação</label>
-                <input autoComplete='off' type="date" id="d-data_criacao" name='data_criacao' placeholder='Data de criação do motor' defaultValue={formatDate(modalData?.data_criacao) || ""} />
+                <label htmlFor="d-nome">Nome</label>
+                <input autoComplete='off' type="text" id="d-nome" name='nome' placeholder='Nome do motor' defaultValue={modalData?.nome || ""} />
               </div>
-            </div>
-            <div className="columns">
               <div className="input-box">
-                <label htmlFor="d-lideres">Lideres</label>
-                <input autoComplete='off' type="text" id="d-lideres" name='lideres' placeholder='Lideres do motor' defaultValue={modalData?.lideres?.map((lider: any) => ` ${lider}`)} />
-              </div><div className="input-box">
-                <label htmlFor="d-equipe">Equipe</label>
-                <input autoComplete='off' type="text" id="d-equipe" name='equipe' placeholder='Equipe participante do motor' defaultValue={modalData?.equipe?.map((membro: any) => ` ${membro}`)} />
+                <label htmlFor="d-descricao">Descrição</label>
+                <input autoComplete='off' type="text" id="d-descricao" name='descricao' placeholder='Descrição do motor' defaultValue={modalData?.descricao || ""} />
               </div>
-            </div>
-            <h3>Financeiro</h3>
-            <div className="columns">
               <div className="input-box">
-                <label htmlFor="d-qtd_empresas_atendidas">№ de empresas atendidas</label>
-                <input autoComplete='off' type="number" id="d-qtd_empresas_atendidas" name='qtd_empresas_atendidas' placeholder='Quantidade de empresas atendidas pelo motor' defaultValue={modalData?.qtd_empresas_atendidas || ""} />
-              </div><div className="input-box">
-                <label htmlFor="d-faturamento">Faturamento total</label>
-                <input autoComplete='off' type="text" id="d-faturamento" name='faturamento' placeholder='Faturamento total do motor' defaultValue={modalData?.faturamento || ""} onChange={(event) => formatCurrency(event.target)} />
+                <label htmlFor="d-projetos">Projetos Executados</label>
+                <input autoComplete='off' type="text" id="d-projetos" name='projetos' placeholder='Projetos executados pelo motor' defaultValue={modalData?.projetos?.map((projeto: any) => ` ${projeto}`)} />
               </div>
-            </div>
+              <div className="columns">
+                <div className="input-box">
+                  <label htmlFor="d-motor_tipo">Tipo</label>
+                  <input autoComplete='off' type="text" id="d-motor_tipo" name='motor_tipo' placeholder='Tipo do Motor' defaultValue={modalData?.motor_tipo || ""} />
+                </div><div className="input-box">
+                  <label htmlFor="d-data_criacao">Data de criação</label>
+                  <input autoComplete='off' type="date" id="d-data_criacao" name='data_criacao' placeholder='Data de criação do motor' defaultValue={formatDate(modalData?.data_criacao) || ""} />
+                </div>
+              </div>
+              <div className="columns">
+                <div className="input-box">
+                  <label htmlFor="d-lideres">Lideres</label>
+                  <input autoComplete='off' type="text" id="d-lideres" name='lideres' placeholder='Lideres do motor' defaultValue={modalData?.lideres?.map((lider: any) => ` ${lider}`)} />
+                </div><div className="input-box">
+                  <label htmlFor="d-equipe">Equipe</label>
+                  <input autoComplete='off' type="text" id="d-equipe" name='equipe' placeholder='Equipe participante do motor' defaultValue={modalData?.equipe?.map((membro: any) => ` ${membro}`)} />
+                </div>
+              </div>
+              <h3>Financeiro</h3>
+              <div className="columns">
+                <div className="input-box">
+                  <label htmlFor="d-qtd_empresas_atendidas">№ de empresas atendidas</label>
+                  <input autoComplete='off' type="number" id="d-qtd_empresas_atendidas" name='qtd_empresas_atendidas' placeholder='Quantidade de empresas atendidas pelo motor' defaultValue={modalData?.qtd_empresas_atendidas || ""} />
+                </div><div className="input-box">
+                  <label htmlFor="d-faturamento">Faturamento total</label>
+                  <input autoComplete='off' type="text" id="d-faturamento" name='faturamento' placeholder='Faturamento total do motor' defaultValue={modalData?.faturamento || ""} onChange={(event) => formatCurrency(event.target)} />
+                </div>
+              </div>
+            </form>
+            <button onClick={() => setSubModalOpen(true)}><span>Projetos Executados</span><FaList /></button>
           </>
         )
       default:
@@ -212,7 +219,12 @@ export function Modal({
     }
   }
 
+  // Editor de texto
   const [textValue, setTextValue] = useState<string>(modalContent ?? "");
+
+  // Submodal
+  const [isSubModalOpen, setSubModalOpen] = useState<boolean>(false);
+  const [subModalValue, setSubModalValue] = useState<object>({})
 
   const router = useRouter();
 
@@ -334,9 +346,7 @@ export function Modal({
           <div className='left-div'>
             <h2>{`Modal de ${DimensaoEnum[modalType]}`}</h2>
             <div>
-              <form ref={formRef} className='modal-form'>
-                {renderSwitch(modalType)}
-              </form>
+              {renderSwitch(modalType)}
               <div className="relacoes-div">
                 <span>Relações</span>
                 <div>
@@ -359,7 +369,7 @@ export function Modal({
                             // Se há relações, o checkbox fica marcado
                             return <li key={`li-${relation.id}`}><input type="checkbox" id={`cb-${relation.id}`} checked={relation.related} onChange={(e) => {
                               const isChecked = e.target.checked;
-                              
+
                               setFilteredRelations((prev: any) => {
                                 const updated = prev.map((r: any) => r.id === relation.id ? { ...r, related: isChecked } : r);
 
@@ -383,6 +393,9 @@ export function Modal({
           <TextEditor value={textValue} onChange={(value) => setTextValue(value)} />
         </section>
       </div>
+      {isSubModalOpen && (
+        <SubModal dimensao={modalType} closeSubModal={() => setSubModalOpen(false)} setValue={(value: any) => setSubModalValue(value)} />
+      )}
     </section>
   )
 }

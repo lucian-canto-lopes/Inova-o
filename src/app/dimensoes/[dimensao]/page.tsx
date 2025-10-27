@@ -17,9 +17,7 @@ async function getDimensaoData(dimensao: DimensaoTipo) {
   });
   if (!response.ok) {
     console.log("Erro ao buscar dimensões");
-    return {
-      data: []
-    };
+    return [];
   };
   const data = await response.json();
   return data

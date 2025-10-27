@@ -6,7 +6,8 @@
   align-items: center;
   justify-content: center;
   z-index: 1;
-  position: relative;
+  position: absolute;
+  top: 0;
 
   &>div {
     background-color: white;
@@ -31,61 +32,84 @@
     &>div {
       display: flex;
       flex-direction: column;
-      row-gap: 20px;
+      margin-bottom: 20px;
+      overflow-x: hidden;
 
       &>h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
         color: var(--dark-green);
+        margin-bottom: 20px;
+
+        &>span {
+          cursor: pointer;
+
+          &:hover {
+            color: var(--light-green)
+          }
+        }
       }
 
-      &>button {
-        border: none;
-        background-color: var(--dark-green);
-        height: 40px;
-        border-radius: 10px;
+      &>section {
         display: flex;
-        justify-content: space-between;
-        padding: 10px;
-        align-items: center;
-        color: white;
-        font-size: 1.2rem;
-        cursor: pointer;
-        width: 100%;
-      }
+        transition: transform ease-in-out 0.3s;
+        /* transform: translateX(-100%); */
 
-      &>table {
-        border-collapse: collapse;
+        &>div {
+          min-width: 100%;
+          gap: 20px;
+          display: flex;
+          flex-direction: column;
 
-        & th {
-          font-size: 1rem;
-          font-weight: normal;
-          color: var(--light-green);
-        }
+          & button {
+            border: none;
+            background-color: var(--dark-green);
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            align-items: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 100%;
+          }
 
-        & td {
-          font-size: 1rem;
-          padding: 5px;
-          border-bottom: 1px solid var(--dark-green);
-        }
+          & table {
+            border-collapse: collapse;
 
-        & tr {
-          color: var(--dark-green);
-        }
+            & th {
+              font-size: 1rem;
+              font-weight: normal;
+              color: var(--light-green);
+            }
 
-        & tr:nth-child(even) {
-          color: white;
-          background-color: var(--light-green);
-        }
+            & td {
+              font-size: 1rem;
+              padding: 5px;
+              border-bottom: 1px solid var(--dark-green);
+            }
 
-        & th,
-        td {
-          width: fit-content;
-          white-space: nowrap;
-        }
+            & tr {
+              color: var(--dark-green);
+            }
 
-        & th:nth-child(1),
-        td:nth-child(1) {
-          width: 100%;
+            & tr:nth-child(even) {
+              color: white;
+              background-color: var(--light-green);
+            }
+
+            & th,
+            td {
+              width: fit-content;
+              white-space: nowrap;
+            }
+
+            & th:nth-child(1),
+            td:nth-child(1) {
+              width: 100%;
+            }
+          }
         }
       }
     }

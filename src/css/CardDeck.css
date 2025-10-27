@@ -36,7 +36,7 @@
   padding: 10px;
   row-gap: 4px;
   min-width: 200px;
-
+  
   &>div {
     display: flex;
     justify-content: space-between;
