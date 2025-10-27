@@ -3,7 +3,6 @@ import { use, useState } from "react";
 import { Modal, DimensaoTipo } from "@/src/components/Modal";
 import { FaPlus } from "react-icons/fa6";
 import CardDeck from "@/src/components/CardDeck";
-import Card from "@/src/components/Card";
 
 interface HeaderProps {
   dimensao: DimensaoTipo,
@@ -12,7 +11,7 @@ interface HeaderProps {
 interface CardDeckProps {
   title: string,
   dimensao: DimensaoTipo,
-  cards: any[]
+  data: any[],
 }
 
 export function DimensaoClientHeader({
@@ -33,32 +32,21 @@ export function DimensaoClientHeader({
 export function DimesaoClientCardDeck({
   title,
   dimensao,
-  cards,
+  data,
 }: CardDeckProps) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState<any>(null);
 
-  // Pega os dados do card selecionado
-  const getCardData = async (id: number) => {
-    const response = await fetch(`/api/dimensoes/${dimensao}/${id}`, {
-      cache: "no-cache",
-    });
-    if (!response.ok) return console.log(`Erro ao obter dados de ${dimensao} id ${id}`);
-    const result = await response.json();
-    return setModalData(result);
+  const openModal = (resultado: any) => {
+    setModalData(resultado);
+    setModalOpen(true);
   }
 
   return (
     <>
-      <CardDeck title={title} >
-        {cards?.map((card: any) => {
-          return <Card title={card.nome} key={card.dimensaoId} onClick={async () => {
-            await getCardData(card.dimensaoId);
-            console.log(modalData)
-            setModalOpen(true);
-          }}/>
-        })}
-      </CardDeck>
+      <CardDeck title={title} data={data.map((item: any) => {
+        return { id: item.dimensaoId, tipo: dimensao, data: item }
+      })} onCardClick={openModal} />
       {isModalOpen && (
         <Modal closeModal={() => setModalOpen(false)} modalType={dimensao} modalData={modalData.data} modalContent={modalData.conteudo} />
       )}

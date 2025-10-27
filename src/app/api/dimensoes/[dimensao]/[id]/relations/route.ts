@@ -39,13 +39,16 @@ export async function GET(
     ...relationsQ.Dimensao_DimensaoB.map(r => r.dimensaoA),
   ].map(r => ({
     id: r.id,
+    tipo: r.tipo,
     nome: r.Disciplina?.nome || r.Evento?.nome || r.Motor?.nome || r.Negocio?.nome, 
   }));
+
+  const relatedIds = new Set(relations.map(r => r.id));
 
   const available = await prisma.dimensao.findMany({
     where: {
       id: {
-        notIn: [parseInt(id)],
+        notIn: [parseInt(id), ...relatedIds],
       },
     },
     select: {
@@ -62,7 +65,18 @@ export async function GET(
     nome: r.Disciplina?.nome || r.Evento?.nome || r.Motor?.nome || r.Negocio?.nome,
   })));
 
-  return NextResponse.json({ relations, available }, { status: 200 });
+  const formatedRelations = [
+    ...relations.map(r => ({
+      ...r,
+      related: true,
+    })),
+    ...available.map(r => ({
+      ...r,
+      related: false,
+    }))
+  ]
+
+  return NextResponse.json(formatedRelations, { status: 200 });
 }
 
 export async function PUT(
