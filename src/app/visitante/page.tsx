@@ -47,13 +47,20 @@ function LocalNavBar({
         </div>
       </div>
 
-      <div className="shrink-0 w-8 h-8 rounded-full overflow-hidden bg-white/70 ring-1 ring-black/10">
-        <img
-          src="/default-avatar-profile-icon.webp"
-          alt="Ícone de Usuário"
-          className="w-full h-full object-cover"
-        />
-      </div>
+      <Link
+        href="/login"  // troque se sua rota de login for diferente
+        aria-label="Ir para login"
+        title="Sair / Login"
+        className="shrink-0 rounded-full focus:outline-none focus:ring-2 focus:ring-black/20"
+      >
+        <div className="w-8 h-8 rounded-full overflow-hidden bg-white/70 ring-1 ring-black/10 hover:ring-2 hover:ring-black/20 transition">
+          <img
+            src="/default-avatar-profile-icon.webp"
+            alt="Ícone de Usuário"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </Link>
     </div>
   );
 }
