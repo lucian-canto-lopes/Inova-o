@@ -1,9 +1,7 @@
-import { PrismaClient } from "@/src/generated/prisma";
+import prisma from "@/lib/prisma";
 import { dimensaoTipo } from "../route";
 import { NextResponse } from "next/server";
 import { toArray, toFloat } from "../route";
-
-const prisma = new PrismaClient();
 
 export async function GET(
   request: Request,

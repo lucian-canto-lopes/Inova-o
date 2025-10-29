@@ -13,7 +13,7 @@ export enum DimensaoEnum {
   disciplinas = "Disciplinas",
   eventos = "Eventos",
   motores = "Motores",
-  negocios = "Negócios"
+  negocios = "Negócios",
 }
 export type DimensaoTipo = keyof typeof DimensaoEnum;
 
@@ -24,7 +24,7 @@ interface Props {
   modalContent: any,
 }
 
-const formatCurrency = (input: HTMLInputElement) => {
+export const formatCurrency = (input: HTMLInputElement) => {
   input.value = input.value.replace(/\D/g, "");
   if (input.value.length < 3) {
     input.value = "00" + input.value;
@@ -33,7 +33,7 @@ const formatCurrency = (input: HTMLInputElement) => {
   if (input.value.startsWith("0") && input.value.length > 4) input.value = input.value.slice(1, input.value.length);
 }
 
-const formatDate = (date_string: string) => {
+export const formatDate = (date_string: string) => {
   if (!date_string) return;
   return date_string.slice(0, 10);
 }
@@ -178,10 +178,7 @@ export function Modal({
                 <label htmlFor="d-descricao">Descrição</label>
                 <input autoComplete='off' type="text" id="d-descricao" name='descricao' placeholder='Descrição do motor' defaultValue={modalData?.descricao || ""} />
               </div>
-              <div className="input-box">
-                <label htmlFor="d-projetos">Projetos Executados</label>
-                <input autoComplete='off' type="text" id="d-projetos" name='projetos' placeholder='Projetos executados pelo motor' defaultValue={modalData?.projetos?.map((projeto: any) => ` ${projeto}`)} />
-              </div>
+              {/* Removi o Input dos Projetos */}
               <div className="columns">
                 <div className="input-box">
                   <label htmlFor="d-motor_tipo">Tipo</label>
@@ -394,7 +391,7 @@ export function Modal({
         </section>
       </div>
       {isSubModalOpen && (
-        <SubModal dimensao={modalType} closeSubModal={() => setSubModalOpen(false)} setValue={(value: any) => setSubModalValue(value)} />
+        <SubModal dimensao={modalType == "disciplinas" ? "disciplinas" : "motores"} closeSubModal={() => setSubModalOpen(false)} setValue={(value: any) => setSubModalValue(value)} />
       )}
     </section>
   )

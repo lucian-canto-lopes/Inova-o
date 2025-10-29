@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@prisma/extension-accelerate": "^2.0.2",
     "next": "15.5.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
@@ -15,12 +16,12 @@
     "react-quill-new": "^3.6.0"
   },
   "devDependencies": {
-    "@prisma/client": "^6.17.1",
+    "@prisma/client": "^6.18.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "prisma": "^6.17.1",
+    "prisma": "^6.18.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

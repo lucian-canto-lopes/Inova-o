@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { FaPlus } from "react-icons/fa6";
-import CursosClient from "./CursosClient";
+import { CursosClientCardDeck, CursosClientSubModal } from "./CursosClient";
 
 export default async function CursosPage({
   params,
@@ -22,9 +21,9 @@ export default async function CursosPage({
       </span>
       <header>
         <div>Cursos</div>
-        <button>Adicionar <FaPlus /></button>
+        <CursosClientSubModal />
       </header>
-      <CursosClient title="Todos" data={[]} />
+      <CursosClientCardDeck title="Todos" data={[]} />
     </>
   )
 }

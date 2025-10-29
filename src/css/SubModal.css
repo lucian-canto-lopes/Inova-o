@@ -8,6 +8,7 @@
   z-index: 1;
   position: absolute;
   top: 0;
+  left: 0;
 
   &>div {
     background-color: white;
@@ -47,6 +48,12 @@
             color: var(--light-green)
           }
         }
+      }
+
+      &>form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
       }
 
       &>section {
