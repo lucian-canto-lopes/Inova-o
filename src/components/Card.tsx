@@ -12,7 +12,7 @@ function Card({
   onClick
 }: Props) {
   const getDimensaoData = async () => {
-    const response = await fetch(`http://localhost:3000/api/dimensoes/${data.tipo}/${data.id}`);
+    const response = await fetch(`http://localhost:3000/api/dimensoes/` + (data.tipo === "cursos" ? `disciplinas/${data.id}/cursos` :`${data.tipo}/${data.id}`));
     if (!response.ok) return {};
     const dimensaoData = await response.json();
     return dimensaoData;

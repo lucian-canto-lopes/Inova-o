@@ -14,6 +14,7 @@ export enum DimensaoEnum {
   eventos = "Eventos",
   motores = "Motores",
   negocios = "Negócios",
+  cursos = "Cursos",
 }
 export type DimensaoTipo = keyof typeof DimensaoEnum;
 
@@ -70,14 +71,10 @@ export function Modal({
               <div className="columns">
                 <div className="input-box">
                   <label htmlFor="d-a-matriculados">Alunos Matriculados</label>
-                  <input autoComplete='off' type="text" id="d-a-matriculados" name='alunos_matriculados' defaultValue={modalData?.alunos_matriculados?.map((aluno: any) => {
-                    return ` ${aluno}`
-                  })} />
+                  <input autoComplete='off' type="text" id="d-a-matriculados" name='alunos_matriculados' defaultValue={modalData?.alunos_matriculados?.join(", ")} />
                 </div><div className="input-box">
                   <label htmlFor="d-a-aprovados">Alunos Aprovados</label>
-                  <input autoComplete='off' type="text" id="d-a-aprovados" name='alunos_aprovados' defaultValue={modalData?.alunos_aprovados?.map((aluno: any) => {
-                    return ` ${aluno}`
-                  })} />
+                  <input autoComplete='off' type="text" id="d-a-aprovados" name='alunos_aprovados' defaultValue={modalData?.alunos_aprovados?.join(", ")} />
                 </div>
               </div>
             </form>
@@ -115,7 +112,7 @@ export function Modal({
             </div>
             <div className="input-box">
               <label htmlFor="d-publico_participante">Público Participante</label>
-              <input autoComplete='off' type="text" id="d-publico_participante" name='publico_participante' placeholder='Pessoas envolvidas no evento' defaultValue={modalData?.publico_participante?.map((publico: any) => ` ${publico}`)} />
+              <input autoComplete='off' type="text" id="d-publico_participante" name='publico_participante' placeholder='Pessoas envolvidas no evento' defaultValue={modalData?.publico_participante?.join(", ")} />
             </div>
             <div className="input-box">
               <label htmlFor="d-qtd_publico">Quandidade de público</label>
@@ -123,15 +120,15 @@ export function Modal({
             </div>
             <div className="input-box">
               <label htmlFor="d-equipe">Equipe de organização</label>
-              <input autoComplete='off' type="text" id="d-equipe" name='equipe' placeholder='Equipe de organização do evento' defaultValue={modalData?.equipe?.map((membro: any) => ` ${membro}`)} />
+              <input autoComplete='off' type="text" id="d-equipe" name='equipe' placeholder='Equipe de organização do evento' defaultValue={modalData?.equipe?.join(", ")} />
             </div>
             <div className="input-box">
               <label htmlFor="d-coordenadores">Coordenadores</label>
-              <input autoComplete='off' type="text" id="d-coordenadores" name='coordenadores' placeholder='Coordenadores do evento' defaultValue={modalData?.coordenadores?.map((coordenador: any) => ` ${coordenador}`)} />
+              <input autoComplete='off' type="text" id="d-coordenadores" name='coordenadores' placeholder='Coordenadores do evento' defaultValue={modalData?.coordenadores?.join(", ")} />
             </div>
             <div className="input-box">
               <label htmlFor="d-parceiros">Parceiros</label>
-              <input autoComplete='off' type="text" id="d-parceiros" name='parceiros' placeholder='Contribuidores do evento' defaultValue={modalData?.parceiros?.map((parceiro: any) => ` ${parceiro}`)} />
+              <input autoComplete='off' type="text" id="d-parceiros" name='parceiros' placeholder='Contribuidores do evento' defaultValue={modalData?.parceiros?.join(", ")} />
             </div>
           </form>
         )
@@ -158,7 +155,7 @@ export function Modal({
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="d-fundadores">Fundadores</label>
-                <input autoComplete='off' type="text" id="d-fundadores" name='fundadores' placeholder='Fundadores do nogócio' defaultValue={modalData?.fundadores?.map((fundador: any) => ` ${fundador}`)} />
+                <input autoComplete='off' type="text" id="d-fundadores" name='fundadores' placeholder='Fundadores do nogócio' defaultValue={modalData?.fundadores?.join(", ")} />
               </div><div className="input-box">
                 <label htmlFor="d-porte">Porte do nogócio</label>
                 <input autoComplete='off' type="text" id="d-porte" name='porte' placeholder='Ex.: MEI | ME | EPP | etc.' defaultValue={modalData?.porte || ""} />
@@ -191,10 +188,10 @@ export function Modal({
               <div className="columns">
                 <div className="input-box">
                   <label htmlFor="d-lideres">Lideres</label>
-                  <input autoComplete='off' type="text" id="d-lideres" name='lideres' placeholder='Lideres do motor' defaultValue={modalData?.lideres?.map((lider: any) => ` ${lider}`)} />
+                  <input autoComplete='off' type="text" id="d-lideres" name='lideres' placeholder='Lideres do motor' defaultValue={modalData?.lideres?.join(", ")} />
                 </div><div className="input-box">
                   <label htmlFor="d-equipe">Equipe</label>
-                  <input autoComplete='off' type="text" id="d-equipe" name='equipe' placeholder='Equipe participante do motor' defaultValue={modalData?.equipe?.map((membro: any) => ` ${membro}`)} />
+                  <input autoComplete='off' type="text" id="d-equipe" name='equipe' placeholder='Equipe participante do motor' defaultValue={modalData?.equipe?.join(", ")} />
                 </div>
               </div>
               <h3>Financeiro</h3>
@@ -391,7 +388,8 @@ export function Modal({
         </section>
       </div>
       {isSubModalOpen && (
-        <SubModal dimensao={modalType == "disciplinas" ? "disciplinas" : "motores"} closeSubModal={() => setSubModalOpen(false)} setValue={(value: any) => setSubModalValue(value)} />
+        // setValue={(value: any) => setSubModalValue(value)}
+        <SubModal dimensao={modalType == "disciplinas" ? "disciplinas" : "motores"} closeSubModal={() => setSubModalOpen(false)} data={{}} />
       )}
     </section>
   )

@@ -5,20 +5,25 @@ import { formatCurrency } from './Modal';
 import "../css/SubModal.css"
 import { useRef, useState } from 'react';
 import { LuImagePlus } from 'react-icons/lu';
+import { useRouter } from 'next/navigation';
 
 type SubModalTypes = "disciplinas" | "motores" | "cursos"
 
 interface Props {
-  setValue: (value: any) => void,
+  // setValue: (value: any) => void,
   closeSubModal: () => void,
-  dimensao: SubModalTypes
+  dimensao: SubModalTypes,
+  data: any,
 }
 
 export default function SubModal({
-  setValue,
+  // setValue, // Em algum momento eu adicionei esse parametro pensando que ele seria importante, não lembro o porque, porém
   closeSubModal,
   dimensao,
+  data,
 }: Props) {
+  const router = useRouter();
+
   const [isAdd, setIsAdd] = useState<boolean>(false);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -155,33 +160,50 @@ export default function SubModal({
       break;
 
     case "cursos":
-      saveContent = () => {
+      saveContent = async () => {
         if (!formRef.current) return console.error("Não há um formulário no submodal atual");
 
         const formData = new FormData(formRef.current);
         const body = Object.fromEntries(formData.entries());
         console.log(body);
-      }
+
+        const response = await fetch("/api/dimensoes/disciplinas/cursos", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        });
+
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(`Error [${response.status}]: ${text}`);
+        }
+
+        const result = await response.json();
+        console.log(result);
+      };
+
       content = (
         <div>
           <h1>Modal de Cursos</h1>
           <form ref={formRef}>
             <div className="input-box">
               <label htmlFor="nome">Nome</label>
-              <input type="text" id='nome' name='nome' autoComplete="off" />
+              <input type="text" id='nome' name='nome' autoComplete="off" defaultValue={data?.nome || ""} />
             </div>
             <div className="input-box">
               <label htmlFor="competicoes">Competições de Inovação</label>
-              <input type="text" id='competicoes' name='competicoes' autoComplete="off" />
+              <input type="text" id='competicoes' name='competicoes' autoComplete="off" defaultValue={data?.competicoes?.join(", ")} />
             </div>
             <div className="columns">
               <div className="input-box">
                 <label htmlFor="fomento">Fomento</label>
-                <input type="text" id='fomento' name='fomento' autoComplete="off" onChange={(event) => formatCurrency(event.target)} />
+                <input type="text" id='fomento' name='fomento' autoComplete="off" onChange={(event) => formatCurrency(event.target)} defaultValue={data?.fomento || ""} />
               </div>
               <div className="input-box">
-                <label htmlFor="captal-captado">Captal Captado</label>
-                <input type="text" id='captal-captado' name='captal-captado' autoComplete="off" onChange={(event) => formatCurrency(event.target)} />
+                <label htmlFor="capital-captado">Capital Captado</label>
+                <input type="text" id='capital-captado' name='capital_captado' autoComplete="off" onChange={(event) => formatCurrency(event.target)} defaultValue={data?.capital_captado || ""} />
               </div>
             </div>
           </form>
@@ -200,7 +222,11 @@ export default function SubModal({
     <section className="submodal-bg">
       <div>
         <header>
-          <FaRegSave onClick={saveContent} />
+          <FaRegSave onClick={() => {
+            saveContent;
+            closeSubModal();
+            router.refresh();
+          }} />
           <FaRegTrashAlt />
           <FaX onClick={closeSubModal} />
         </header>

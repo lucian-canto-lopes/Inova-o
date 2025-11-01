@@ -11,24 +11,35 @@ export function CursosClientSubModal() {
     <>
       <button onClick={() => setModalOpen(true)}>Adicionar <FaPlus /></button>
       {isModalOpen && (
-        <SubModal closeSubModal={() => setModalOpen(false)} dimensao="cursos" setValue={(value) => (console.log(value))} />
+        <SubModal closeSubModal={() => setModalOpen(false)} dimensao="cursos" data={{}} />
       )}
     </>
   )
 }
 
-export function CursosClientCardDeck ({
+export function CursosClientCardDeck({
   title,
   data,
 }: {
   title: string,
   data: any
 }) {
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalData, setModalData] = useState<any>(null);
+
   const handleCardClick = (result: any) => {
-    console.log(result)
+    setModalOpen(true);
+    setModalData(result);
   }
 
   return (
-    <CardDeck title={title} data={data} onCardClick={handleCardClick} />
+    <>
+      <CardDeck title={title} data={data.map((item: any) => {
+        return { id: item.id, tipo: "cursos", data: item }
+      })} onCardClick={handleCardClick} />
+      {isModalOpen && (
+        <SubModal closeSubModal={() => setModalOpen(false)} dimensao="cursos" data={modalData}/>
+      )}
+    </>
   )
 }
