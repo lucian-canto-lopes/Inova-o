@@ -28,6 +28,8 @@ export async function GET(
     conteudo: rawQ.conteudo,
     tipo: rawQ.tipo,
   };
+  console.log(formattedQ)
+
   return NextResponse.json(formattedQ, { status: 200 });
 }
 

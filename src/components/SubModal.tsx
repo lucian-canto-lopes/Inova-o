@@ -61,32 +61,34 @@ export default function SubModal({
                 </tbody>
               </table>
             </div>
-            <form ref={formRef}>
-              <div className="input-box">
-                <label htmlFor="titulo">Título</label>
-                <input placeholder="Título do edital" autoComplete="off" type="text" id='titulo' name='titulo' />
-              </div>
-              <div className="columns">
+            <div>
+              <form ref={formRef}>
                 <div className="input-box">
-                  <label htmlFor="valor">Valor</label>
-                  <input placeholder="Valor do edital" autoComplete="off" type="text" id='valor' name='valor' onChange={(event) => formatCurrency(event.target)} />
+                  <label htmlFor="titulo">Título</label>
+                  <input placeholder="Título do edital" autoComplete="off" type="text" id='titulo' name='titulo' />
                 </div>
-                <div className="input-box">
-                  <label htmlFor="captal-captado">Captal Captado</label>
-                  <input placeholder="Captal captado pelo edital" autoComplete="off" type="text" id='captal-captado' name='captal-captado' onChange={(event) => formatCurrency(event.target)} />
+                <div className="columns">
+                  <div className="input-box">
+                    <label htmlFor="valor">Valor</label>
+                    <input placeholder="Valor do edital" autoComplete="off" type="text" id='valor' name='valor' onChange={(event) => formatCurrency(event.target)} />
+                  </div>
+                  <div className="input-box">
+                    <label htmlFor="captal-captado">Captal Captado</label>
+                    <input placeholder="Captal captado pelo edital" autoComplete="off" type="text" id='captal-captado' name='captal-captado' onChange={(event) => formatCurrency(event.target)} />
+                  </div>
                 </div>
-              </div>
-              <div className="columns">
-                <div className="input-box">
-                  <label htmlFor="total-equipes">Total de Equipes</label>
-                  <input placeholder="Total de equipes participantes" autoComplete="off" type="number" id='total-equipes' name='total-equipes' />
+                <div className="columns">
+                  <div className="input-box">
+                    <label htmlFor="total-equipes">Total de Equipes</label>
+                    <input placeholder="Total de equipes participantes" autoComplete="off" type="number" id='total-equipes' name='total-equipes' />
+                  </div>
+                  <div className="input-box">
+                    <label htmlFor="t-e-vitoriosas">Total de Equipes Vitoriosas</label>
+                    <input placeholder="Total de equipes vitoriosas" autoComplete="off" type="number" id='t-e-vitoriosas' name='t-e-vitoriosas' />
+                  </div>
                 </div>
-                <div className="input-box">
-                  <label htmlFor="t-e-vitoriosas">Total de Equipes Vitoriosas</label>
-                  <input placeholder="Total de equipes vitoriosas" autoComplete="off" type="number" id='t-e-vitoriosas' name='t-e-vitoriosas' />
-                </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </section>
         </div>
       )
@@ -123,37 +125,39 @@ export default function SubModal({
                 </tbody>
               </table>
             </div>
-            <form ref={formRef}>
-              <div className="input-box">
-                <label htmlFor="titulo">Título</label>
-                <input placeholder="Título do projeto" autoComplete="off" type="text" id='titulo' name='titulo' />
-              </div>
-              <div className="input-box">
-                <label htmlFor="descricao">Descrição</label>
-                <input placeholder="Descrição do projeto" autoComplete="off" type="text" id='descricao' name='descricao' />
-              </div>
-              <div className="columns">
+            <div>
+              <form ref={formRef}>
                 <div className="input-box">
-                  <label htmlFor="orcamento">Orçamento</label>
-                  <input placeholder="Orçamento do projeto" autoComplete="off" type="text" id='orcamento' name='orcamento' onChange={(event) => formatCurrency(event.target)} />
+                  <label htmlFor="titulo">Título</label>
+                  <input placeholder="Título do projeto" autoComplete="off" type="text" id='titulo' name='titulo' />
                 </div>
                 <div className="input-box">
-                  <label htmlFor="valor-gerado">Valor</label>
-                  <input placeholder="Valor do projeto" autoComplete="off" type="text" id='valor-gerado' name='valor-gerado' onChange={(event) => formatCurrency(event.target)} />
+                  <label htmlFor="descricao">Descrição</label>
+                  <input placeholder="Descrição do projeto" autoComplete="off" type="text" id='descricao' name='descricao' />
                 </div>
-              </div>
-              <div className="columns">
-                <div className="input-box">
-                  <label htmlFor="data-criacao">Data de criação</label>
-                  <input placeholder="Data de criação do projeto" autoComplete="off" type="date" id='data-criacao' name='data-criacao' />
+                <div className="columns">
+                  <div className="input-box">
+                    <label htmlFor="orcamento">Orçamento</label>
+                    <input placeholder="Orçamento do projeto" autoComplete="off" type="text" id='orcamento' name='orcamento' onChange={(event) => formatCurrency(event.target)} />
+                  </div>
+                  <div className="input-box">
+                    <label htmlFor="valor-gerado">Valor</label>
+                    <input placeholder="Valor do projeto" autoComplete="off" type="text" id='valor-gerado' name='valor-gerado' onChange={(event) => formatCurrency(event.target)} />
+                  </div>
                 </div>
-                <div className="input-box">
-                  <label htmlFor="duracao">Duração</label>
-                  <input placeholder="Duração do projeto" autoComplete="off" type="text" id='duracao' name='duracao' />
+                <div className="columns">
+                  <div className="input-box">
+                    <label htmlFor="data-criacao">Data de criação</label>
+                    <input placeholder="Data de criação do projeto" autoComplete="off" type="date" id='data-criacao' name='data-criacao' />
+                  </div>
+                  <div className="input-box">
+                    <label htmlFor="duracao">Duração</label>
+                    <input placeholder="Duração do projeto" autoComplete="off" type="text" id='duracao' name='duracao' />
+                  </div>
                 </div>
-              </div>
-              <button><span>Adicionar Imagem</span><LuImagePlus /></button>
-            </form>
+                <button><span>Adicionar Imagem</span><LuImagePlus /></button>
+              </form>
+            </div>
           </section>
         </div>
       )
@@ -223,7 +227,7 @@ export default function SubModal({
       <div>
         <header>
           <FaRegSave onClick={() => {
-            saveContent;
+            saveContent();
             closeSubModal();
             router.refresh();
           }} />

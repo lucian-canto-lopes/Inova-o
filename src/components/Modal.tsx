@@ -2,7 +2,7 @@
 import { FaList, FaPlus, FaX } from 'react-icons/fa6';
 import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import '../css/Modal.css';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import SubModal from './SubModal';
@@ -79,6 +79,32 @@ export function Modal({
               </div>
             </form>
             <button onClick={() => setSubModalOpen(true)}><span>Editais</span><FaList /></button>
+            <div className="relacoes-div">
+              <span>Cursos</span>
+              <div>
+                {cursos.filter((r: any) => r.related).map((relation: any) => {
+                  return <div className="relacoes-item" key={`relation-${relation.id}`}>{relation.nome}</div>
+                })}
+                <div style={{ position: "relative" }}>
+                  <section onClick={!isCursosOpen ? () => setCursosOpen(true) : undefined} className={isCursosOpen ? "relation-section" : ""}>
+                    <div>
+                      <input type="text" name="search-cursos" id="search-cursos" placeholder='Procurar...' autoComplete='off' onChange={(e) => setSearchCursos(e.target.value)} />
+                      <FaPlus onClick={isCursosOpen ? () => setCursosOpen(false) : undefined} />
+                    </div>
+                    {isCursosOpen && (
+                      <ul>
+                        {filteredCursos.map((curso: any) => {
+                          // Se há relações, o checkbox fica marcado
+                          return <li key={`li-curso-${curso.id}`}><input type="checkbox" id={`cb-curso-${curso.id}`} checked={curso.related} onChange={(e) => toggleCursos(curso.id, e.target.checked)} />
+                            <label htmlFor={`cb-curso-${curso.id}`}>{curso.nome}</label>
+                          </li>
+                        })}
+                      </ul>
+                    )}
+                  </section>
+                </div>
+              </div>
+            </div>
           </>
         )
       case "eventos":
@@ -213,12 +239,67 @@ export function Modal({
     }
   }
 
-  // Editor de texto
+  // useState - Editor de texto
   const [textValue, setTextValue] = useState<string>(modalContent ?? "");
 
-  // Submodal
+  // useState - Submodal
   const [isSubModalOpen, setSubModalOpen] = useState<boolean>(false);
-  const [subModalValue, setSubModalValue] = useState<object>({})
+
+  // Cursos - useStates & useMemos
+  const [cursos, setCursos] = useState<any>([]);
+  const [isCursosOpen, setCursosOpen] = useState<boolean>(false);
+  const [searchCursos, setSearchCursos] = useState<string>("");
+  const filteredCursos = useMemo(() => {
+    if (!searchCursos.trim()) return cursos;
+    return cursos.filter((r: any) => r.nome.toLowerCase().includes(searchCursos.toLowerCase()));
+  }, [searchCursos, cursos]);
+  const toggleCursos = (id: number, checked: boolean) => {
+    setCursos((prev: any) => prev.map((r: any) => r.id === id ? { ...r, related: checked } : r));
+  };
+
+  // Relações - useStates & useMemos
+  const [relations, setRelations] = useState<any>([]);
+  const [isRelationCLOpen, setRelationCLOpen] = useState(false);
+  const [searchRelations, setSearchRelations] = useState<string>("");
+  const filteredRelations = useMemo(() => {
+    if (!searchRelations.trim()) return cursos;
+    return relations.filter((r: any) => r.nome.toLowerCase().includes(searchRelations.toLowerCase()));
+  }, [searchRelations, relations]);
+  const toggleRelations = (id: number, checked: boolean) => {
+    setRelations((prev: any) => prev.map((r: any) => r.id === id ? { ...r, related: checked } : r));
+  }
+
+  // Fetch Data
+  const fetchCursos = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/dimensoes/disciplinas/${modalData.dimensaoId ? modalData.dimensaoId : -1}/cursos`, {
+        cache: "no-cache",
+      });
+      if (!res.ok) throw new Error("Erro ao buscar Cursos");
+      const data = await res.json();
+      setCursos(data || []);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  const fetchRelations = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${modalData.dimensaoId ? modalData.dimensaoId : -1}/relations`, {
+        cache: "no-cache",
+      });
+      if (!res.ok) throw new Error("Erro ao buscar relações");
+      const data = await res.json();
+      setRelations(data || []);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  useEffect(() => {
+    modalType == "disciplinas" && fetchCursos();
+    fetchRelations();
+  }, [modalData?.dimensaoId]);
 
   const router = useRouter();
 
@@ -250,7 +331,9 @@ export function Modal({
       console.log(`[ERROR]: ${error}`);
     };
 
-    try {
+    relationsBlock: try {
+      if (!modalData.dimensaoId) break relationsBlock;
+
       const relationsIds = relations.map((r: any) => parseInt(r.id));
       const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${modalData.dimensaoId}/relations`, {
         method: "PUT",
@@ -303,31 +386,6 @@ export function Modal({
     router.refresh();
   }
 
-  const [relations, setRelations] = useState<any>([]);
-  const [isRelationCLOpen, setRelationCLOpen] = useState(false);
-  const [filteredRelations, setFilteredRelations] = useState<any>([]);
-
-  const fetchRelations = async () => {
-    if (!modalData?.dimensaoId) return;
-
-    try {
-      const res = await fetch(`http://localhost:3000/api/dimensoes/motores/${modalData.dimensaoId}/relations`, {
-        cache: "no-cache",
-      });
-      if (!res.ok) throw new Error("Erro ao buscar relações");
-      const data = await res.json();
-      setRelations(data || []);
-      setFilteredRelations(data || [])
-      console.log(data)
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  useEffect(() => {
-    fetchRelations();
-  }, [modalData?.dimensaoId]);
-
   return (
     <section className="modal-bg">
       <div className="modal">
@@ -350,31 +408,16 @@ export function Modal({
                   <div style={{ position: "relative" }}>
                     <section onClick={!isRelationCLOpen ? () => setRelationCLOpen(true) : undefined} className={isRelationCLOpen ? "relation-section" : ""}>
                       <div>
-                        <input type="text" name="search-relation" id="search-relation" placeholder='Procurar...' autoComplete='off' onChange={(e) => {
-                          // filtro por nome
-                          const filtered = relations.filter((r: any) => r.nome.toLowerCase().includes(e.target.value.toLowerCase()));
-                          setFilteredRelations(filtered);
-                        }} />
+                        <input type="text" name="search-relation" id="search-relation" placeholder='Procurar...' autoComplete='off' onChange={(e) => setSearchRelations(e.target.value)} />
                         <FaPlus onClick={isRelationCLOpen ? () => setRelationCLOpen(false) : undefined} />
                       </div>
                       {isRelationCLOpen && (
                         <ul>
                           {filteredRelations.map((relation: any) => {
                             // Se há relações, o checkbox fica marcado
-                            return <li key={`li-${relation.id}`}><input type="checkbox" id={`cb-${relation.id}`} checked={relation.related} onChange={(e) => {
-                              const isChecked = e.target.checked;
-
-                              setFilteredRelations((prev: any) => {
-                                const updated = prev.map((r: any) => r.id === relation.id ? { ...r, related: isChecked } : r);
-
-                                return updated;
-                              })
-                              setRelations((prev: any) => {
-                                const updated = prev.map((r: any) => r.id === relation.id ? { ...r, related: isChecked } : r);
-
-                                return updated;
-                              })
-                            }} /><label htmlFor={`cb-${relation.id}`}>{relation.nome}</label></li>
+                            return <li key={`li-${relation.id}`}><input type="checkbox" id={`cb-${relation.id}`} checked={relation.related} onChange={(e) => toggleRelations(relation.id, e.target.checked)} />
+                              <label htmlFor={`cb-${relation.id}`}>{relation.nome}</label>
+                            </li>
                           })}
                         </ul>
                       )}
