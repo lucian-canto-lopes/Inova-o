@@ -7,7 +7,8 @@ async function getDimentions(limit: number, order: ("cres" | "decres" | "data"))
   const res = await fetch(`/api/dimensoes?limit=${limit}&order=${order}`);
   if (!res.ok) {
     const text = await res.text();
-    return console.error("Erro ao pegar dimensões: " + text);
+    console.error("Erro ao pegar dimensões: " + text);
+    return []
   }
   const data = await res.json();
   return data;

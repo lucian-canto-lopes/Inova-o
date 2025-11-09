@@ -30,7 +30,7 @@ section.workspace {
   width: 100%;
   padding: 20px 80px;
 
-  span {
+  &>span {
     color: var(--dark-green);
     font-size: 1.1rem;
 
@@ -44,13 +44,13 @@ section.workspace {
     }
   }
 
-  & > header {
+  &> header {
     margin-top: 60px;
     display: flex;
     justify-content: space-between;
     font-size: 2.5rem;
 
-    & > button {
+    &> button {
       padding: 0 15px;
       background-color: var(--dark-green);
       border: none;

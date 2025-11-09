@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@/src/generated/prisma";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 export type dimensaoTipo = "disciplinas" | "eventos" | "motores" | "negocios";
 interface Params {
@@ -127,7 +125,7 @@ export async function POST(
           qtd_empresas_atendidas: parseInt(body.qtd_empresas_atendidas),
           equipe: toArray(body.equipe),
           lideres: toArray(body.lideres),
-          projetos: toArray(body.projetos),
+          // projetos: toArray(body.projetos), // Aqui mudar para json
           dimensao: {
             create: {
               tipo: "motores",

@@ -1,100 +1,113 @@
-import { PrismaClient } from "@/src/generated/prisma";
+import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { dimensaoTipo } from "../../route";
-
-const prisma = new PrismaClient();
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ dimensao: dimensaoTipo; id: string }> }
 ) {
   const { id } = await params;
+  const parsedId = parseInt(id);
 
-  const relationsQ = await prisma.dimensao.findUnique({
-    where: {
-      id: parseInt(id),
-    },
-    include: {
-      Dimensao_DimensaoA: {
-        include: {
-          dimensaoB: {
-            include: { Disciplina: true, Evento: true, Motor: true, Negocio: true },
+  if (parsedId == -1) {
+    const rawData = await prisma.dimensao.findMany({
+      select: { id: true, tipo: true, Disciplina: true, Evento: true, Motor: true, Negocio: true }
+    });
+
+    const formatedData = rawData.map(d => ({
+      id: d.id,
+      tipo: d.tipo,
+      nome: d.Disciplina?.nome || d.Evento?.nome || d.Motor?.nome || d.Negocio?.nome,
+    }));
+
+    return NextResponse.json(formatedData, { status: 200 });
+  }
+  else {
+    const relationsQ = await prisma.dimensao.findUnique({
+      where: {
+        id: parsedId,
+      },
+      include: {
+        Dimensao_DimensaoA: {
+          include: {
+            dimensaoB: {
+              include: { Disciplina: true, Evento: true, Motor: true, Negocio: true },
+            },
+          },
+        },
+        Dimensao_DimensaoB: {
+          include: {
+            dimensaoA: {
+              include: { Disciplina: true, Evento: true, Motor: true, Negocio: true },
+            },
           },
         },
       },
-      Dimensao_DimensaoB: {
-        include: {
-          dimensaoA: {
-            include: { Disciplina: true, Evento: true, Motor: true, Negocio: true },
-          },
+    });
+
+    if (!relationsQ) return NextResponse.json({ error: "Dimensão não encontrada" }, { status: 404 });
+
+    const relations = [
+      ...relationsQ.Dimensao_DimensaoA.map(r => r.dimensaoB),
+      ...relationsQ.Dimensao_DimensaoB.map(r => r.dimensaoA),
+    ].map(r => ({
+      id: r.id,
+      tipo: r.tipo,
+      nome: r.Disciplina?.nome || r.Evento?.nome || r.Motor?.nome || r.Negocio?.nome,
+    }));
+
+    const relatedIds = new Set(relations.map(r => r.id));
+
+    const available = await prisma.dimensao.findMany({
+      where: {
+        id: {
+          notIn: [parsedId, ...relatedIds],
         },
       },
-    },
-  });
+      select: {
+        id: true,
+        tipo: true,
+        Disciplina: { select: { nome: true } },
+        Evento: { select: { nome: true } },
+        Motor: { select: { nome: true } },
+        Negocio: { select: { nome: true } },
+      }
+    }).then(a => a.map(r => ({
+      id: r.id,
+      tipo: r.tipo,
+      nome: r.Disciplina?.nome || r.Evento?.nome || r.Motor?.nome || r.Negocio?.nome,
+    })));
 
-  if (!relationsQ) return NextResponse.json({ error: "Dimensão não encontrada" }, { status: 404 });
+    const formatedRelations = [
+      ...relations.map(r => ({
+        ...r,
+        related: true,
+      })),
+      ...available.map(r => ({
+        ...r,
+        related: false,
+      }))
+    ]
 
-  const relations = [
-    ...relationsQ.Dimensao_DimensaoA.map(r => r.dimensaoB),
-    ...relationsQ.Dimensao_DimensaoB.map(r => r.dimensaoA),
-  ].map(r => ({
-    id: r.id,
-    tipo: r.tipo,
-    nome: r.Disciplina?.nome || r.Evento?.nome || r.Motor?.nome || r.Negocio?.nome, 
-  }));
-
-  const relatedIds = new Set(relations.map(r => r.id));
-
-  const available = await prisma.dimensao.findMany({
-    where: {
-      id: {
-        notIn: [parseInt(id), ...relatedIds],
-      },
-    },
-    select: {
-      id: true,
-      tipo: true,
-      Disciplina: { select: { nome: true } },
-      Evento: { select: { nome: true } },
-      Motor: { select: { nome: true } },
-      Negocio: { select: { nome: true } },
-    }
-  }).then(a => a.map(r => ({
-    id: r.id,
-    tipo: r.tipo,
-    nome: r.Disciplina?.nome || r.Evento?.nome || r.Motor?.nome || r.Negocio?.nome,
-  })));
-
-  const formatedRelations = [
-    ...relations.map(r => ({
-      ...r,
-      related: true,
-    })),
-    ...available.map(r => ({
-      ...r,
-      related: false,
-    }))
-  ]
-
-  return NextResponse.json(formatedRelations, { status: 200 });
+    return NextResponse.json(formatedRelations, { status: 200 });
+  }
 }
 
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ dimensao: dimensaoTipo; id: string }>},
+  { params }: { params: Promise<{ dimensao: dimensaoTipo; id: string }> },
 ) {
   try {
     const { id } = await params;
     const idInt = parseInt(id);
     const body = await request.json();
     const { relations }: { relations: number[] } = body;
-    console.log(relations)
 
     const uniqueRelations = [...new Set(relations)].filter(r => r !== idInt);
 
     await prisma.dimensao_Dimensao.deleteMany({
       where: {
-        OR: [{ dimensaoAId: idInt }, { dimensaoBId: idInt }], 
+        OR: [{ dimensaoAId: idInt }, { dimensaoBId: idInt }],
       },
     });
 

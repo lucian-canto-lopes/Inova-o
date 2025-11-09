@@ -18,6 +18,7 @@ interface DimensoesFilter {
   eventos: true,
   motores: true,
   negocios: true,
+  cursos: true,
 }
 
 const sortArray: string[] = ["Data", "Cres", "Decr"];
@@ -32,6 +33,7 @@ function CardDeck({ title, hasFilter = false, data, onCardClick }: Props) {
     eventos: true,
     motores: true,
     negocios: true,
+    cursos: true,
   });
 
   const filteredData = data.filter((item: {tipo: DimensaoTipo}) => dimensoesFilter[item.tipo]);

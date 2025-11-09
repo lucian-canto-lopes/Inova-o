@@ -36,14 +36,16 @@ model Dimensao_Dimensao {
 }
 
 model Disciplina {
-  dimensao            Dimensao @relation(fields: [dimensaoId], references: [id], onDelete: Cascade)
-  dimensaoId          Int      @id @unique
+  dimensao            Dimensao             @relation(fields: [dimensaoId], references: [id], onDelete: Cascade)
+  dimensaoId          Int                  @id @unique
   nome                String
   coordenador         String
   semestre            String
-  codigo              String   @unique
+  codigo              String               @unique
   alunos_matriculados String[]
   alunos_aprovados    String[]
+  editais             Json?
+  Disciplinas_Cursos  Disciplinas_Cursos[]
 }
 
 model Evento {
@@ -67,7 +69,7 @@ model Motor {
   dimensaoId             Int      @id @unique
   nome                   String
   descricao              String
-  projetos               String[]
+  projetos               Json?
   motor_tipo             String
   data_criacao           DateTime
   lideres                String[]
@@ -85,4 +87,22 @@ model Negocio {
   data_criacao      DateTime
   fundadores        String[]
   porte             String
+}
+
+model Cursos {
+  id                 Int                  @id @default(autoincrement())
+  nome               String
+  competicoes        String[]
+  fomento            Float
+  capital_captado    Float
+  Disciplinas_Cursos Disciplinas_Cursos[]
+}
+
+model Disciplinas_Cursos {
+  disciplina   Disciplina @relation(fields: [disciplinaId], references: [dimensaoId], onDelete: Cascade)
+  disciplinaId Int
+  cursos       Cursos     @relation(fields: [cursosId], references: [id], onDelete: Cascade)
+  cursosId     Int
+
+  @@id([disciplinaId, cursosId])
 }
