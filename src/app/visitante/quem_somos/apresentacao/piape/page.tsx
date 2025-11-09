@@ -5,6 +5,10 @@ import Link from "next/link";
 
 export default function PiapePage() {
   const [dimsOpen, setDimsOpen] = useState(true);
+<<<<<<< HEAD
+=======
+  const [searchValue, setSearchValue] = useState("");
+>>>>>>> nextjs-paralelo
 
   return (
     <div className="min-h-screen bg-[#F7F7F7]">
@@ -14,9 +18,25 @@ export default function PiapePage() {
           <div className="relative">
             <input
               placeholder="Procurar..."
+<<<<<<< HEAD
               className="w-full h-10 rounded-full pl-4 pr-10 outline-none border border-black/10 bg-white text-sm"
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[#2C5C10]">
+=======
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              className={`w-full h-10 rounded-full pl-4 pr-10 outline-none border transition ${
+                searchValue.trim()
+                  ? "bg-white text-black placeholder:text-zinc-400 border-black/10"
+                  : "bg-white/10 text-white placeholder:text-white/80 border-transparent"
+              }`}
+            />
+            <div
+              className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 ${
+                searchValue.trim() ? "text-[#2C5C10]" : "text-white/90"
+              }`}
+            >
+>>>>>>> nextjs-paralelo
               <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor" aria-hidden>
                 <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
               </svg>

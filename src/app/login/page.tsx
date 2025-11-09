@@ -1,14 +1,42 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+<<<<<<< HEAD
 
+=======
+>>>>>>> nextjs-paralelo
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
 
+<<<<<<< HEAD
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+=======
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const fd = new FormData(e.currentTarget as HTMLFormElement);
+      const username = String(fd.get("username") || "");
+      const password = String(fd.get("password") || "");
+
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.message || "Falha no login");
+      }
+      window.location.href = "/dimensoes";
+    } catch (err: any) {
+      alert(err?.message || "Erro ao autenticar");
+      console.error(err);
+    }
+>>>>>>> nextjs-paralelo
   };
 
   return (
@@ -32,6 +60,7 @@ export default function LoginPage() {
                 <label htmlFor="user" className="sr-only">Usuário</label>
                 <input
                   id="user"
+                  name="username"
                   type="text"
                   placeholder="Usuário"
                   autoComplete="username"
@@ -45,6 +74,7 @@ export default function LoginPage() {
                 <div className="relative">
                   <input
                     id="password"
+                    name="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Senha"
                     autoComplete="current-password"
