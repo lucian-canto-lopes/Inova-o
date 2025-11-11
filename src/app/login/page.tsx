@@ -1,19 +1,11 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-<<<<<<< HEAD
-
-=======
->>>>>>> nextjs-paralelo
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
 
-<<<<<<< HEAD
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-=======
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -26,7 +18,7 @@ export default function LoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
-
+                
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.message || "Falha no login");
@@ -36,7 +28,6 @@ export default function LoginPage() {
       alert(err?.message || "Erro ao autenticar");
       console.error(err);
     }
->>>>>>> nextjs-paralelo
   };
 
   return (

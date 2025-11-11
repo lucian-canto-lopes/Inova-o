@@ -18,8 +18,8 @@ export function verifyToken(token: string) {
     const expected = crypto.createHmac("sha256", SECRET).update(b64).digest("base64url");
     if (sig !== expected) return null;
     const json = JSON.parse(Buffer.from(b64, "base64").toString("utf8"));
-    if (json.exp && Date.now() > Number(json.exp)) return null;
-    return json as { u: string; exp?: number };
+    if ((json as any).exp && Date.now() > Number((json as any).exp)) return null;
+    return json as { u: string | number; exp?: number };
   } catch {
     return null;
   }

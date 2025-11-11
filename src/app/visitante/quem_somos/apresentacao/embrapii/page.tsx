@@ -3,27 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 
-<<<<<<< HEAD
-export default function EmbrapiiPage() {
-  const [dimsOpen, setDimsOpen] = useState(true);
-=======
 type Item = 'embrapii' | 'intap' | 'toylab' | 'labcria' | 'piape';
 
 export default function EmbrapiiPage() {
   const [dimsOpen, setDimsOpen] = useState(true);
   const [searchValue, setSearchValue] = useState("");
->>>>>>> nextjs-paralelo
 
   return (
     <div className="min-h-screen bg-[#F7F7F7]">
       {/* Top bar */}
       <header className="fixed top-0 left-0 right-0 z-50 h-14 bg-[#A3CE6F] flex items-center px-4">
         <div className="flex-1 max-w-[900px] mx-auto w-full">
-<<<<<<< HEAD
-          <div className="relative">
-            <input placeholder="Procurar..." className="w-full h-10 rounded-full pl-4 pr-10 outline-none border border-black/10 bg-white text-sm" />
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[#2C5C10]">
-=======
           {/* área de pesquisa - igual ao visitante (inline) */}
           <div className="relative">
             <input
@@ -41,7 +31,6 @@ export default function EmbrapiiPage() {
                 searchValue.trim() ? "text-[#2C5C10]" : "text-white/90"
               }`}
             >
->>>>>>> nextjs-paralelo
               <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor" aria-hidden>
                 <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
               </svg>
@@ -50,14 +39,10 @@ export default function EmbrapiiPage() {
         </div>
 
         <Link href="/visitante/quem_somos" className="ml-4">
-<<<<<<< HEAD
-          <button aria-label="Voltar" className="w-9 h-9 flex items-center justify-center rounded-full border-2 border-black/10 bg-white/90 text-zinc-800 hover:bg-white transition">
-=======
           <button
             aria-label="Voltar"
             className="w-9 h-9 flex items-center justify-center rounded-full border-2 border-black/10 bg-white/90 text-zinc-800 hover:bg-white transition"
           >
->>>>>>> nextjs-paralelo
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
@@ -65,22 +50,13 @@ export default function EmbrapiiPage() {
         </Link>
       </header>
 
-<<<<<<< HEAD
-      {/* Left sidebar (fixed below top bar) */}
-=======
       {/* Left sidebar */}
->>>>>>> nextjs-paralelo
       <aside className="fixed top-14 left-0 h-[calc(100vh-56px)] w-44 bg-[#4C7F16] text-white p-4">
         <nav>
           <button
             type="button"
-<<<<<<< HEAD
-            onClick={() => setDimsOpen((v) => !v)}
-            className="inline-flex items-center justify-between w-full gap-2 bg-[#355e0f] px-3 py-2 rounded-md shadow-sm text-white"
-=======
             onClick={() => setDimsOpen(v => !v)}
             className="inline-flex items-center justify-between w-full gap-2 bg-[#355e0f] px-3 py-2 rounded-md shadow-sm"
->>>>>>> nextjs-paralelo
             aria-expanded={dimsOpen}
             aria-controls="dimensoes-list"
           >

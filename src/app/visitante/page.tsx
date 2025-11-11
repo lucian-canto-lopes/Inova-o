@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 /* ===== NavBar (fixa e em largura total) ===== */
@@ -47,15 +47,6 @@ function LocalNavBar({
         </div>
       </div>
 
-<<<<<<< HEAD
-      <div className="shrink-0 w-8 h-8 rounded-full overflow-hidden bg-white/70 ring-1 ring-black/10">
-        <img
-          src="/default-avatar-profile-icon.webp"
-          alt="Ícone de Usuário"
-          className="w-full h-full object-cover"
-        />
-      </div>
-=======
       <Link
         href="/login"  // troque se sua rota de login for diferente
         aria-label="Ir para login"
@@ -70,7 +61,6 @@ function LocalNavBar({
           />
         </div>
       </Link>
->>>>>>> nextjs-paralelo
     </div>
   );
 }
@@ -187,9 +177,40 @@ function LocalSideBar({ collapsed }: { collapsed: boolean }) {
 }
 
 /* ===== Página ===== */
+type Metrics = {
+  negociosGerados: number;
+  disciplinasInovacao: number;
+  pisCriadas: number;
+  fomentoCaptado: number;
+  eventosInovacao: number;
+  alunosParticipantes: number;
+};
+
+function BRL(v: unknown) {
+  const n = typeof v === "number" ? v : Number(v);
+  if (!isFinite(n)) return "—";
+  return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
 export default function VisitantePage() {
   const [collapsed, setCollapsed] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+
+  const [metrics, setMetrics] = useState<Metrics | null>(null);
+
+  useEffect(() => {
+    fetch("/api/visitantes/metrics")
+      .then(r => r.json())
+      .then(setMetrics)
+      .catch(() => setMetrics({
+        negociosGerados: 0,
+        disciplinasInovacao: 0,
+        pisCriadas: 0,
+        fomentoCaptado: 0,
+        eventosInovacao: 0,
+        alunosParticipantes: 0,
+      }));
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#F7F7F7]">
@@ -208,12 +229,30 @@ export default function VisitantePage() {
         <section className="flex-1">
           <div className="mx-auto w-full max-w-[1280px] px-6 mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              <Card title="Negócios gerados por projetos de inovação na UFOPA:" value="20" />
-              <Card title="Número de disciplinas de inovação em BCC:" value="500" />
-              <Card title="PIs criadas na UFOPA no curso BCC:" value="10" />
-              <Card title="Fomento captado por eventos de inovação:" value="R$ 50.000,00" />
-              <Card title="Eventos de inovação realizados na UFOPA pelo curso BCC:" value="16" />
-              <Card title="Alunos participantes das disciplinas de inovação BCC:" value="80" />
+              <Card
+                title="Negócios de inovação gerados (UFOPA)"
+                value={metrics?.negociosGerados ?? "—"}
+              />
+              <Card
+                title="Disciplinas de inovação do curso BCC"
+                value={metrics?.disciplinasInovacao ?? "—"}
+              />
+              <Card
+                title="Editais publicados (inovação)"
+                value={metrics?.pisCriadas ?? "—"}
+              />
+              <Card
+                title="Receita total de eventos de inovação"
+                value={metrics ? BRL(metrics.fomentoCaptado) : "—"}
+              />
+              <Card
+                title="Eventos de inovação cadastrados"
+                value={metrics?.eventosInovacao ?? "—"}
+              />
+              <Card
+                title="Alunos nas disciplinas de inovação (BCC)"
+                value={metrics?.alunosParticipantes ?? "—"}
+              />
             </div>
           </div>
         </section>
@@ -228,55 +267,6 @@ function Card({ title, value }: { title: string; value: string | number }) {
     <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-4 flex flex-col justify-center text-center hover:shadow-md transition">
       <span className="text-sm text-zinc-700 mb-2 leading-snug">{title}</span>
       <strong className="text-lg text-zinc-900">{value}</strong>
-    </div>
-  );
-}
-
-function QuemSomos() {
-  return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-4xl font-extrabold mb-6">Quem Somos</h1>
-      <p className="text-lg text-zinc-700 mb-4">
-        Somos uma equipe dedicada à promoção da inovação e do empreendedorismo na UFOPA, conectando alunos, professores e a comunidade externa.
-      </p>
-      <p className="text-lg text-zinc-700 mb-6">
-        Nosso objetivo é transformar ideias em negócios sustentáveis, por meio do incentivo à pesquisa aplicada e ao desenvolvimento de projetos inovadores.
-      </p>
-
-      <h2 className="text-2xl font-bold mb-4">Nossos Projetos</h2>
-      <ul className="list-disc list-inside mb-6">
-        <li className="mb-2">
-          <strong>Embrapii:</strong> Projeto de inovação que visa desenvolver soluções tecnológicas para a indústria.
-        </li>
-        <li className="mb-2">
-          <strong>InTap:</strong> Iniciativa que conecta pesquisadores a empresas em busca de inovação.
-        </li>
-        <li className="mb-2">
-          <strong>ToyLab:</strong> Laboratório de protótipos e testes de produtos inovadores.
-        </li>
-        <li className="mb-2">
-          <strong>LabCria:</strong> Espaço colaborativo para criação e desenvolvimento de projetos.
-        </li>
-        <li>
-          <strong>PIAPE:</strong> Programa de Incubação de Arranjos Produtivos e Empreendimentos.
-        </li>
-      </ul>
-
-      <h2 className="text-2xl font-bold mb-4">Nossa Equipe</h2>
-      <p className="text-lg text-zinc-700 mb-4">
-        Contamos com uma equipe multidisciplinar, composta por professores, pesquisadores e profissionais de diversas áreas, todos apaixonados por inovação e ensino.
-      </p>
-      <p className="text-lg text-zinc-700 mb-6">
-        Juntos, trabalhamos para criar um ambiente estimulante e rico em oportunidades para o desenvolvimento de novas ideias e negócios.
-      </p>
-
-      <h2 className="text-2xl font-bold mb-4">Entre em Contato</h2>
-      <p className="text-lg text-zinc-700 mb-4">
-        Tem uma ideia ou projeto em mente? Quer saber mais sobre nossas iniciativas? Entre em contato conosco!
-      </p>
-      <p className="text-lg text-zinc-700">
-        Email: <a href="mailto:contato@ufopa.br" className="text-[#2C5C10]">contato@ufopa.br</a>
-      </p>
     </div>
   );
 }
