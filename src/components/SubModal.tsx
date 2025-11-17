@@ -29,6 +29,7 @@ export default function SubModal({
 
   let content;
   let saveContent: () => void;
+  let deleteInstance: () => void;
 
   switch (dimensao) {
     case "disciplinas":
@@ -188,6 +189,23 @@ export default function SubModal({
         console.log(result);
       };
 
+      deleteInstance = async () => {
+        if (!data) return console.error("O modal atual não está salvo na DataBase");
+
+        try {
+          const response = await fetch(`/api/dimensoes/disciplinas/cursos/${data.id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+          });
+          if (!response.ok) {
+            const text = await response.text();
+            throw new Error(`Error [${response.status}]: ${text}`);
+          };
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
       content = (
         <div>
           <h1>Modal de Cursos</h1>
@@ -217,8 +235,11 @@ export default function SubModal({
 
     default:
       saveContent = () => {
-        console.log("Se vc está vendo essa mensagem no terminal, algo está errado")
-      }
+        console.log("Se vc está vendo essa mensagem no terminal, algo está errado saveContent");
+      };
+      deleteInstance = () => {
+        console.log("Se vc está vendo essa mensagem no terminal, algo está errado com deleteInstance");
+      };
       break;
   }
 
@@ -231,7 +252,11 @@ export default function SubModal({
             closeSubModal();
             router.refresh();
           }} />
-          <FaRegTrashAlt />
+          <FaRegTrashAlt onClick={() => {
+            deleteInstance();
+            closeSubModal();
+            router.refresh();
+          }} />
           <FaX onClick={closeSubModal} />
         </header>
         {content}

@@ -16,6 +16,7 @@ Salvar Normalmente
 - [x] Criar rota para salvar cursos na db
   - [x] Fazer conexão front -> back end
   - [x] Relacionar Cursos com Disciplinas
+- [x] Excluir cursos da db
 - [x] Criar rota para salvar os Editais
   - [ ] Fazer conexão front -> back end
 - [ ] Criar rota para salvar os Projetos

@@ -262,7 +262,7 @@ export function Modal({
   const [isRelationCLOpen, setRelationCLOpen] = useState(false);
   const [searchRelations, setSearchRelations] = useState<string>("");
   const filteredRelations = useMemo(() => {
-    if (!searchRelations.trim()) return cursos;
+    if (!searchRelations.trim()) return relations;
     return relations.filter((r: any) => r.nome.toLowerCase().includes(searchRelations.toLowerCase()));
   }, [searchRelations, relations]);
   const toggleRelations = (id: number, checked: boolean) => {
@@ -331,10 +331,28 @@ export function Modal({
       console.log(`[ERROR]: ${error}`);
     };
 
-    relationsBlock: try {
+    cursosBlock: try { // Atualiza os cursos marcados no modal de Disciplinas
+      if (!modalData.dimensaoId || modalType !== "disciplinas") break cursosBlock;
+
+      const cursosIds = cursos.flatMap((r: any) => r.related ? [r.id] : []);
+      const response = await fetch(`http://localhost:3000/api/dimensoes/disciplinas/${modalData.dimensaoId}/cursos`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cursosIds),
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Error ${response.status}: ${text}`);
+      };
+    } catch (error) {
+      console.error(error);
+    }
+
+    relationsBlock: try { // Atualiza as relações marcadas no modal
       if (!modalData.dimensaoId) break relationsBlock;
 
-      const relationsIds = relations.map((r: any) => parseInt(r.id));
+      const relationsIds = relations.flatMap((r: any) => r.related ? [r.id] : []);
       const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${modalData.dimensaoId}/relations`, {
         method: "PUT",
         headers: {
@@ -347,8 +365,6 @@ export function Modal({
         const text = await response.text();
         throw new Error(`Erro ${response.status}: ${text}`);
       }
-
-      const result = await response.json();
     } catch (error) {
       console.error(error);
     }
