@@ -106,3 +106,19 @@ model Disciplinas_Cursos {
 
   @@id([disciplinaId, cursosId])
 }
+
+model Usuario {
+  id                  Int          @id @default(autoincrement())
+  tipo_de_usuario     TipoUsuario  @default(USUARIO)
+  email_institucional String       @unique
+  senha               String
+  nome_usuario        String       @unique
+  telefone            String?
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+}
+
+enum TipoUsuario {
+  USUARIO
+  ADMIN
+}
