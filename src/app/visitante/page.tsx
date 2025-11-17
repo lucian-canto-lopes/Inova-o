@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { MonthlyLineChart } from "@/src/components/MonthlyLineChart";
+import { ImpactChart } from "@/src/components/ImpactChart";
 
 /* ===== NavBar (fixa e em largura total) ===== */
 function LocalNavBar({
@@ -66,54 +68,51 @@ function LocalNavBar({
 }
 
 /* ===== SideBar (cola logo abaixo da navbar) ===== */
-/* substituído: agora exibe filtros em vez do menu */
-/* highlight controla a cor do título (branco/preto) */
-function LocalSideBar({ collapsed }: { collapsed: boolean }) {
+function LocalSideBar({
+  collapsed,
+  filters,
+  onChange,
+  onApply,
+}: {
+  collapsed: boolean;
+  filters: { from: string; to: string; agent: string; view: string } // <- mudou
+  onChange: (k: keyof typeof filters, v: string) => void;
+  onApply: () => void;
+}) {
   return (
     <aside
       className="bg-[#4C7F16] text-white transition-[width,padding] duration-200 shrink-0 sticky top-14"
-      style={{
-        width: collapsed ? 0 : 300,
-        padding: collapsed ? "0 0 0 0" : "24px",
-        overflow: "hidden",
-        height: "calc(100vh - 56px)",
-      }}
+      style={{ width: collapsed ? 0 : 300, padding: collapsed ? "0 0 0 0" : "24px", overflow: "hidden", height: "calc(100vh - 56px)" }}
     >
       <div className="flex flex-col h-full">
-        {/* Mantém sempre branco — não altera com o input */}
         <h2 className="text-3xl font-extrabold mb-4 text-white">Filtros</h2>
 
-        <form className="flex-1 flex flex-col justify-start">
+        <form
+          className="flex-1 flex flex-col justify-start"
+          onSubmit={(e) => { e.preventDefault(); onApply(); }}
+        >
           <div>
             <div className="grid grid-cols-2 gap-3 mb-3">
-              <label className="sr-only" htmlFor="periodo1">Período</label>
+              <label className="sr-only" htmlFor="from">Início</label>
               <div className="relative">
-                <select
-                  id="periodo1"
-                  className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
-                >
-                  <option>Período</option>
-                  <option>2024</option>
-                  <option>2023</option>
-                </select>
-                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10] pointer-events-none" viewBox="0 0 20 20" fill="none" aria-hidden>
-                  <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <input
+                  id="from"
+                  type="date"
+                  value={filters.from}
+                  onChange={(e) => onChange("from", e.target.value)}
+                  className="w-full rounded-xl px-4 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40"
+                />
               </div>
 
-              <label className="sr-only" htmlFor="periodo2">Período</label>
+              <label className="sr-only" htmlFor="to">Fim</label>
               <div className="relative">
-                <select
-                  id="periodo2"
-                  className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
-                >
-                  <option>Período</option>
-                  <option>Janeiro</option>
-                  <option>Fevereiro</option>
-                </select>
-                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10] pointer-events-none" viewBox="0 0 20 20" fill="none" aria-hidden>
-                  <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <input
+                  id="to"
+                  type="date"
+                  value={filters.to}
+                  onChange={(e) => onChange("to", e.target.value)}
+                  className="w-full rounded-xl px-4 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40"
+                />
               </div>
             </div>
 
@@ -122,30 +121,34 @@ function LocalSideBar({ collapsed }: { collapsed: boolean }) {
               <div className="relative">
                 <select
                   id="agente"
+                  value={filters.agent}
+                  onChange={(e) => onChange("agent", e.target.value)}
                   className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
                 >
-                  <option>Agente</option>
-                  <option>Agente A</option>
-                  <option>Agente B</option>
+                  <option value="">Agente</option>
+                  <option value="1">Agente A</option>
+                  <option value="2">Agente B</option>
                 </select>
-                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10] pointer-events-none" viewBox="0 0 20 20" fill="none" aria-hidden>
+                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10]" viewBox="0 0 20 20" fill="none" aria-hidden>
                   <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
             </div>
 
             <div className="mb-3">
-              <label className="sr-only" htmlFor="visualizacao">Tipo de visualização</label>
+              <label className="sr-only" htmlFor="visualizacao">Visualização</label>
               <div className="relative">
                 <select
                   id="visualizacao"
+                  value={filters.view}
+                  onChange={(e) => onChange("view", e.target.value)}
                   className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
                 >
-                  <option>Visualização</option>
-                  <option>Lista</option>
-                  <option>Grade</option>
+                  <option value="cards">Somente cards</option>
+                  <option value="charts">Somente gráficos</option>
+                  <option value="both">Cards e gráficos</option>
                 </select>
-                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10] pointer-events-none" viewBox="0 0 20 20" fill="none" aria-hidden>
+                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10]" viewBox="0 0 20 20" fill="none" aria-hidden>
                   <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
@@ -154,7 +157,7 @@ function LocalSideBar({ collapsed }: { collapsed: boolean }) {
 
           <div className="flex items-center justify-between mt-2">
             <button
-              type="button"
+              type="submit"
               className="inline-flex items-center justify-center bg-[#2F6F10] hover:bg-[#2b6310] px-6 py-2 rounded-full text-white transition"
             >
               aplicar
@@ -166,10 +169,9 @@ function LocalSideBar({ collapsed }: { collapsed: boolean }) {
                   <img src="/file.svg" alt="Quem somos" className="w-7 h-7 object-contain" />
                 </div>
               </Link>
-
-               <div className="text-sm">Quem somos?</div>
-             </div>
-           </div>
+              <div className="text-sm">Quem somos?</div>
+            </div>
+          </div>
         </form>
       </div>
     </aside>
@@ -195,78 +197,127 @@ function BRL(v: unknown) {
 export default function VisitantePage() {
   const [collapsed, setCollapsed] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [filters, setFilters] = useState({ from: "", to: "", agent: "", view: "both" });
 
   const [metrics, setMetrics] = useState<Metrics | null>(null);
+  const [series, setSeries] = useState<{ monthly: any[]; impactos: any[] } | null>(null);
+
+  // Garanta min-w-0 nos ancestrais e monte gráficos só após mount
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  const showCards  = filters.view === "cards"  || filters.view === "both";
+  const showCharts = filters.view === "charts" || filters.view === "both";
+
+  async function safeJson(res: Response) {
+    try {
+      const ct = res.headers.get("content-type") || "";
+      if (!ct.includes("application/json")) return null;
+      return await res.json();
+    } catch { return null; }
+  }
+
+  async function load() {
+    if (!showCards) return;
+    const p = new URLSearchParams();
+    if (filters.from) p.set("from", filters.from);
+    if (filters.to) p.set("to", filters.to);
+    if (filters.agent) p.set("agent", filters.agent);
+    if (searchValue.trim()) p.set("q", searchValue.trim());
+
+    const res = await fetch(`/api/visitantes/metrics?${p.toString()}`);
+    const json = await safeJson(res);
+    setMetrics(json ?? {
+      negociosGerados: 0,
+      disciplinasInovacao: 0,
+      pisCriadas: 0,
+      fomentoCaptado: 0,
+      eventosInovacao: 0,
+      alunosParticipantes: 0,
+    });
+  }
+
+  async function loadSeries() {
+    if (!showCharts) return;
+    const p = new URLSearchParams();
+    if (filters.from) p.set("from", filters.from);
+    if (filters.to) p.set("to", filters.to);
+    if (filters.agent) p.set("agent", filters.agent);
+    if (searchValue.trim()) p.set("q", searchValue.trim());
+
+    const res = await fetch(`/api/visitantes/series?${p.toString()}`);
+    const json = await safeJson(res);
+    setSeries(json ?? { monthly: [], impactos: [] });
+  }
 
   useEffect(() => {
-    fetch("/api/visitantes/metrics")
-      .then(r => r.json())
-      .then(setMetrics)
-      .catch(() => setMetrics({
-        negociosGerados: 0,
-        disciplinasInovacao: 0,
-        pisCriadas: 0,
-        fomentoCaptado: 0,
-        eventosInovacao: 0,
-        alunosParticipantes: 0,
-      }));
-  }, []);
+    const t = setTimeout(() => {
+      load();       // busca cards se necessário
+      loadSeries(); // busca gráficos se necessário
+    }, 300);
+    return () => clearTimeout(t);
+  }, [filters.from, filters.to, filters.agent, filters.view, searchValue]);
 
   return (
-    <div className="min-h-screen bg-[#F7F7F7]">
-      {/* Navbar fixa */}
+    <div className="flex flex-col min-h-screen bg-white">
       <LocalNavBar
-        onToggleSB={() => setCollapsed((v) => !v)}
-        onSearchChange={(v) => setSearchValue(v)}
+        onToggleSB={() => setCollapsed(v => !v)}
+        onSearchChange={setSearchValue}
         searchValue={searchValue}
       />
-      <div className="h-14" />
 
-      <main className="flex">
-        {/* remova o highlight — LocalSideBar agora ignora mudança de cor */}
-        <LocalSideBar collapsed={collapsed} />
+      <div className="flex flex-1 pt-14">
+        <LocalSideBar
+          collapsed={collapsed}
+          filters={filters}
+          onChange={(k, v) => setFilters(f => ({ ...f, [k]: v }))}
+          onApply={() => {}} // evitamos duplicidade
+        />
 
-        <section className="flex-1">
-          <div className="mx-auto w-full max-w-[1280px] px-6 mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              <Card
-                title="Negócios de inovação gerados (UFOPA)"
-                value={metrics?.negociosGerados ?? "—"}
-              />
-              <Card
-                title="Disciplinas de inovação do curso BCC"
-                value={metrics?.disciplinasInovacao ?? "—"}
-              />
-              <Card
-                title="Editais publicados (inovação)"
-                value={metrics?.pisCriadas ?? "—"}
-              />
-              <Card
-                title="Receita total de eventos de inovação"
-                value={metrics ? BRL(metrics.fomentoCaptado) : "—"}
-              />
-              <Card
-                title="Eventos de inovação cadastrados"
-                value={metrics?.eventosInovacao ?? "—"}
-              />
-              <Card
-                title="Alunos nas disciplinas de inovação (BCC)"
-                value={metrics?.alunosParticipantes ?? "—"}
-              />
+        <main className="flex-1 p-4 max-w-[1200px] mx-auto min-w-0">
+          {/* === LINHA DE CARDS (layout original) === */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
+            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
+              <div style={{ color: "#000", fontSize: 13, fontWeight: 500 }}>Negócios gerados:</div>
+              <div style={{ color: "#000", fontSize: 28, fontWeight: 700 }}>{metrics?.negociosGerados ?? 0}</div>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
+              <div style={{ color: "#000", fontSize: 13, fontWeight: 500 }}>Disciplinas de inovação:</div>
+              <div style={{ color: "#000", fontSize: 28, fontWeight: 700 }}>{metrics?.disciplinasInovacao ?? 0}</div>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
+              <div style={{ color: "#000", fontSize: 13, fontWeight: 500 }}>PIs criadas:</div>
+              <div style={{ color: "#000", fontSize: 28, fontWeight: 700 }}>{metrics?.pisCriadas ?? 0}</div>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
+              <div style={{ color: "#000", fontSize: 13, fontWeight: 500 }}>Fomento captado:</div>
+              <div style={{ color: "#000", fontSize: 28, fontWeight: 700 }}>{BRL(metrics?.fomentoCaptado ?? 0)}</div>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
+              <div style={{ color: "#000", fontSize: 13, fontWeight: 500 }}>Eventos realizados:</div>
+              <div style={{ color: "#000", fontSize: 28, fontWeight: 700 }}>{metrics?.eventosInovacao ?? 0}</div>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
+              <div style={{ color: "#000", fontSize: 13, fontWeight: 500 }}>Alunos envolvidos:</div>
+              <div style={{ color: "#000", fontSize: 28, fontWeight: 700 }}>{metrics?.alunosParticipantes ?? 0}</div>
             </div>
           </div>
-        </section>
-      </main>
-    </div>
-  );
-}
 
-/* ===== Card ===== */
-function Card({ title, value }: { title: string; value: string | number }) {
-  return (
-    <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-4 flex flex-col justify-center text-center hover:shadow-md transition">
-      <span className="text-sm text-zinc-700 mb-2 leading-snug">{title}</span>
-      <strong className="text-lg text-zinc-900">{value}</strong>
+          {/* === GRÁFICOS (como no layout original) === */}
+          <div className="bg-white rounded-2xl p-6 shadow-md mb-6">
+            <h3 className="text-sm font-semibold text-zinc-700 mb-3">Evolução da inovação na UFOPA</h3>
+            <MonthlyLineChart data={series?.monthly ?? []} />
+          </div>
+
+          <div className="bg-white rounded-2xl p-6 shadow-md">
+            <h3 className="text-sm font-semibold text-zinc-700 mb-3">Impactos gerados por disciplinas</h3>
+            <ImpactChart data={series?.impactos ?? []} />
+          </div>
+
+          {/* Removidos: blocos “Resumo”, “Gráficos Mensais” (com prop series),
+              “Impactos ao longo do tempo” (com prop series) e a “Tabela de Detalhes” */}
+        </main>
+      </div>
     </div>
   );
 }

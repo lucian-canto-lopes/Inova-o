@@ -25,3 +25,17 @@
   cursor: pointer;
   border: var(--dark-green) 4px solid;
 }
+
+/* força texto preto nos cards */
+.card-white,
+.card-white * {
+  color: #000 !important;
+  opacity: 1 !important;
+}
+
+/* específico para títulos e valores */
+.card-white .card-title,
+.card-white .card-value {
+  color: #000 !important;
+  opacity: 1 !important;
+}
