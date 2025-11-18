@@ -18,7 +18,7 @@ Salvar Normalmente
   - [x] Relacionar Cursos com Disciplinas
 - [x] Excluir cursos da db
 - [x] Criar rota para salvar os Editais
-  - [ ] Fazer conexão front -> back end
+  - [x] Fazer conexão front -> back end
 - [ ] Criar rota para salvar os Projetos
   - [ ] Fazer conexão front -> back end
 
@@ -28,3 +28,7 @@ Salvar Normalmente
   -- *Para isso tbm (?)*
   - [x] Motores -> Projetos
     - [x] Adicionar
+
+# Mudanças a Fazer:
+- [ ] Alterar os campos das dimensões que deveriam estar aceitando somente números, e estão aceitando uma string[]
+> Exemplo:  alunos_matriculados String[] em Disciplinas

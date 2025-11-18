@@ -448,7 +448,11 @@ export function Modal({
       </div>
       {isSubModalOpen && (
         // setValue={(value: any) => setSubModalValue(value)}
-        <SubModal dimensao={modalType == "disciplinas" ? "disciplinas" : "motores"} closeSubModal={() => setSubModalOpen(false)} data={{}} />
+        <SubModal
+          dimensao={modalType == "disciplinas" ? "disciplinas" : "motores"}
+          closeSubModal={() => setSubModalOpen(false)}
+          data={modalType == "disciplinas" ? { id: modalData.dimensaoId, editais: modalData.editais ?? [] } : {}}
+        />
       )}
     </section>
   )
