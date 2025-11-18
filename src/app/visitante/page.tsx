@@ -284,12 +284,12 @@ export default function VisitantePage() {
                   value={metrics?.negociosGerados ?? "—"}
                 />
                 <Card
-                  title="Disciplinas de inovação do curso BCC"
+                  title="Disciplinas de inovação em cursos de computação"
                   value={metrics?.disciplinasInovacao ?? "—"}
                 />
                 <Card
                   title="Editais publicados (inovação)"
-                  value={metrics?.pisCriadas ?? "—"}
+                  value={metrics?.editaisPublicados ?? "—"}
                 />
                 <Card
                   title="Receita total de eventos de inovação"

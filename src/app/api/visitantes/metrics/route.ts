@@ -16,7 +16,7 @@ export async function GET() {
     include: { Disciplinas_Cursos: { include: { disciplina: true } } }
   }), null as any);
 
-  const disciplinasInovacao = bcc?.Disciplinas_Cursos?.length ?? 0;
+  const disciplinasInovacao = await safe(() => prisma.disciplina.count(), 0);
 
   const alunosParticipantes = (bcc?.Disciplinas_Cursos ?? [])
     .reduce((sum: number, dc: any) =>
