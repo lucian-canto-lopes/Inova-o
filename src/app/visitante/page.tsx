@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 
 /* ===== NavBar (fixa e em largura total) ===== */
 function LocalNavBar({
@@ -68,13 +69,25 @@ function LocalNavBar({
 /* ===== SideBar (cola logo abaixo da navbar) ===== */
 /* substituído: agora exibe filtros em vez do menu */
 /* highlight controla a cor do título (branco/preto) */
-function LocalSideBar({ collapsed }: { collapsed: boolean }) {
+type Filters = { from: string; to: string; agent: string; view: "cards" | "charts" | "both" };
+
+function LocalSideBar({
+  collapsed,
+  filters,
+  onChange,
+  onApply,
+}: {
+  collapsed: boolean;
+  filters: Filters;
+  onChange: (key: keyof Filters, value: string) => void;
+  onApply: () => void;
+}) {
   return (
     <aside
       className="bg-[#4C7F16] text-white transition-[width,padding] duration-200 shrink-0 sticky top-14"
       style={{
         width: collapsed ? 0 : 300,
-        padding: collapsed ? "0 0 0 0" : "24px",
+        padding: collapsed ? "0" : "24px",
         overflow: "hidden",
         height: "calc(100vh - 56px)",
       }}
@@ -83,38 +96,32 @@ function LocalSideBar({ collapsed }: { collapsed: boolean }) {
         {/* Mantém sempre branco — não altera com o input */}
         <h2 className="text-3xl font-extrabold mb-4 text-white">Filtros</h2>
 
-        <form className="flex-1 flex flex-col justify-start">
+        <form
+          className="flex-1 flex flex-col justify-start"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onApply();
+          }}
+        >
           <div>
             <div className="grid grid-cols-2 gap-3 mb-3">
-              <label className="sr-only" htmlFor="periodo1">Período</label>
-              <div className="relative">
-                <select
-                  id="periodo1"
-                  className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
-                >
-                  <option>Período</option>
-                  <option>2024</option>
-                  <option>2023</option>
-                </select>
-                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10] pointer-events-none" viewBox="0 0 20 20" fill="none" aria-hidden>
-                  <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
+              <label className="sr-only" htmlFor="from">Data inicial</label>
+              <input
+                id="from"
+                type="date"
+                value={filters.from}
+                onChange={(e) => onChange("from", e.target.value)}
+                className="w-full rounded-xl px-4 py-2.5 bg-white text-black text-sm border border-transparent focus:ring-2 focus:ring-[#91BB63]/40"
+              />
 
-              <label className="sr-only" htmlFor="periodo2">Período</label>
-              <div className="relative">
-                <select
-                  id="periodo2"
-                  className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
-                >
-                  <option>Período</option>
-                  <option>Janeiro</option>
-                  <option>Fevereiro</option>
-                </select>
-                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10] pointer-events-none" viewBox="0 0 20 20" fill="none" aria-hidden>
-                  <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
+              <label className="sr-only" htmlFor="to">Data final</label>
+              <input
+                id="to"
+                type="date"
+                value={filters.to}
+                onChange={(e) => onChange("to", e.target.value)}
+                className="w-full rounded-xl px-4 py-2.5 bg-white text-black text-sm border border-transparent focus:ring-2 focus:ring-[#91BB63]/40"
+              />
             </div>
 
             <div className="mb-3">
@@ -122,11 +129,13 @@ function LocalSideBar({ collapsed }: { collapsed: boolean }) {
               <div className="relative">
                 <select
                   id="agente"
-                  className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
+                  value={filters.agent}
+                  onChange={(e) => onChange("agent", e.target.value)}
+                  className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
                 >
-                  <option>Agente</option>
-                  <option>Agente A</option>
-                  <option>Agente B</option>
+                  <option value="">Agente</option>
+                  <option value="1">Agente A</option>
+                  <option value="2">Agente B</option>
                 </select>
                 <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10] pointer-events-none" viewBox="0 0 20 20" fill="none" aria-hidden>
                   <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -139,11 +148,13 @@ function LocalSideBar({ collapsed }: { collapsed: boolean }) {
               <div className="relative">
                 <select
                   id="visualizacao"
-                  className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
+                  value={filters.view}
+                  onChange={(e) => onChange("view", e.target.value as Filters["view"])}
+                  className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
                 >
-                  <option>Visualização</option>
-                  <option>Lista</option>
-                  <option>Grade</option>
+                  <option value="cards">Somente cards</option>
+                  <option value="charts">Somente gráficos</option>
+                  <option value="both">Cards e gráficos</option>
                 </select>
                 <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10] pointer-events-none" viewBox="0 0 20 20" fill="none" aria-hidden>
                   <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -154,7 +165,7 @@ function LocalSideBar({ collapsed }: { collapsed: boolean }) {
 
           <div className="flex items-center justify-between mt-2">
             <button
-              type="button"
+              type="submit"
               className="inline-flex items-center justify-center bg-[#2F6F10] hover:bg-[#2b6310] px-6 py-2 rounded-full text-white transition"
             >
               aplicar
@@ -167,9 +178,9 @@ function LocalSideBar({ collapsed }: { collapsed: boolean }) {
                 </div>
               </Link>
 
-               <div className="text-sm">Quem somos?</div>
-             </div>
-           </div>
+              <div className="text-sm">Quem somos?</div>
+            </div>
+          </div>
         </form>
       </div>
     </aside>
@@ -186,6 +197,11 @@ type Metrics = {
   alunosParticipantes: number;
 };
 
+type SeriesPayload = {
+  monthly: { month: string; valor: number }[];
+  impactos: { nome: string; alunos: number }[];
+};
+
 function BRL(v: unknown) {
   const n = typeof v === "number" ? v : Number(v);
   if (!isFinite(n)) return "—";
@@ -196,64 +212,117 @@ export default function VisitantePage() {
   const [collapsed, setCollapsed] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
+  const [filters, setFilters] = useState<Filters>({
+    from: "",
+    to: "",
+    agent: "",
+    view: "both",
+  });
+  const [appliedFilters, setAppliedFilters] = useState(filters);
+
   const [metrics, setMetrics] = useState<Metrics | null>(null);
+  const [series, setSeries] = useState<SeriesPayload | null>(null);
+
+  const showCards = appliedFilters.view === "cards" || appliedFilters.view === "both";
+  const showCharts = appliedFilters.view === "charts" || appliedFilters.view === "both";
 
   useEffect(() => {
-    fetch("/api/visitantes/metrics")
-      .then(r => r.json())
+    const params = new URLSearchParams();
+    if (appliedFilters.from) params.set("from", appliedFilters.from);
+    if (appliedFilters.to) params.set("to", appliedFilters.to);
+    if (appliedFilters.agent) params.set("agent", appliedFilters.agent);
+    if (searchValue.trim()) params.set("q", searchValue.trim());
+
+    fetch(`/api/visitantes/metrics?${params.toString()}`)
+      .then((r) => r.json())
       .then(setMetrics)
-      .catch(() => setMetrics({
-        negociosGerados: 0,
-        disciplinasInovacao: 0,
-        pisCriadas: 0,
-        fomentoCaptado: 0,
-        eventosInovacao: 0,
-        alunosParticipantes: 0,
-      }));
-  }, []);
+      .catch(() =>
+        setMetrics({
+          negociosGerados: 0,
+          disciplinasInovacao: 0,
+          pisCriadas: 0,
+          fomentoCaptado: 0,
+          eventosInovacao: 0,
+          alunosParticipantes: 0,
+        })
+      );
+
+    if (!showCharts) {
+      setSeries(null);
+      return;
+    }
+
+    fetch(`/api/visitantes/series?${params.toString()}`)
+      .then((r) => r.json())
+      .then(setSeries)
+      .catch(() => setSeries({ monthly: [], impactos: [] }));
+  }, [appliedFilters, searchValue, showCharts]);
 
   return (
     <div className="min-h-screen bg-[#F7F7F7]">
-      {/* Navbar fixa */}
       <LocalNavBar
         onToggleSB={() => setCollapsed((v) => !v)}
-        onSearchChange={(v) => setSearchValue(v)}
+        onSearchChange={setSearchValue}
         searchValue={searchValue}
       />
       <div className="h-14" />
 
       <main className="flex">
-        {/* remova o highlight — LocalSideBar agora ignora mudança de cor */}
-        <LocalSideBar collapsed={collapsed} />
+        <LocalSideBar
+          collapsed={collapsed}
+          filters={filters}
+          onChange={(key, value) => setFilters((prev) => ({ ...prev, [key]: value }))}
+          onApply={() => setAppliedFilters(filters)}
+        />
 
         <section className="flex-1">
           <div className="mx-auto w-full max-w-[1280px] px-6 mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              <Card
-                title="Negócios de inovação gerados (UFOPA)"
-                value={metrics?.negociosGerados ?? "—"}
-              />
-              <Card
-                title="Disciplinas de inovação do curso BCC"
-                value={metrics?.disciplinasInovacao ?? "—"}
-              />
-              <Card
-                title="Editais publicados (inovação)"
-                value={metrics?.pisCriadas ?? "—"}
-              />
-              <Card
-                title="Receita total de eventos de inovação"
-                value={metrics ? BRL(metrics.fomentoCaptado) : "—"}
-              />
-              <Card
-                title="Eventos de inovação cadastrados"
-                value={metrics?.eventosInovacao ?? "—"}
-              />
-              <Card
-                title="Alunos nas disciplinas de inovação (BCC)"
-                value={metrics?.alunosParticipantes ?? "—"}
-              />
-            </div>
+            {showCards && (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <Card
+                  title="Negócios de inovação gerados (UFOPA)"
+                  value={metrics?.negociosGerados ?? "—"}
+                />
+                <Card
+                  title="Disciplinas de inovação do curso BCC"
+                  value={metrics?.disciplinasInovacao ?? "—"}
+                />
+                <Card
+                  title="Editais publicados (inovação)"
+                  value={metrics?.pisCriadas ?? "—"}
+                />
+                <Card
+                  title="Receita total de eventos de inovação"
+                  value={metrics ? BRL(metrics.fomentoCaptado) : "—"}
+                />
+                <Card
+                  title="Eventos de inovação cadastrados"
+                  value={metrics?.eventosInovacao ?? "—"}
+                />
+                <Card
+                  title="Alunos nas disciplinas de inovação (BCC)"
+                  value={metrics?.alunosParticipantes ?? "—"}
+                />
+              </div>
+            )}
+
+            {showCharts && series && (
+              <div className="mt-8 space-y-6 min-w-0">
+                <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-6">
+                  <h3 className="text-sm font-semibold text-zinc-800 mb-3">
+                    Evolução da inovação na UFOPA
+                  </h3>
+                  <MonthlyChart data={series.monthly} />
+                </div>
+
+                <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-6">
+                  <h3 className="text-sm font-semibold text-zinc-800 mb-3">
+                    Impactos gerados por disciplinas
+                  </h3>
+                  <ImpactChart data={series.impactos} />
+                </div>
+              </div>
+            )}
           </div>
         </section>
       </main>
@@ -267,6 +336,38 @@ function Card({ title, value }: { title: string; value: string | number }) {
     <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-4 flex flex-col justify-center text-center hover:shadow-md transition">
       <span className="text-sm text-zinc-700 mb-2 leading-snug">{title}</span>
       <strong className="text-lg text-zinc-900">{value}</strong>
+    </div>
+  );
+}
+
+function MonthlyChart({ data }: { data: { month: string; valor: number }[] }) {
+  return (
+    <div className="w-full min-w-0">
+      <ResponsiveContainer width="100%" height={320}>
+        <LineChart data={data}>
+          <CartesianGrid stroke="#ECECEC" strokeDasharray="4 4" />
+          <XAxis dataKey="month" />
+          <YAxis allowDecimals={false} />
+          <Tooltip />
+          <Line type="monotone" dataKey="valor" stroke="#4C7F16" strokeWidth={2} dot={false} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function ImpactChart({ data }: { data: { nome: string; alunos: number }[] }) {
+  return (
+    <div className="w-full min-w-0">
+      <ResponsiveContainer width="100%" height={320}>
+        <LineChart data={data}>
+          <CartesianGrid stroke="#ECECEC" strokeDasharray="4 4" />
+          <XAxis dataKey="nome" tick={{ fontSize: 11 }} />
+          <YAxis allowDecimals={false} />
+          <Tooltip />
+          <Line type="monotone" dataKey="alunos" stroke="#5C7AEA" strokeWidth={2} />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 }
