@@ -191,7 +191,7 @@ function LocalSideBar({
 type Metrics = {
   negociosGerados: number;
   disciplinasInovacao: number;
-  pisCriadas: number;
+  editaisPublicados: number;
   fomentoCaptado: number;
   eventosInovacao: number;
   alunosParticipantes: number;
@@ -240,7 +240,7 @@ export default function VisitantePage() {
         setMetrics({
           negociosGerados: 0,
           disciplinasInovacao: 0,
-          pisCriadas: 0,
+          editaisPublicados: 0,
           fomentoCaptado: 0,
           eventosInovacao: 0,
           alunosParticipantes: 0,
@@ -300,7 +300,7 @@ export default function VisitantePage() {
                   value={metrics?.eventosInovacao ?? "—"}
                 />
                 <Card
-                  title="Alunos nas disciplinas de inovação (BCC)"
+                  title="Alunos participantes em disciplinas de inovação"
                   value={metrics?.alunosParticipantes ?? "—"}
                 />
               </div>

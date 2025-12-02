@@ -1,26 +1,61 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import bcrypt from "bcrypt";
-import { prisma } from "@/src/lib/prisma";
-import { signToken } from "@/src/lib/auth";
+import { PrismaClient } from "../../../generated/prisma";
+import bcrypt from "bcryptjs";
+import { SignJWT } from "jose";
 
-export const runtime = "nodejs"; // garante Node runtime (necessário p/ bcrypt)
+const prisma = new PrismaClient();
+const SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "fallback-secret-change-me");
+
+async function signToken(payload: Record<string, unknown>) {
+  return await new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("7d")
+    .sign(SECRET);
+}
 
 export async function POST(req: Request) {
   try {
-    const { username, password } = await req.json().catch(() => ({}));
+    console.log("=== LOGIN INICIADO ===");
+
+    const body = await req.json();
+    console.log("Body recebido:", { username: body.username, hasPassword: !!body.password });
+
+    const username = body.username;
+    const password = body.password;
+
     if (!username || !password) {
-      return NextResponse.json({ ok: false, message: "Dados inválidos" }, { status: 400 });
+      console.log("Campos faltando");
+      return NextResponse.json({ message: "Usuário e senha obrigatórios" }, { status: 400 });
     }
 
-    const user = await prisma.usuario.findUnique({ where: { nome_usuario: String(username).trim() } });
-    if (!user) return NextResponse.json({ ok: false, message: "Credenciais inválidas" }, { status: 401 });
+    console.log("Buscando usuário:", username);
 
-    const ok = await bcrypt.compare(String(password), user.senha);
-    if (!ok) return NextResponse.json({ ok: false, message: "Credenciais inválidas" }, { status: 401 });
+    const user = await prisma.usuario.findFirst({
+      where: { nome_usuario: username },
+    });
 
-    const token = signToken({ u: user.id, exp: Date.now() + 1000 * 60 * 60 * 24 * 7 });
-    cookies().set("session", token, {
+    console.log("Usuário encontrado:", user ? "SIM" : "NÃO");
+
+    if (!user) {
+      return NextResponse.json({ message: "Credenciais inválidas" }, { status: 401 });
+    }
+
+    console.log("Comparando senha...");
+    const valid = await bcrypt.compare(password, user.senha);
+    console.log("Senha válida:", valid);
+
+    if (!valid) {
+      return NextResponse.json({ message: "Credenciais inválidas" }, { status: 401 });
+    }
+
+    console.log("Gerando token...");
+    const token = await signToken({ u: user.id });
+    console.log("Token gerado");
+
+    console.log("Salvando cookie...");
+    const cookieStore = await cookies();
+    cookieStore.set("piape.token", token, {
       httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
@@ -28,9 +63,13 @@ export async function POST(req: Request) {
       maxAge: 60 * 60 * 24 * 7,
     });
 
-    return NextResponse.json({ ok: true });
-  } catch (e) {
-    console.error(e);
-    return NextResponse.json({ ok: false, message: "Erro interno" }, { status: 500 });
+    console.log("=== LOGIN SUCESSO ===");
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("=== ERRO NO LOGIN ===");
+    console.error("Tipo:", typeof err);
+    console.error("Mensagem:", err instanceof Error ? err.message : err);
+    console.error("Stack:", err instanceof Error ? err.stack : "N/A");
+    return NextResponse.json({ message: "Erro interno" }, { status: 500 });
   }
 }
