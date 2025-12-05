@@ -350,7 +350,7 @@ export function Modal({
     }
 
     relationsBlock: try { // Atualiza as relações marcadas no modal
-      if (!modalData.dimensaoId) break relationsBlock;
+      if (!modalData.dimensaoId) break relationsBlock; // tenho que atualizar como a api salva novas dimensões para conseguir salvar as relações
 
       const relationsIds = relations.flatMap((r: any) => r.related ? [r.id] : []);
       const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${modalData.dimensaoId}/relations`, {
@@ -431,7 +431,7 @@ export function Modal({
                         <ul>
                           {filteredRelations.map((relation: any) => {
                             // Se há relações, o checkbox fica marcado
-                            return <li key={`li-${relation.id}`}><input type="checkbox" id={`cb-${relation.id}`} checked={relation.related} onChange={(e) => toggleRelations(relation.id, e.target.checked)} />
+                            return <li key={`li-${relation.id}`}><input type="checkbox" id={`cb-${relation.id}`} checked={relation.related ?? ''} onChange={(e) => toggleRelations(relation.id, e.target.checked)} />
                               <label htmlFor={`cb-${relation.id}`}>{relation.nome}</label>
                             </li>
                           })}
@@ -449,9 +449,9 @@ export function Modal({
       {isSubModalOpen && (
         // setValue={(value: any) => setSubModalValue(value)}
         <SubModal
-          dimensao={modalType == "disciplinas" ? "disciplinas" : "motores"}
+          dimensao={modalType}
           closeSubModal={() => setSubModalOpen(false)}
-          data={modalType == "disciplinas" ? { id: modalData.dimensaoId, editais: modalData.editais ?? [] } : {}}
+          data={modalData}
         />
       )}
     </section>

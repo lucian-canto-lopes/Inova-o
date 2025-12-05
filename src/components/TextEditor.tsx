@@ -59,7 +59,7 @@ export default function TextEditor({
           const formData = new FormData();
           formData.append("file", file);
           
-          const res = await fetch("api/upload", {
+          const res = await fetch("http://localhost:3000/api/upload", {
             method: "POST",
             body: formData,
           });
