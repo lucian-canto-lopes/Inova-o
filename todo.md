@@ -19,8 +19,11 @@ Salvar Normalmente
 - [x] Excluir cursos da db
 - [x] Criar rota para salvar os Editais
   - [x] Fazer conexão front -> back end
-- [ ] Criar rota para salvar os Projetos
-  - [ ] Fazer conexão front -> back end
+- [x] Criar rota para salvar os Projetos
+  - [x] Fazer conexão front -> back end
+
+- [x] Enviar imagens maiores de 1mb
+- [x] Arrumar a rota de upload de imagens
 
 - [x] SubModais (Front end)
   - [x] Disciplinas -> Editais
@@ -29,6 +32,9 @@ Salvar Normalmente
   - [x] Motores -> Projetos
     - [x] Adicionar
 
-# Mudanças a Fazer:
+# Mudanças/Correções a Fazer:
 - [ ] Alterar os campos das dimensões que deveriam estar aceitando somente números, e estão aceitando uma string[]
 > Exemplo:  alunos_matriculados String[] em Disciplinas
+- [ ] Corrigir: As relações não são salvas ao salvar uma nova dimensão
+  - > Motivo: A api tenta fazer a relação da nova dimensão sem ter o id dela, pois ala inda não foi salva, causando um erro 
+- [ ] Quando salvar submodais, Atualizar o modal

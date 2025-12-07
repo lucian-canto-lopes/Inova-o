@@ -1,9 +1,6 @@
-import { PrismaClient } from "../generated/prisma";
+// Esse arquivo é redundante, vc já pode acessar um cliente do prima com: import prisma from "@/lib/prisma";
+// Vou deletar esse arquivo da proxima vez, e pode deixar que eu arrumo as importações que estão usando esse arquivo
 
-const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+import rootPrisma from "../../lib/prisma";
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient();
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-
-export default prisma;
+export const prisma = rootPrisma;
