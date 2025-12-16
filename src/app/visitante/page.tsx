@@ -70,17 +70,20 @@ function LocalNavBar({
 /* substituído: agora exibe filtros em vez do menu */
 /* highlight controla a cor do título (branco/preto) */
 type Filters = { from: string; to: string; agent: string; view: "cards" | "charts" | "both" };
+type Motor = { dimensaoId: number; nome: string };
 
 function LocalSideBar({
   collapsed,
   filters,
   onChange,
   onApply,
+  motores,
 }: {
   collapsed: boolean;
   filters: Filters;
   onChange: (key: keyof Filters, value: string) => void;
   onApply: () => void;
+  motores: Motor[];
 }) {
   return (
     <aside
@@ -125,7 +128,7 @@ function LocalSideBar({
             </div>
 
             <div className="mb-3">
-              <label className="sr-only" htmlFor="agente">Agente responsável</label>
+              <label className="sr-only" htmlFor="agente">Motor responsável</label>
               <div className="relative">
                 <select
                   id="agente"
@@ -133,9 +136,12 @@ function LocalSideBar({
                   onChange={(e) => onChange("agent", e.target.value)}
                   className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
                 >
-                  <option value="">Agente</option>
-                  <option value="1">Agente A</option>
-                  <option value="2">Agente B</option>
+                  <option value="">Agentes</option>
+                  {motores.map((m) => (
+                    <option key={m.dimensaoId} value={m.dimensaoId}>
+                      {m.nome}
+                    </option>
+                  ))}
                 </select>
                 <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10] pointer-events-none" viewBox="0 0 20 20" fill="none" aria-hidden>
                   <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -222,9 +228,18 @@ export default function VisitantePage() {
 
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [series, setSeries] = useState<SeriesPayload | null>(null);
+  const [motores, setMotores] = useState<Motor[]>([]);
 
   const showCards = appliedFilters.view === "cards" || appliedFilters.view === "both";
   const showCharts = appliedFilters.view === "charts" || appliedFilters.view === "both";
+
+  // Buscar motores ao carregar a página
+  useEffect(() => {
+    fetch("/api/visitantes/motores")
+      .then((r) => r.json())
+      .then(setMotores)
+      .catch(() => setMotores([]));
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -273,6 +288,7 @@ export default function VisitantePage() {
           filters={filters}
           onChange={(key, value) => setFilters((prev) => ({ ...prev, [key]: value }))}
           onApply={() => setAppliedFilters(filters)}
+          motores={motores}
         />
 
         <section className="flex-1">
