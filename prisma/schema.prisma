@@ -42,8 +42,8 @@ model Disciplina {
   coordenador         String
   semestre            String
   codigo              String               @unique
-  alunos_matriculados String[]
-  alunos_aprovados    String[]
+  alunos_matriculados Int
+  alunos_aprovados    Int
   editais             Json?
   Disciplinas_Cursos  Disciplinas_Cursos[]
 }

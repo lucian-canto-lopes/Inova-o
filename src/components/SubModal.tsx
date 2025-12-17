@@ -154,11 +154,6 @@ export default function SubModal({
             closeSubModal();
             router.refresh();
           }} />
-          <FaRegTrashAlt onClick={() => {
-            deleteInstance();
-            closeSubModal();
-            router.refresh();
-          }} />
           <FaX onClick={closeSubModal} />
         </header>
         <div>
@@ -230,7 +225,6 @@ export default function SubModal({
 
         const formData = new FormData(formRef.current);
         const body = Object.fromEntries(formData.entries());
-        console.log(body);
 
         const response = await fetch("/api/dimensoes/disciplinas/cursos", {
           method: "POST",
@@ -246,7 +240,6 @@ export default function SubModal({
         }
 
         const result = await response.json();
-        console.log(result);
       };
 
       deleteInstance = async () => {
