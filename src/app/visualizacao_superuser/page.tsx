@@ -10,7 +10,7 @@ export default function SuperUserPage() {
 
   const menuItems = [
     { title: "Editar\ndados", href: "/dimensoes", icon: <FaClipboard /> },
-    { title: "Visualizar\ndados", href: "/visitante", icon: <FaClipboard /> },
+    { title: "Visualizar\ndados", href: "/visualizacao_superuser/ver_dados", icon: <FaClipboard /> },
     { title: "Relatórios", href: "/visualizacao_superuser/relatorios", icon: <FaClipboard /> },
   ];
 
