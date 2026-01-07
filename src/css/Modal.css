@@ -6,13 +6,12 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   background-color: white;
   border-radius: 20px;
   max-width: 1330px;
@@ -115,15 +114,38 @@
     font-size: 1.1rem;
   }
 
-  & input {
+  & input, & select {
     padding: 12px 16px;
     border-radius: 8px;
     border: 1px solid lightgray;
     outline: none;
   }
 
-  & input:focus {
+  & input:focus, & select:focus {
     border: 1px solid var(--dark-green);
+  }
+
+  & select, ::picker(select) {
+    appearance: base-select;
+    cursor: pointer;
+  }
+  
+  ::picker(select) {
+    inset: auto;
+    padding: 0;
+    border: var(--light-green) 1px solid;
+    border-radius: 10px;
+    margin-top: 4px;
+  }
+
+  & select::picker-icon {
+    content: "▼";
+    color: var(--dark-green);
+    transition: all ease-in-out .25s;
+  }
+
+  & select:open::picker-icon {
+    rotate: 180deg;
   }
 }
 

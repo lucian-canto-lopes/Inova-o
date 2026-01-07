@@ -33,6 +33,9 @@ Salvar Normalmente
     - [x] Adicionar
     - [ ] Funcionalidade de adicionar imagens
 
+- [x] Adicionar campos: carga horaria e Status para disciplinas
+- [x] Adicionar Campos: prazo e status para projetos
+
 # Mudanças/Correções a Fazer:
 - [x] Alterar os campos das dimensões que deveriam estar aceitando somente números, e estão aceitando uma string[]
   - > Exemplo:  alunos_matriculados String[] em Disciplinas

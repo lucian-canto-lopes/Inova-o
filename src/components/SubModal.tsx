@@ -1,11 +1,11 @@
 'use client'
 import { FaPlus, FaTrophy, FaX } from 'react-icons/fa6';
-import { FaFolderOpen, FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
+import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import { formatCurrency } from './Modal';
-import "../css/SubModal.css"
 import { useRef, useState } from 'react';
 import { LuImagePlus } from 'react-icons/lu';
 import { useRouter } from 'next/navigation';
+import "../css/SubModal.css"
 
 type SubModalTypes = "disciplinas" | "motores" | "cursos" | "eventos" | "negocios"
 
@@ -30,7 +30,7 @@ export default function SubModal({
   let content;
   let saveContent: () => void;
   let deleteInstance: () => void;
-  
+
   const [editais, setEditais] = useState(data.editais || data.projetos || []); // está nomeado como editais, mas cerve para Projetos tbm, fique a vontade para mudar o nome, desde que não quebre nada
 
   const addEdital = () => {
@@ -76,8 +76,8 @@ export default function SubModal({
         </header>
         <div>
           <h1>Disciplinas {isAdd ? (<> → <span onClick={() => setIsAdd(false)}>Editais</span> → Adicionar</>) : (<>→ Editais</>)}</h1>
-          <section style={isAdd ? { transform: "translateX(-100%)" } : {}}>
-            <div>
+          <section>
+            <div style={isAdd ? { width: "translateX(-100%)" } : {}}>
               <button onClick={() => setIsAdd(true)}><span>Adicionar</span><FaPlus /></button>
               <table>
                 <tbody>
@@ -158,8 +158,8 @@ export default function SubModal({
         </header>
         <div>
           <h1>Motores {isAdd ? (<> → <span onClick={() => setIsAdd(false)}>Projetos</span> → Adicionar</>) : (<>→ Projetos</>)}</h1>
-          <section style={isAdd ? { transform: "translateX(-100%)" } : {}}>
-            <div>
+          <section>
+            <div style={isAdd ? { display: "none" } : {}}>
               <button onClick={() => setIsAdd(true)}><span>Adicionar</span><FaPlus /></button>
               <table>
                 <tbody>
@@ -207,7 +207,22 @@ export default function SubModal({
                     <input placeholder="Duração do projeto" autoComplete="off" type="text" id='duracao' name='duracao' />
                   </div>
                 </div>
-                <button><span>Adicionar Imagem</span><LuImagePlus /></button>
+                <div className="columns">
+                  <div className="input-box">
+                    <label htmlFor="prazo">Prazo</label>
+                    <input placeholder="Data de criação do projeto" autoComplete="off" type="date" id='prazo' name='prazo' />
+                  </div>
+                  <div className="input-box">
+                    <label htmlFor="d-status">Carga Horaria</label>
+                    <select name="status" id="d-status">
+                      <option value="progresso">Em progresso</option>
+                      <option value="hiatos">Em hiato</option>
+                      <option value="encerrado">Encerrado</option>
+                      <option value="cancelado">Cancelado</option>
+                    </select>
+                  </div>
+                </div>
+                <button disabled><span>Adicionar Imagem</span><LuImagePlus /></button>
               </form>
               <button onClick={() => {
                 addEdital();

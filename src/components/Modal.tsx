@@ -77,6 +77,21 @@ export function Modal({
                   <input autoComplete='off' type="number" id="d-a-aprovados" name='alunos_aprovados' defaultValue={modalData?.alunos_aprovados || ""} />
                 </div>
               </div>
+              <div className="columns">
+                <div className="input-box">
+                  <label htmlFor="d-carga-horaria">Carga Horaria</label>
+                  <input type="number" name="carga_horaria" id="d-carga-horaria" defaultValue={modalData?.carga_horaria || ""} />
+                </div>
+                <div className="input-box">
+                  <label htmlFor="d-status">Carga Horaria</label>
+                  <select name="status" id="d-status">
+                    <option value="progresso">Em progresso</option>
+                    <option value="hiatos">Em hiato</option>
+                    <option value="encerrado">Encerrado</option>
+                    <option value="cancelado">Cancelado</option>
+                  </select>
+                </div>
+              </div>
             </form>
             <button onClick={() => setSubModalOpen(true)}><span>Editais</span><FaList /></button>
             <div className="relacoes-div">
