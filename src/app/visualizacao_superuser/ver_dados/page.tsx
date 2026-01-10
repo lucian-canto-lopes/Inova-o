@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell
+} from "recharts";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 
@@ -97,6 +100,8 @@ export default function VerDadosPage() {
   });
 
   const [cardSelecionado, setCardSelecionado] = useState<CardType>(null);
+  const [showGraficoModal, setShowGraficoModal] = useState(false);
+  const [tipoGrafico, setTipoGrafico] = useState<"barra" | "pizza" | "linha" | null>(null);
 
   // Dados de exemplo - esses valores viriam de uma API
   const dados = {
@@ -129,12 +134,95 @@ export default function VerDadosPage() {
     setCardSelecionado(null);
   };
 
+  const COLORS = ["#5a8a2a", "#82ca9d", "#8884d8", "#ffc658", "#e57373", "#ba68c8", "#ffd54f", "#4fc3f7"]; // para pizza
+
   const renderTabela = () => {
     if (!cardSelecionado) return null;
-
     const dadosCard = dadosDetalhados[cardSelecionado];
     if (!dadosCard) return null;
 
+    // Se tipoGrafico está definido, renderiza o gráfico e não a tabela
+    if (tipoGrafico) {
+      // Prepara os dados para o gráfico
+      // Para gráfico de pizza, pega as colunas e soma valores numéricos
+      let data = [];
+      if (tipoGrafico === "pizza") {
+        // Cada coluna vira uma fatia, soma os valores numéricos
+        data = dadosCard.colunas.map((col, idx) => {
+          let total = 0;
+          dadosCard.dados.forEach((linha: any) => {
+            const valor = linha[col.toLowerCase()] || linha[col] || linha[Object.keys(linha)[idx]];
+            const num = typeof valor === "string" ? Number(valor.replace(/[^\d,.-]/g, '').replace(',', '.')) : Number(valor);
+            if (!isNaN(num)) total += num;
+          });
+          return { name: col, value: total };
+        });
+      } else {
+        // Para barra e linha, cada linha é um ponto
+        data = dadosCard.dados.map((linha: any, idx: number) => {
+          const obj: any = { name: linha.nome || linha.projeto || linha.titulo || linha.area || `Item ${idx+1}` };
+          dadosCard.colunas.forEach((col) => {
+            const valor = linha[col.toLowerCase()] || linha[col];
+            const num = typeof valor === "string" ? Number(valor.replace(/[^\d,.-]/g, '').replace(',', '.')) : Number(valor);
+            obj[col] = !isNaN(num) && valor !== undefined ? num : valor;
+          });
+          return obj;
+        });
+      }
+
+      return (
+        <div className="w-full h-full flex flex-col items-center justify-center">
+          <div className="bg-white rounded-lg shadow p-6 w-full max-w-2xl">
+            <h2 className="text-xl font-bold mb-4 text-[#4C7F16]">{dadosCard.titulo} - Gráfico</h2>
+            <div style={{ width: '100%', height: 350 }}>
+              <ResponsiveContainer width="100%" height={300}>
+                {tipoGrafico === "barra" && (
+                  <BarChart data={data}>
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    {dadosCard.colunas.map((col, idx) => (
+                      <Bar key={col} dataKey={col} fill={COLORS[idx % COLORS.length]} />
+                    ))}
+                  </BarChart>
+                )}
+                {tipoGrafico === "linha" && (
+                  <LineChart data={data}>
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    {dadosCard.colunas.map((col, idx) => (
+                      <Line key={col} type="monotone" dataKey={col} stroke={COLORS[idx % COLORS.length]} strokeWidth={2} />
+                    ))}
+                  </LineChart>
+                )}
+                {tipoGrafico === "pizza" && (
+                  <PieChart>
+                    <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
+                      {data.map((entry, idx) => (
+                        <Cell key={`cell-${idx}`} fill={COLORS[idx % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Legend />
+                    <Tooltip />
+                  </PieChart>
+                )}
+              </ResponsiveContainer>
+            </div>
+            <button
+              className="mt-6 bg-[#4C7F16] hover:bg-[#3d6812] text-white px-6 py-2 rounded text-sm transition"
+              onClick={() => setTipoGrafico(null)}
+            >
+              Voltar para a lista
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // Se não, renderiza a tabela normalmente
     return (
       <div className="w-full h-full flex flex-col">
         <div className="bg-white rounded-lg shadow flex-1 overflow-auto">
@@ -163,10 +251,55 @@ export default function VerDadosPage() {
         </div>
 
         <div className="flex justify-center mt-6">
-          <button className="bg-[#4C7F16] hover:bg-[#3d6812] text-white px-8 py-2 rounded text-sm transition">
+          <button
+            className="bg-[#4C7F16] hover:bg-[#3d6812] text-white px-8 py-2 rounded text-sm transition"
+            onClick={() => setShowGraficoModal(true)}
+          >
             Gerar gráfico
           </button>
         </div>
+
+        {/* Modal de seleção de gráfico */}
+        {showGraficoModal && (
+          <div
+            className="fixed inset-0 flex items-center justify-center z-50"
+            style={{
+              background: 'rgba(255,255,255,0.3)',
+              backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)'
+            }}
+          >
+            <div className="bg-white rounded-lg p-8 min-w-[320px] shadow-lg flex flex-col items-center">
+              <h3 className="text-lg font-semibold mb-4 text-[#4C7F16]">Escolha o tipo de gráfico</h3>
+              <div className="flex flex-col gap-3 w-full">
+                <button
+                  className="border border-[#4C7F16] text-[#4C7F16] rounded px-4 py-2 hover:bg-[#e8f5e9]"
+                  onClick={() => { setTipoGrafico("barra"); setShowGraficoModal(false); }}
+                >
+                  Gráfico de Barra
+                </button>
+                <button
+                  className="border border-[#4C7F16] text-[#4C7F16] rounded px-4 py-2 hover:bg-[#e8f5e9]"
+                  onClick={() => { setTipoGrafico("pizza"); setShowGraficoModal(false); }}
+                >
+                  Gráfico de Pizza
+                </button>
+                <button
+                  className="border border-[#4C7F16] text-[#4C7F16] rounded px-4 py-2 hover:bg-[#e8f5e9]"
+                  onClick={() => { setTipoGrafico("linha"); setShowGraficoModal(false); }}
+                >
+                  Gráfico de Linha
+                </button>
+              </div>
+              <button
+                className="mt-6 text-gray-500 hover:text-gray-700"
+                onClick={() => setShowGraficoModal(false)}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     );
   };
@@ -246,7 +379,7 @@ export default function VerDadosPage() {
             </button>
             <Link href="/visualizacao_superuser/ver_dados/visu_grafico">
               <button className="w-full bg-[#3d6812] hover:bg-[#2d5010] px-6 py-2 rounded text-sm transition">
-                Gerar gráfico
+                Visualizar gráficos
               </button>
             </Link>
           </div>
