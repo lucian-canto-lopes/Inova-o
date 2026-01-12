@@ -71,10 +71,25 @@ export function Modal({
               <div className="columns">
                 <div className="input-box">
                   <label htmlFor="d-a-matriculados">Alunos Matriculados</label>
-                  <input autoComplete='off' type="text" id="d-a-matriculados" name='alunos_matriculados' defaultValue={modalData?.alunos_matriculados?.join(", ")} />
+                  <input autoComplete='off' type="number" id="d-a-matriculados" name='alunos_matriculados' defaultValue={modalData?.alunos_matriculados || ""} />
                 </div><div className="input-box">
                   <label htmlFor="d-a-aprovados">Alunos Aprovados</label>
-                  <input autoComplete='off' type="text" id="d-a-aprovados" name='alunos_aprovados' defaultValue={modalData?.alunos_aprovados?.join(", ")} />
+                  <input autoComplete='off' type="number" id="d-a-aprovados" name='alunos_aprovados' defaultValue={modalData?.alunos_aprovados || ""} />
+                </div>
+              </div>
+              <div className="columns">
+                <div className="input-box">
+                  <label htmlFor="d-carga-horaria">Carga Horaria</label>
+                  <input type="number" name="carga_horaria" id="d-carga-horaria" defaultValue={modalData?.carga_horaria || ""} />
+                </div>
+                <div className="input-box">
+                  <label htmlFor="d-status">Carga Horaria</label>
+                  <select name="status" id="d-status">
+                    <option value="progresso">Em progresso</option>
+                    <option value="hiatos">Em hiato</option>
+                    <option value="encerrado">Encerrado</option>
+                    <option value="cancelado">Cancelado</option>
+                  </select>
                 </div>
               </div>
             </form>
@@ -231,7 +246,7 @@ export function Modal({
                 </div>
               </div>
             </form>
-            <button onClick={() => setSubModalOpen(true)}><span>Projetos Executados</span><FaList /></button>
+            <button onClick={() => handleSubModal(true)}><span>Projetos Executados</span><FaList /></button>
           </>
         )
       default:
@@ -244,6 +259,17 @@ export function Modal({
 
   // useState - Submodal
   const [isSubModalOpen, setSubModalOpen] = useState<boolean>(false);
+  const [modalDataUS, setModalDataUS] = useState(modalData);
+
+  // Atualiza os dados dos submodais toda vez que eles são abertos
+  const handleSubModal = async (abrir: boolean) => {
+    const res = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${modalData.dimensaoId}`);
+    if (res.ok) {
+      const data = await res.json();
+      setModalDataUS(data.data);
+    }
+    setSubModalOpen(abrir);
+  }
 
   // Cursos - useStates & useMemos
   const [cursos, setCursos] = useState<any>([]);
@@ -311,6 +337,8 @@ export function Modal({
     const body = Object.fromEntries(formData.entries());
     body["conteudo"] = textValue;
 
+    let id;
+
     try {
       const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}` + (modalData.dimensaoId ? `/${modalData.dimensaoId}` : ''), {
         method: modalData.dimensaoId ? "PUT" : "POST",
@@ -327,6 +355,7 @@ export function Modal({
 
       const result = await response.json();
       console.log("Sucesso: ", result);
+      id = result.id;
     } catch (error) {
       console.log(`[ERROR]: ${error}`);
     };
@@ -350,10 +379,10 @@ export function Modal({
     }
 
     relationsBlock: try { // Atualiza as relações marcadas no modal
-      if (!modalData.dimensaoId) break relationsBlock; // tenho que atualizar como a api salva novas dimensões para conseguir salvar as relações
+      if (!id) break relationsBlock; // tenho que atualizar como a api salva novas dimensões para conseguir salvar as relações
 
       const relationsIds = relations.flatMap((r: any) => r.related ? [r.id] : []);
-      const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${modalData.dimensaoId}/relations`, {
+      const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${id}/relations`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -451,7 +480,7 @@ export function Modal({
         <SubModal
           dimensao={modalType}
           closeSubModal={() => setSubModalOpen(false)}
-          data={modalData}
+          data={modalDataUS}
         />
       )}
     </section>

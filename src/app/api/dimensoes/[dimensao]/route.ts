@@ -68,8 +68,8 @@ export async function POST(
           coordenador: body.coordenador,
           semestre: body.semestre,
           codigo: body.codigo,
-          alunos_matriculados: toArray(body.alunos_matriculados),
-          alunos_aprovados: toArray(body.alunos_aprovados),
+          alunos_matriculados: parseInt(body.alunos_matriculados),
+          alunos_aprovados: parseInt(body.alunos_aprovados),
           dimensao: {
             create: {
               tipo: "disciplinas",
@@ -83,7 +83,7 @@ export async function POST(
       });
 
       if (!disciplina) return NextResponse.json({ message: "Não foi possível criar uma Disciplina" }, { status: 500 });
-      return NextResponse.json({ message: "Sucesso em Disciplinas" }, { status: 201 });
+      return NextResponse.json({ message: "Sucesso em Disciplinas", id: disciplina.dimensaoId }, { status: 201 });
 
     case "eventos":
       const evento = await prisma.evento.create({
@@ -112,7 +112,7 @@ export async function POST(
       });
 
       if (!evento) return NextResponse.json({ message: "Não foi possível criar um Evento" }, { status: 500 });
-      return NextResponse.json({ message: "Sucesso em criar Evento" }, { status: 201 });
+      return NextResponse.json({ message: "Sucesso em criar Evento", id: evento.dimensaoId }, { status: 201 });
 
     case "motores":
       const motor = await prisma.motor.create({
@@ -139,7 +139,7 @@ export async function POST(
       });
 
       if (!motor) return NextResponse.json({ message: "Não foi possível criar um Motor" }, { status: 500 });
-      return NextResponse.json({ message: "Sucesso em criar Motor" }, { status: 201 });
+      return NextResponse.json({ message: "Sucesso em criar Motor", id: motor.dimensaoId }, { status: 201 });
 
     case "negocios":
       const negocio = await prisma.negocio.create({
@@ -163,7 +163,7 @@ export async function POST(
       });
 
       if (!negocio) return NextResponse.json({ message: "Não foi possível criar um Negócio" }, { status: 500 });
-      return NextResponse.json({ message: "Sucesso ao criar Negócio " }, { status: 201 });
+      return NextResponse.json({ message: "Sucesso ao criar Negócio ", id: negocio.dimensaoId }, { status: 201 });
 
     default:
       return NextResponse.json({ message: "Bad Request" }, { status: 400 });

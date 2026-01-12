@@ -15,7 +15,6 @@ function Card({
     const response = await fetch(`http://localhost:3000/api/dimensoes/` + (data.tipo === "cursos" ? `disciplinas/cursos/${data.id}` :`${data.tipo}/${data.id}`));
     if (!response.ok) return {};
     const dimensaoData = await response.json();
-    console.log(dimensaoData)
     return dimensaoData;
   }
   
