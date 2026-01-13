@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell
 } from "recharts";
@@ -72,15 +72,31 @@ type ApiResponse = {
   };
 };
 
+const FILTROS_INICIAIS = {
+  tipo: "",
+  fonte: "",
+  ano: "",
+  semestre: "",
+  disciplina: "",
+  curso: "",
+};
+
+type FiltroKey = keyof typeof FILTROS_INICIAIS;
+
+const FILTROS_POR_CARD: Record<Exclude<CardType, null>, FiltroKey[]> = {
+  negocios: ["tipo", "fonte"],
+  disciplinas: ["disciplina", "semestre", "ano", "fonte"],
+  alunos: ["disciplina", "semestre", "ano", "fonte"],
+  fomento: ["curso", "fonte"],
+  eventos: ["tipo", "ano", "fonte"],
+  capital: ["curso", "fonte"],
+  motores: ["tipo", "fonte"],
+  publico_eventos: ["tipo", "ano", "fonte"],
+};
+
 export default function VerDadosPage() {
-  const [filtros, setFiltros] = useState({
-    tipo: "",
-    fonte: "",
-    ano: "",
-    semestre: "",
-    disciplina: "",
-    curso: "",
-  });
+  const [filtros, setFiltros] = useState(FILTROS_INICIAIS);
+  const [filtrosAplicados, setFiltrosAplicados] = useState(FILTROS_INICIAIS);
 
   const [cardSelecionado, setCardSelecionado] = useState<CardType>(null);
   const [showGraficoModal, setShowGraficoModal] = useState(false);
@@ -93,6 +109,16 @@ export default function VerDadosPage() {
   const [cursoOptions, setCursoOptions] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const filtrosAtivos = useMemo(() => {
+    return (Object.entries(filtrosAplicados) as [FiltroKey, string][])
+      .filter(([, valor]) => String(valor).trim() !== "");
+  }, [filtrosAplicados]);
+
+  const cardVisivel = (tipo: Exclude<CardType, null>) => {
+    if (filtrosAtivos.length === 0) return true;
+    const filtrosSuportados = FILTROS_POR_CARD[tipo];
+    return filtrosAtivos.every(([filtro]) => filtrosSuportados.includes(filtro));
+  };
 
   useEffect(() => {
     const carregarDados = async () => {
@@ -243,6 +269,10 @@ export default function VerDadosPage() {
     setFiltros((prev) => ({ ...prev, [campo]: valor }));
   };
 
+  const handleSalvarFiltros = () => {
+    setFiltrosAplicados({ ...filtros });
+  };
+
   const formatarMoeda = (valor: number) => {
     return Number(valor || 0).toLocaleString("pt-BR", {
       style: "currency",
@@ -287,45 +317,86 @@ export default function VerDadosPage() {
     return String(data.getFullYear());
   };
 
-  const aplicarFiltros = (dados: Record<string, any>[], cardTipo: CardType) => {
+  const aplicarFiltros = (
+    dados: Record<string, any>[],
+    cardTipo: CardType,
+    filtrosBase = filtrosAplicados,
+  ) => {
     if (!cardTipo) return dados;
     return dados.filter((linha) => {
-      if (filtros.curso && (cardTipo === "fomento" || cardTipo === "capital")) {
-        if (!matchTexto(linha.nome, filtros.curso)) return false;
+      if (filtrosBase.curso && (cardTipo === "fomento" || cardTipo === "capital")) {
+        if (!matchTexto(linha.nome, filtrosBase.curso)) return false;
       }
-      if (filtros.disciplina && (cardTipo === "disciplinas" || cardTipo === "alunos")) {
-        if (!matchTexto(linha.nome, filtros.disciplina)) return false;
+      if (filtrosBase.disciplina && (cardTipo === "disciplinas" || cardTipo === "alunos")) {
+        if (!matchTexto(linha.nome, filtrosBase.disciplina)) return false;
       }
-      if (filtros.semestre && (cardTipo === "disciplinas" || cardTipo === "alunos")) {
-        if (!matchTexto(linha.semestre, filtros.semestre)) return false;
+      if (filtrosBase.semestre && (cardTipo === "disciplinas" || cardTipo === "alunos")) {
+        if (!matchTexto(linha.semestre, filtrosBase.semestre)) return false;
       }
-      if (filtros.ano) {
+      if (filtrosBase.ano) {
         if (cardTipo === "eventos" || cardTipo === "publico_eventos") {
           const anoEvento = extrairAnoData(linha.data_inicio);
-          if (anoEvento && anoEvento !== filtros.ano) return false;
+          if (anoEvento && anoEvento !== filtrosBase.ano) return false;
         } else if (cardTipo === "disciplinas" || cardTipo === "alunos") {
           const anoSemestre = extrairAnoSemestre(linha.semestre);
-          if (anoSemestre && anoSemestre !== filtros.ano) return false;
+          if (anoSemestre && anoSemestre !== filtrosBase.ano) return false;
         }
       }
-      if (filtros.tipo) {
+      if (filtrosBase.tipo) {
         if (cardTipo === "motores") {
-          if (!matchTexto(linha.motor_tipo, filtros.tipo)) return false;
+          if (!matchTexto(linha.motor_tipo, filtrosBase.tipo)) return false;
         } else if (cardTipo === "negocios") {
-          if (!matchTexto(linha.porte, filtros.tipo)) return false;
+          if (!matchTexto(linha.porte, filtrosBase.tipo)) return false;
         } else if (cardTipo === "eventos" || cardTipo === "publico_eventos") {
-          if (!matchTexto(linha.duracao, filtros.tipo)) return false;
+          if (!matchTexto(linha.duracao, filtrosBase.tipo)) return false;
         }
       }
-      if (filtros.fonte) {
+      if (filtrosBase.fonte) {
         const textoLinha = Object.values(linha)
           .map((valor) => (Array.isArray(valor) ? valor.join(" ") : String(valor ?? "")))
           .join(" ");
-        if (!matchTexto(textoLinha, filtros.fonte)) return false;
+        if (!matchTexto(textoLinha, filtrosBase.fonte)) return false;
       }
       return true;
     });
   };
+
+  const somarCampo = (dados: Record<string, any>[], campo: string) => {
+    return dados.reduce((acc, item) => acc + (Number(item?.[campo]) || 0), 0);
+  };
+
+  const metricasFiltradas = useMemo(() => {
+    if (!metrics) return null;
+    if (!dadosDetalhados.negocios) return metrics;
+
+    const negocios = aplicarFiltros(dadosDetalhados.negocios.dados, "negocios");
+    const disciplinas = aplicarFiltros(dadosDetalhados.disciplinas.dados, "disciplinas");
+    const eventos = aplicarFiltros(dadosDetalhados.eventos.dados, "eventos");
+    const fomento = aplicarFiltros(dadosDetalhados.fomento.dados, "fomento");
+    const capital = aplicarFiltros(dadosDetalhados.capital.dados, "capital");
+    const alunos = aplicarFiltros(
+      (dadosDetalhados.alunos?.dados || dadosDetalhados.disciplinas.dados),
+      "alunos",
+    );
+    const motores = aplicarFiltros(dadosDetalhados.motores.dados, "motores");
+    const publicoEventos = aplicarFiltros(
+      (dadosDetalhados.publico_eventos?.dados || dadosDetalhados.eventos.dados),
+      "publico_eventos",
+    );
+
+    return {
+      negociosGerados: negocios.length,
+      disciplinasInovacao: disciplinas.length,
+      fomentoCaptado: somarCampo(fomento, "fomento"),
+      eventosRealizados: eventos.length,
+      alunosEnvolvidos: somarCampo(alunos, "alunos_matriculados"),
+      capitalCaptado: somarCampo(capital, "capital_captado"),
+      motores: motores.length,
+      publicoEventos: somarCampo(publicoEventos, "qtd_publico"),
+    };
+  }, [metrics, dadosDetalhados, filtrosAplicados]);
+
+  const metricsExibidas = metricasFiltradas ?? metrics;
 
   const handleCardClick = (tipo: CardType) => {
     setCardSelecionado(tipo);
@@ -700,7 +771,10 @@ export default function VerDadosPage() {
           </div>
 
           <div className="mt-8 space-y-3">
-            <button className="w-full bg-[#3d6812] hover:bg-[#2d5010] px-6 py-2 rounded text-sm transition">
+            <button
+              className="w-full bg-[#3d6812] hover:bg-[#2d5010] px-6 py-2 rounded text-sm transition"
+              onClick={handleSalvarFiltros}
+            >
               Salvar
             </button>
             <Link href="/dimensoes/visualizacao_superuser/ver_dados/visu_grafico">
@@ -718,72 +792,88 @@ export default function VerDadosPage() {
           ) : (
             <div className="grid grid-cols-2 gap-5 w-full h-full">
               {/* Linha 1 */}
-              <div
-                onClick={() => handleCardClick("negocios")}
-                className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
-              >
-                <span className="text-gray-700 text-base mb-2">Negocios gerados:</span>
-                <span className="text-gray-800 text-2xl font-bold">{metrics?.negociosGerados ?? "-"}</span>
-              </div>
-              <div
-                onClick={() => handleCardClick("disciplinas")}
-                className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
-              >
-                <span className="text-gray-700 text-base mb-2">Disciplinas de inovacao:</span>
-                <span className="text-gray-800 text-2xl font-bold">{metrics?.disciplinasInovacao ?? "-"}</span>
-              </div>
+              {cardVisivel("negocios") && (
+                <div
+                  onClick={() => handleCardClick("negocios")}
+                  className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
+                >
+                  <span className="text-gray-700 text-base mb-2">Negocios gerados:</span>
+                  <span className="text-gray-800 text-2xl font-bold">{metricsExibidas?.negociosGerados ?? "-"}</span>
+                </div>
+              )}
+              {cardVisivel("disciplinas") && (
+                <div
+                  onClick={() => handleCardClick("disciplinas")}
+                  className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
+                >
+                  <span className="text-gray-700 text-base mb-2">Disciplinas de inovacao:</span>
+                  <span className="text-gray-800 text-2xl font-bold">{metricsExibidas?.disciplinasInovacao ?? "-"}</span>
+                </div>
+              )}
 
               {/* Linha 2 */}
-              <div
-                onClick={() => handleCardClick("fomento")}
-                className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
-              >
-                <span className="text-gray-700 text-base mb-2">Fomento captado:</span>
-                <span className="text-gray-800 text-2xl font-bold">
-                  {metrics ? formatarMoeda(metrics.fomentoCaptado) : "-"}
-                </span>
-              </div>
-              <div
-                onClick={() => handleCardClick("eventos")}
-                className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
-              >
-                <span className="text-gray-700 text-base mb-2">Eventos realizados:</span>
-                <span className="text-gray-800 text-2xl font-bold">{metrics?.eventosRealizados ?? "-"}</span>
-              </div>
+              {cardVisivel("fomento") && (
+                <div
+                  onClick={() => handleCardClick("fomento")}
+                  className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
+                >
+                  <span className="text-gray-700 text-base mb-2">Fomento captado:</span>
+                  <span className="text-gray-800 text-2xl font-bold">
+                    {metricsExibidas ? formatarMoeda(metricsExibidas.fomentoCaptado) : "-"}
+                  </span>
+                </div>
+              )}
+              {cardVisivel("eventos") && (
+                <div
+                  onClick={() => handleCardClick("eventos")}
+                  className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
+                >
+                  <span className="text-gray-700 text-base mb-2">Eventos realizados:</span>
+                  <span className="text-gray-800 text-2xl font-bold">{metricsExibidas?.eventosRealizados ?? "-"}</span>
+                </div>
+              )}
 
               {/* Linha 3 */}
-              <div
-                onClick={() => handleCardClick("alunos")}
-                className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
-              >
-                <span className="text-gray-700 text-base mb-2">Alunos em disciplinas:</span>
-                <span className="text-gray-800 text-2xl font-bold">{metrics?.alunosEnvolvidos ?? "-"}</span>
-              </div>
-              <div
-                onClick={() => handleCardClick("capital")}
-                className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
-              >
-                <span className="text-gray-700 text-base mb-2">Capital captado (cursos):</span>
-                <span className="text-gray-800 text-2xl font-bold">
-                  {metrics ? formatarMoeda(metrics.capitalCaptado) : "-"}
-                </span>
-              </div>
+              {cardVisivel("alunos") && (
+                <div
+                  onClick={() => handleCardClick("alunos")}
+                  className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
+                >
+                  <span className="text-gray-700 text-base mb-2">Alunos em disciplinas:</span>
+                  <span className="text-gray-800 text-2xl font-bold">{metricsExibidas?.alunosEnvolvidos ?? "-"}</span>
+                </div>
+              )}
+              {cardVisivel("capital") && (
+                <div
+                  onClick={() => handleCardClick("capital")}
+                  className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
+                >
+                  <span className="text-gray-700 text-base mb-2">Capital captado (cursos):</span>
+                  <span className="text-gray-800 text-2xl font-bold">
+                    {metricsExibidas ? formatarMoeda(metricsExibidas.capitalCaptado) : "-"}
+                  </span>
+                </div>
+              )}
 
               {/* Linha 4 */}
-              <div
-                onClick={() => handleCardClick("motores")}
-                className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
-              >
-                <span className="text-gray-700 text-base mb-2">Motores</span>
-                <span className="text-gray-800 text-2xl font-bold">{metrics?.motores ?? "-"}</span>
-              </div>
-              <div
-                onClick={() => handleCardClick("publico_eventos")}
-                className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
-              >
-                <span className="text-gray-700 text-base mb-2">Quantidade de publico em eventos</span>
-                <span className="text-gray-800 text-2xl font-bold">{metrics?.publicoEventos ?? "-"}</span>
-              </div>
+              {cardVisivel("motores") && (
+                <div
+                  onClick={() => handleCardClick("motores")}
+                  className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
+                >
+                  <span className="text-gray-700 text-base mb-2">Motores</span>
+                  <span className="text-gray-800 text-2xl font-bold">{metricsExibidas?.motores ?? "-"}</span>
+                </div>
+              )}
+              {cardVisivel("publico_eventos") && (
+                <div
+                  onClick={() => handleCardClick("publico_eventos")}
+                  className="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all"
+                >
+                  <span className="text-gray-700 text-base mb-2">Quantidade de publico em eventos</span>
+                  <span className="text-gray-800 text-2xl font-bold">{metricsExibidas?.publicoEventos ?? "-"}</span>
+                </div>
+              )}
             </div>
           )}
         </main>
