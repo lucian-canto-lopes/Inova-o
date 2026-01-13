@@ -103,14 +103,14 @@ export function Modal({
                 <div style={{ position: "relative" }}>
                   <section onClick={!isCursosOpen ? () => setCursosOpen(true) : undefined} className={isCursosOpen ? "relation-section" : ""}>
                     <div>
-                      <input type="text" name="search-cursos" id="search-cursos" placeholder='Procurar...' autoComplete='off' onChange={(e) => setSearchCursos(e.target.value)} />
+                      <input type="text" name="search-cursos" id="search-cursos" placeholder='Procurar...' autoComplete='off' value={searchCursos} onChange={(e) => setSearchCursos(e.target.value)} />
                       <FaPlus onClick={isCursosOpen ? () => setCursosOpen(false) : undefined} />
                     </div>
                     {isCursosOpen && (
                       <ul>
                         {filteredCursos.map((curso: any) => {
                           // Se há relações, o checkbox fica marcado
-                          return <li key={`li-curso-${curso.id}`}><input type="checkbox" id={`cb-curso-${curso.id}`} checked={curso.related} onChange={(e) => toggleCursos(curso.id, e.target.checked)} />
+                          return <li key={`li-curso-${curso.id}`}><input type="checkbox" id={`cb-curso-${curso.id}`} checked={curso.related ?? false} onChange={(e) => toggleCursos(curso.id, e.target.checked)} />
                             <label htmlFor={`cb-curso-${curso.id}`}>{curso.nome}</label>
                           </li>
                         })}
@@ -453,14 +453,14 @@ export function Modal({
                   <div style={{ position: "relative" }}>
                     <section onClick={!isRelationCLOpen ? () => setRelationCLOpen(true) : undefined} className={isRelationCLOpen ? "relation-section" : ""}>
                       <div>
-                        <input type="text" name="search-relation" id="search-relation" placeholder='Procurar...' autoComplete='off' onChange={(e) => setSearchRelations(e.target.value)} />
+                        <input type="text" name="search-relation" id="search-relation" placeholder='Procurar...' autoComplete='off' value={searchRelations} onChange={(e) => setSearchRelations(e.target.value)} />
                         <FaPlus onClick={isRelationCLOpen ? () => setRelationCLOpen(false) : undefined} />
                       </div>
                       {isRelationCLOpen && (
                         <ul>
                           {filteredRelations.map((relation: any) => {
                             // Se há relações, o checkbox fica marcado
-                            return <li key={`li-${relation.id}`}><input type="checkbox" id={`cb-${relation.id}`} checked={relation.related ?? ''} onChange={(e) => toggleRelations(relation.id, e.target.checked)} />
+                            return <li key={`li-${relation.id}`}><input type="checkbox" id={`cb-${relation.id}`} checked={relation.related ?? false} onChange={(e) => toggleRelations(relation.id, e.target.checked)} />
                               <label htmlFor={`cb-${relation.id}`}>{relation.nome}</label>
                             </li>
                           })}

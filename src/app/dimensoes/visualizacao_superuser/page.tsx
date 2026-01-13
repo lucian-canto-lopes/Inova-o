@@ -3,15 +3,15 @@ import { useState } from "react";
 import Link from "next/link";
 import { FaBars, FaMagnifyingGlass } from "react-icons/fa6";
 import { FaClipboard } from "react-icons/fa";
-import "../../css/NavBar.css";
+import "../../../css/NavBar.css";
 
 export default function SuperUserPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const menuItems = [
-    { title: "Editar\ndados", href: "/dimensoes", icon: <FaClipboard /> },
-    { title: "Visualizar\ndados", href: "/visualizacao_superuser/ver_dados", icon: <FaClipboard /> },
-    { title: "Relatórios", href: "/visualizacao_superuser/relatorios", icon: <FaClipboard /> },
+    { title: "Editar\ndados", href: "/dimensoes/dimensoes_page", icon: <FaClipboard /> },
+    { title: "Visualizar\ndados", href: "/dimensoes/visualizacao_superuser/ver_dados", icon: <FaClipboard /> },
+    { title: "Relatórios", href: "/dimensoes/visualizacao_superuser/relatorios", icon: <FaClipboard /> },
   ];
 
   return (

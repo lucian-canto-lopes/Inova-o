@@ -1,10 +1,10 @@
 'use client'
 import { useState } from "react";
-import "../../css/index.css";
+import "../../../css/index.css";
 
-import NavBar from "../../components/NavBar";
-import SideBar from "../../components/SideBar";
-import SBGroup from "@/src/components/SBGroup";
+import NavBar from "../../../components/NavBar";
+import SideBar from "../../../components/SideBar";
+import SBGroup from "../../../components/SBGroup";
 
 export default function DimensoesLayout({
   children,

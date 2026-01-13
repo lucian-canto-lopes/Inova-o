@@ -260,14 +260,14 @@ export default function GraficosPage() {
     const savedCharts = JSON.parse(localStorage.getItem("selectedCharts") || "[]");
     savedCharts.push(chartId);
     localStorage.setItem("selectedCharts", JSON.stringify(savedCharts));
-    router.push("/visualizacao_superuser/relatorios/indicador_personalizavel");
+    router.push("/dimensoes/visualizacao_superuser/relatorios/indicador_personalizavel");
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#E8E8E8]">
       {/* NavBar */}
       <nav className="bg-[#A3CE6F] h-16 flex items-center px-8 shrink-0">
-        <Link href="/visualizacao_superuser/relatorios/indicador_personalizavel" className="text-white hover:text-white/80 transition">
+        <Link href="/dimensoes/visualizacao_superuser/relatorios/indicador_personalizavel" className="text-white hover:text-white/80 transition">
           <svg viewBox="0 0 24 24" className="w-8 h-8" fill="currentColor">
             <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
           </svg>

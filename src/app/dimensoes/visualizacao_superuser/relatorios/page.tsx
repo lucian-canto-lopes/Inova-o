@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { FaCheck, FaPen, FaArrowRight, FaPlus, FaArrowLeft } from "react-icons/fa";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
-import "../../../css/NavBar.css";
+import "../../../../css/NavBar.css";
 
 type FilterOption = {
   id: string;
@@ -144,7 +144,7 @@ export default function RelatoriosPage() {
     <div className="min-h-screen flex flex-col bg-[#E8E8E8]">
       {/* NavBar */}
       <nav className="bg-[#A3CE6F] h-20 flex items-center justify-between px-12 shrink-0">
-        <Link href="/visualizacao_superuser">
+        <Link href="/dimensoes/visualizacao_superuser">
           <FaArrowLeft className="w-10 h-10 text-white cursor-pointer" />
         </Link>
         <h1 className="text-[#2a5a0a] text-3xl font-bold">Exibição de dados</h1>
@@ -178,7 +178,7 @@ export default function RelatoriosPage() {
                   {filter.label}
                 </span>
                 {filter.editable && (
-                  <Link href="/visualizacao_superuser/relatorios/indicador_personalizavel">
+                  <Link href="/dimensoes/visualizacao_superuser/relatorios/indicador_personalizavel">
                     <FaPen size={12} className="opacity-60 hover:opacity-100 transition" />
                   </Link>
                 )}

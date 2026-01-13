@@ -130,7 +130,7 @@ export default function IndicadorPersonalizavelPage() {
     localStorage.removeItem("selectedCharts");
 
     alert("Gráfico adicionado ao relatório com sucesso!");
-    router.push("/visualizacao_superuser/relatorios");
+    router.push("/dimensoes/visualizacao_superuser/relatorios");
   };
 
   const handleReload = () => {
@@ -143,7 +143,7 @@ export default function IndicadorPersonalizavelPage() {
     <div className="min-h-screen flex flex-col bg-[#E8E8E8]">
       {/* NavBar */}
       <nav className="bg-[#A3CE6F] h-16 flex items-center justify-between px-8 shrink-0">
-        <Link href="/visualizacao_superuser/relatorios" className="text-white hover:text-white/80 transition">
+        <Link href="/dimensoes/visualizacao_superuser/relatorios" className="text-white hover:text-white/80 transition">
           <FaArrowLeft className="w-6 h-6" />
         </Link>
         <h1 className="text-white text-2xl font-semibold">Pré-visualização</h1>
@@ -190,7 +190,7 @@ export default function IndicadorPersonalizavelPage() {
           {charts.length === 0 ? (
             /* Botão adicionar gráfico - mostrar apenas quando não há gráficos */
             <Link 
-              href="/visualizacao_superuser/relatorios/indicador_personalizavel/graficos"
+              href="/dimensoes/visualizacao_superuser/relatorios/indicador_personalizavel/graficos"
               className="bg-white rounded-lg shadow-lg p-8 flex flex-col items-center justify-center cursor-pointer hover:shadow-xl transition min-w-[200px] min-h-[200px]"
             >
               <div className="w-20 h-20 rounded-full border-4 border-[#4C7F16] flex items-center justify-center mb-4">

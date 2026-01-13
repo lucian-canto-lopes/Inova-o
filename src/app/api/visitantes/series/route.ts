@@ -75,7 +75,7 @@ export async function GET(req: Request) {
 
     const impactos = disciplinas.map((d) => ({
       nome: d.nome.length > 20 ? d.nome.substring(0, 20) + "..." : d.nome,
-      alunos: d.alunos_matriculados?.length ?? 0,
+      alunos: d.alunos_matriculados ?? 0,
     }));
 
     return NextResponse.json({ monthly, impactos });

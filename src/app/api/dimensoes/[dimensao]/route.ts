@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 export type dimensaoTipo = "disciplinas" | "eventos" | "motores" | "negocios";
 interface Params {
-  params: { dimensao: dimensaoTipo }
+  params: Promise<{ dimensao: string }>
 };
 
 export function toFloat(value: any): number {
@@ -62,28 +62,33 @@ export async function POST(
 
   switch (dimensao) {
     case "disciplinas":
-      const disciplina = await prisma.disciplina.create({
-        data: {
-          nome: body.nome,
-          coordenador: body.coordenador,
-          semestre: body.semestre,
-          codigo: body.codigo,
-          alunos_matriculados: parseInt(body.alunos_matriculados),
-          alunos_aprovados: parseInt(body.alunos_aprovados),
-          dimensao: {
-            create: {
-              tipo: "disciplinas",
-              conteudo: body.conteudo
-            }
+      try {
+        const disciplina = await prisma.disciplina.create({
+          data: {
+            nome: body.nome || "",
+            coordenador: body.coordenador || "",
+            semestre: body.semestre || "",
+            codigo: body.codigo || "",
+            alunos_matriculados: parseInt(body.alunos_matriculados) || 0,
+            alunos_aprovados: parseInt(body.alunos_aprovados) || 0,
+            dimensao: {
+              create: {
+                tipo: "disciplinas",
+                conteudo: body.conteudo || ""
+              }
+            },
           },
-        },
-        include: {
-          dimensao: true
-        }
-      });
+          include: {
+            dimensao: true
+          }
+        });
 
-      if (!disciplina) return NextResponse.json({ message: "Não foi possível criar uma Disciplina" }, { status: 500 });
-      return NextResponse.json({ message: "Sucesso em Disciplinas", id: disciplina.dimensaoId }, { status: 201 });
+        if (!disciplina) return NextResponse.json({ message: "Não foi possível criar uma Disciplina" }, { status: 500 });
+        return NextResponse.json({ message: "Sucesso em Disciplinas", id: disciplina.dimensaoId }, { status: 201 });
+      } catch (error: any) {
+        console.error("Erro ao criar disciplina:", error);
+        return NextResponse.json({ message: "Erro ao criar disciplina", error: error.message }, { status: 500 });
+      }
 
     case "eventos":
       const evento = await prisma.evento.create({

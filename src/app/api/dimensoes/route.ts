@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     id: q.id,
     tipo: q.tipo,
     data: q.Disciplina || q.Evento || q.Motor || q.Negocio,
-  }));
+  })).filter(item => item.data !== null);
 
   const sortedResponse = response.sort((a, b) => {
     switch (order) {

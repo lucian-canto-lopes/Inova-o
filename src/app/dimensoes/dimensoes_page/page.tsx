@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react";
-import CardDeck from "../../components/CardDeck";
+import CardDeck from "../../../components/CardDeck";
 import { Modal, DimensaoTipo } from "@/src/components/Modal";
 
 async function getDimentions(limit: number, order: ("cres" | "decres" | "data")) {

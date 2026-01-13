@@ -1,27 +1,33 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { dimensaoTipo } from "../../route";
-
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ dimensao: dimensaoTipo; id: string }> }
+  { params }: { params: Promise<{ dimensao: string; id: string }> }
 ) {
-  const { id } = await params;
-  const parsedId = parseInt(id);
+  try {
+    const { id } = await params;
+    const parsedId = parseInt(id);
 
-  if (parsedId == -1) {
-    const rawData = await prisma.dimensao.findMany({
-      select: { id: true, tipo: true, Disciplina: true, Evento: true, Motor: true, Negocio: true }
-    });
+    if (parsedId == -1) {
+      const rawData = await prisma.dimensao.findMany({
+        select: { 
+          id: true, 
+          tipo: true, 
+          Disciplina: { select: { nome: true } }, 
+          Evento: { select: { nome: true } }, 
+          Motor: { select: { nome: true } }, 
+          Negocio: { select: { nome: true } } 
+        }
+      });
 
-    const formatedData = rawData.map(d => ({
-      id: d.id,
-      tipo: d.tipo,
-      nome: d.Disciplina?.nome || d.Evento?.nome || d.Motor?.nome || d.Negocio?.nome,
-    }));
+      const formatedData = rawData.map(d => ({
+        id: d.id,
+        tipo: d.tipo,
+        nome: d.Disciplina?.nome || d.Evento?.nome || d.Motor?.nome || d.Negocio?.nome,
+      }));
 
-    return NextResponse.json(formatedData, { status: 200 });
-  }
+      return NextResponse.json(formatedData, { status: 200 });
+    }
   else {
     const relationsQ = await prisma.dimensao.findUnique({
       where: {
@@ -31,14 +37,24 @@ export async function GET(
         Dimensao_DimensaoA: {
           include: {
             dimensaoB: {
-              include: { Disciplina: true, Evento: true, Motor: true, Negocio: true },
+              include: { 
+                Disciplina: { select: { nome: true } }, 
+                Evento: { select: { nome: true } }, 
+                Motor: { select: { nome: true } }, 
+                Negocio: { select: { nome: true } } 
+              },
             },
           },
         },
         Dimensao_DimensaoB: {
           include: {
             dimensaoA: {
-              include: { Disciplina: true, Evento: true, Motor: true, Negocio: true },
+              include: { 
+                Disciplina: { select: { nome: true } }, 
+                Evento: { select: { nome: true } }, 
+                Motor: { select: { nome: true } }, 
+                Negocio: { select: { nome: true } } 
+              },
             },
           },
         },
@@ -91,11 +107,15 @@ export async function GET(
 
     return NextResponse.json(formatedRelations, { status: 200 });
   }
+  } catch (error) {
+    console.error("Erro em relations GET:", error);
+    return NextResponse.json({ error: "Erro ao buscar relações" }, { status: 500 });
+  }
 }
 
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ dimensao: dimensaoTipo; id: string }> },
+  { params }: { params: Promise<{ dimensao: string; id: string }> },
 ) {
   try {
     const { id } = await params;

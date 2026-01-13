@@ -82,7 +82,7 @@ export async function GET(req: Request) {
     select: { alunos_matriculados: true }
   }), []);
   const alunosParticipantes = disciplinas.reduce(
-    (acc, d) => acc + (d.alunos_matriculados?.length ?? 0),
+    (acc, d) => acc + (d.alunos_matriculados ?? 0),
     0
   );
 

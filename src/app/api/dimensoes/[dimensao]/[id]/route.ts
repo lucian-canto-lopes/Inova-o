@@ -1,11 +1,10 @@
 import prisma from "@/lib/prisma";
-import { dimensaoTipo } from "../route";
 import { NextResponse } from "next/server";
 import { toArray, toFloat } from "../route";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ dimensao: dimensaoTipo, id: string }> }
+  { params }: { params: Promise<{ dimensao: string; id: string }> }
 ) {
   const { id } = await params;
 
@@ -35,7 +34,7 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ dimensao: dimensaoTipo, id: string }> }
+  { params }: { params: Promise<{ dimensao: string; id: string }> }
 ) {
   const { dimensao, id } = await params;
   const body = await request.json();
@@ -60,8 +59,8 @@ export async function PUT(
           coordenador: body.coordenador,
           semestre: body.semestre,
           codigo: body.codigo,
-          alunos_matriculados: toArray(body.alunos_matriculados),
-          alunos_aprovados: toArray(body.alunos_aprovados),
+          alunos_matriculados: parseInt(body.alunos_matriculados) || 0,
+          alunos_aprovados: parseInt(body.alunos_aprovados) || 0,
         },
       });
 

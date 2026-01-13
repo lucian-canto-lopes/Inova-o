@@ -35,7 +35,7 @@ export default function VisualizacaoGraficosPage() {
     <div className="min-h-screen flex flex-col bg-[#fafafa]">
       {/* Barra superior igual à de ver dados */}
       <nav className="bg-[#A3CE6F] h-20 flex items-center justify-between px-12 shrink-0">
-        <Link href="/visualizacao_superuser/ver_dados">
+        <Link href="/dimensoes/visualizacao_superuser/ver_dados">
           <FaArrowLeft className="w-10 h-10 text-white cursor-pointer" />
         </Link>
         <h1 className="text-white text-3xl font-bold">Visualização de Gráficos</h1>
