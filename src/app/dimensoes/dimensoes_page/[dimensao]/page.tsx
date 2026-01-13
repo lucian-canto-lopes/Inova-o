@@ -36,7 +36,7 @@ export default async function DimensaoPage({
   return (
     <>
       <span>
-        <Link href={"/dimensoes"}>Dimensões</Link> → {DimensaoEnum[dimensao]}
+        <Link href={"/dimensoes/dimensoes_page"}>Dimensões</Link> → {DimensaoEnum[dimensao]}
       </span>
       <header>
         <div>{DimensaoEnum[dimensao]}</div>
