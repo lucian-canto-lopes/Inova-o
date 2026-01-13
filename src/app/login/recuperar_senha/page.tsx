@@ -6,6 +6,7 @@ export default function RecuperarSenhaPage() {
     const [email, setEmail] = useState("");
     const [enviado, setEnviado] = useState(false);
     const [erro, setErro] = useState("");
+    const [url, setUrl] = useState("");
     const router = useRouter();
 
     const onSubmit = async (e: React.FormEvent) => {
@@ -13,8 +14,20 @@ export default function RecuperarSenhaPage() {
         setErro("");
         setEnviado(false);
         try {
-            // Aqui você pode chamar sua API de recuperação de senha
-            // await fetch("/api/recuperar_senha", { ... })
+            const req = await fetch("/api/auth/recuperar_senha", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({email: email})
+            });
+
+            if (!req.ok) {
+                const text = await req.text()
+                throw new Error(text);
+            }
+
+            const res = await req.json()
+
+            setUrl(res.previewUrl)
             setEnviado(true);
         } catch (err: any) {
             setErro("Erro ao enviar e-mail. Tente novamente.");
@@ -46,7 +59,8 @@ export default function RecuperarSenhaPage() {
                     <div className="bg-white rounded-2xl border border-zinc-200 shadow-lg p-6">
                         {enviado ? (
                             <div className="text-center text-green-700 font-medium">
-                                Se o e-mail estiver cadastrado, você receberá instruções para redefinir sua senha.
+                                {"Email enviado (de mentirinha) "}
+                                <a href={url} >Preview do Email</a>
                             </div>
                         ) : (
                             <form className="space-y-4" onSubmit={onSubmit}>
