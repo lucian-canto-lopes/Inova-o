@@ -92,8 +92,8 @@ model Negocio {
 model Cursos {
   id                 Int                  @id @default(autoincrement())
   nome               String
-  competicoes        String[]
-  fomento            Float
+  competicoes        Int
+  fomento            Json?
   capital_captado    Float
   Disciplinas_Cursos Disciplinas_Cursos[]
 }
@@ -108,14 +108,14 @@ model Disciplinas_Cursos {
 }
 
 model Usuario {
-  id                  Int          @id @default(autoincrement())
-  tipo_de_usuario     TipoUsuario  @default(USUARIO)
-  email_institucional String       @unique
+  id                  Int         @id @default(autoincrement())
+  tipo_de_usuario     TipoUsuario @default(USUARIO)
+  email_institucional String      @unique
   senha               String
-  nome_usuario        String       @unique
+  nome_usuario        String      @unique
   telefone            String?
-  createdAt           DateTime     @default(now())
-  updatedAt           DateTime     @updatedAt
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
 }
 
 enum TipoUsuario {
