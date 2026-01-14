@@ -23,7 +23,7 @@ export default function LoginPage() {
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.message || "Falha no login");
       }
-      window.location.href = "/dimensoes";
+      window.location.href = "/dimensoes/visualizacao_superuser";
     } catch (err: any) {
       alert(err?.message || "Erro ao autenticar");
       console.error(err);

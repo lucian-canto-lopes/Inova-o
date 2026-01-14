@@ -1,62 +1,86 @@
 import { NextResponse } from "next/server";
-import prisma from "../../../../lib/prisma";
-import { parseDateISO, rangeWhere } from "../../../../lib/utils";
+import { prisma } from "@/src/lib/prisma";
 
-async function safe<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
-  try { return await fn(); } catch { return fallback; }
+// Busca IDs de dimensões relacionadas a um motor
+async function getDimensoesRelacionadas(motorId: number): Promise<number[]> {
+  const relacoes = await prisma.dimensao_Dimensao.findMany({
+    where: {
+      OR: [
+        { dimensaoAId: motorId },
+        { dimensaoBId: motorId },
+      ],
+    },
+    select: {
+      dimensaoAId: true,
+      dimensaoBId: true,
+    },
+  });
+
+  const ids = new Set<number>();
+  for (const r of relacoes) {
+    if (r.dimensaoAId !== motorId) ids.add(r.dimensaoAId);
+    if (r.dimensaoBId !== motorId) ids.add(r.dimensaoBId);
+  }
+  return Array.from(ids);
 }
 
 export async function GET(req: Request) {
   try {
-    const url = new URL(req.url);
-    const from = parseDateISO(url.searchParams.get("from") || undefined);
-    const to   = parseDateISO(url.searchParams.get("to") || undefined);
-    const q    = url.searchParams.get("q")?.trim() || undefined;
+    const { searchParams } = new URL(req.url);
+    const agentParam = searchParams.get("agent");
+    const motorId = agentParam ? parseInt(agentParam, 10) : null;
 
-    const start = from ?? new Date(new Date().getFullYear(), 0, 1);
-    const end   = to   ?? new Date(new Date().getFullYear() + 1, 0, 1);
-
-    const monthly: { month: string; valor: number }[] = [];
-    const cursor = new Date(start);
-
-    while (cursor < end) {
-      const mStart = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
-      const mEnd   = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
-
-      const cnt = await safe(() =>
-        prisma.negocio.count({
-          where: {
-            ...rangeWhere("data_criacao", mStart, mEnd),
-            ...(q ? { nome: { contains: q, mode: "insensitive" } } : {}),
-          },
-        }),
-        0
-      );
-
-      monthly.push({
-        month: mStart.toLocaleString("pt-BR", { month: "short" }),
-        valor: cnt,
-      });
-
-      cursor.setMonth(cursor.getMonth() + 1);
+    // Se um motor foi selecionado, busca dimensões relacionadas
+    let dimensoesRelacionadas: number[] | null = null;
+    if (motorId && !isNaN(motorId)) {
+      dimensoesRelacionadas = await getDimensoesRelacionadas(motorId);
     }
 
-    const cursoBCC = await safe(() =>
-      prisma.cursos.findFirst({
-        where: { nome: "BCC" },
-        include: { Disciplinas_Cursos: { include: { disciplina: true } } },
-      }),
-      null as any
-    );
+    // Filtro base para entidades relacionadas ao motor
+    const filtroRelacionado = dimensoesRelacionadas 
+      ? { dimensaoId: { in: dimensoesRelacionadas } } 
+      : {};
 
-    const impactos = (cursoBCC?.Disciplinas_Cursos ?? []).map((dc: any) => ({
-      nome: dc?.disciplina?.nome ?? "Disciplina",
-      alunos: Number(dc?.disciplina?.alunos_matriculados?.length ?? 0),
+    // Dados mensais - agrupa eventos por mês
+    const eventos = await prisma.evento.findMany({
+      where: filtroRelacionado,
+      select: {
+        data_inicio: true,
+        receita: true,
+      },
+      orderBy: { data_inicio: "asc" },
+    });
+
+    // Agrupa por mês/ano
+    const monthlyMap = new Map<string, number>();
+    for (const evento of eventos) {
+      const date = new Date(evento.data_inicio);
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      monthlyMap.set(key, (monthlyMap.get(key) ?? 0) + 1);
+    }
+
+    const monthly = Array.from(monthlyMap.entries())
+      .map(([month, valor]) => ({ month, valor }))
+      .sort((a, b) => a.month.localeCompare(b.month));
+
+    // Impactos por disciplina - conta alunos matriculados
+    const disciplinas = await prisma.disciplina.findMany({
+      where: filtroRelacionado,
+      select: {
+        nome: true,
+        alunos_matriculados: true,
+      },
+      orderBy: { nome: "asc" },
+    });
+
+    const impactos = disciplinas.map((d) => ({
+      nome: d.nome.length > 20 ? d.nome.substring(0, 20) + "..." : d.nome,
+      alunos: d.alunos_matriculados ?? 0,
     }));
 
     return NextResponse.json({ monthly, impactos });
-  } catch (e) {
-    console.error("series error:", e);
-    return NextResponse.json({ error: "internal_error" }, { status: 500 });
+  } catch (error) {
+    console.error("Erro ao buscar series:", error);
+    return NextResponse.json({ monthly: [], impactos: [] });
   }
 }

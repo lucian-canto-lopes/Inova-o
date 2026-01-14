@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { toFloat, toArray } from "../route";
+import { toFloat } from "../route";
 
 // Criando um curso
 export async function POST (
@@ -16,8 +16,8 @@ export async function POST (
     await prisma.cursos.create({
       data: {
         nome: body.nome,
-        competicoes: toArray(body.competicoes),
-        fomento: toFloat(body.fomento),
+        competicoes: Number(body.competicoes),
+        fomento: body.fomento,
         capital_captado: toFloat(body.capital_captado)
       }
     });

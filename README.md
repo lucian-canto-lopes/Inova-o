@@ -20,6 +20,14 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Variaveis de ambiente
+
+Defina as variaveis obrigatorias em um arquivo `.env`:
+
+- `DATABASE_URL`: string de conexao do banco usada pelo Prisma.
+- `JWT_SECRET`: segredo para assinar/verificar JWT.
+- `AUTH_SECRET`: segredo usado na autenticacao.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

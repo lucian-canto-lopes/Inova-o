@@ -1,8 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { MonthlyLineChart } from "@/src/components/MonthlyLineChart";
-import { ImpactChart } from "@/src/components/ImpactChart";
 
 /* ===== NavBar (fixa e em largura total) ===== */
 function LocalNavBar({
@@ -68,66 +66,66 @@ function LocalNavBar({
 }
 
 /* ===== SideBar (cola logo abaixo da navbar) ===== */
-function LocalSideBar({
-  collapsed,
-  filters,
-  onChange,
-  onApply,
-}: {
-  collapsed: boolean;
-  filters: { from: string; to: string; agent: string; view: string } // <- mudou
-  onChange: (k: keyof typeof filters, v: string) => void;
-  onApply: () => void;
-}) {
+/* substituído: agora exibe filtros em vez do menu */
+/* highlight controla a cor do título (branco/preto) */
+function LocalSideBar({ collapsed }: { collapsed: boolean }) {
   return (
     <aside
       className="bg-[#4C7F16] text-white transition-[width,padding] duration-200 shrink-0 sticky top-14"
-      style={{ width: collapsed ? 0 : 300, padding: collapsed ? "0 0 0 0" : "24px", overflow: "hidden", height: "calc(100vh - 56px)" }}
+      style={{
+        width: collapsed ? 0 : 300,
+        padding: collapsed ? "0 0 0 0" : "24px",
+        overflow: "hidden",
+        height: "calc(100vh - 56px)",
+      }}
     >
       <div className="flex flex-col h-full">
         <h2 className="text-3xl font-extrabold mb-4 text-white">Filtros</h2>
 
-        <form
-          className="flex-1 flex flex-col justify-start"
-          onSubmit={(e) => { e.preventDefault(); onApply(); }}
-        >
+        <form className="flex-1 flex flex-col justify-start">
           <div>
             <div className="grid grid-cols-2 gap-3 mb-3">
-              <label className="sr-only" htmlFor="from">Início</label>
+              <label className="sr-only" htmlFor="periodo1">Período</label>
               <div className="relative">
-                <input
-                  id="from"
-                  type="date"
-                  value={filters.from}
-                  onChange={(e) => onChange("from", e.target.value)}
-                  className="w-full rounded-xl px-4 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40"
-                />
+                <select
+                  id="periodo1"
+                  className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
+                >
+                  <option>Período</option>
+                  <option>2024</option>
+                  <option>2023</option>
+                </select>
+                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10] pointer-events-none" viewBox="0 0 20 20" fill="none" aria-hidden>
+                  <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </div>
 
-              <label className="sr-only" htmlFor="to">Fim</label>
+              <label className="sr-only" htmlFor="periodo2">Período</label>
               <div className="relative">
-                <input
-                  id="to"
-                  type="date"
-                  value={filters.to}
-                  onChange={(e) => onChange("to", e.target.value)}
-                  className="w-full rounded-xl px-4 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40"
-                />
+                <select
+                  id="periodo2"
+                  className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
+                >
+                  <option>Período</option>
+                  <option>Janeiro</option>
+                  <option>Fevereiro</option>
+                </select>
+                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10] pointer-events-none" viewBox="0 0 20 20" fill="none" aria-hidden>
+                  <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </div>
             </div>
 
             <div className="mb-3">
-              <label className="sr-only" htmlFor="agente">Agente responsável</label>
+              <label className="sr-only" htmlFor="agente">Motor responsável</label>
               <div className="relative">
                 <select
                   id="agente"
-                  value={filters.agent}
-                  onChange={(e) => onChange("agent", e.target.value)}
                   className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
                 >
-                  <option value="">Agente</option>
-                  <option value="1">Agente A</option>
-                  <option value="2">Agente B</option>
+                  <option>Agente</option>
+                  <option>Agente A</option>
+                  <option>Agente B</option>
                 </select>
                 <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10]" viewBox="0 0 20 20" fill="none" aria-hidden>
                   <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -140,8 +138,6 @@ function LocalSideBar({
               <div className="relative">
                 <select
                   id="visualizacao"
-                  value={filters.view}
-                  onChange={(e) => onChange("view", e.target.value)}
                   className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
                 >
                   <option value="cards">Somente cards</option>
@@ -169,9 +165,10 @@ function LocalSideBar({
                   <img src="/file.svg" alt="Quem somos" className="w-7 h-7 object-contain" />
                 </div>
               </Link>
-              <div className="text-sm">Quem somos?</div>
-            </div>
-          </div>
+
+               <div className="text-sm">Quem somos?</div>
+             </div>
+           </div>
         </form>
       </div>
     </aside>
@@ -182,10 +179,15 @@ function LocalSideBar({
 type Metrics = {
   negociosGerados: number;
   disciplinasInovacao: number;
-  pisCriadas: number;
+  editaisPublicados: number;
   fomentoCaptado: number;
   eventosInovacao: number;
   alunosParticipantes: number;
+};
+
+type SeriesPayload = {
+  monthly: { month: string; valor: number }[];
+  impactos: { nome: string; alunos: number }[];
 };
 
 function BRL(v: unknown) {
@@ -197,109 +199,64 @@ function BRL(v: unknown) {
 export default function VisitantePage() {
   const [collapsed, setCollapsed] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [filters, setFilters] = useState({ from: "", to: "", agent: "", view: "both" });
 
   const [metrics, setMetrics] = useState<Metrics | null>(null);
-  const [series, setSeries] = useState<{ monthly: any[]; impactos: any[] } | null>(null);
-
-  // Garanta min-w-0 nos ancestrais e monte gráficos só após mount
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
-
-  const showCards  = filters.view === "cards"  || filters.view === "both";
-  const showCharts = filters.view === "charts" || filters.view === "both";
-
-  async function safeJson(res: Response) {
-    try {
-      const ct = res.headers.get("content-type") || "";
-      if (!ct.includes("application/json")) return null;
-      return await res.json();
-    } catch { return null; }
-  }
-
-  async function load() {
-    if (!showCards) return;
-    const p = new URLSearchParams();
-    if (filters.from) p.set("from", filters.from);
-    if (filters.to) p.set("to", filters.to);
-    if (filters.agent) p.set("agent", filters.agent);
-    if (searchValue.trim()) p.set("q", searchValue.trim());
-
-    const res = await fetch(`/api/visitantes/metrics?${p.toString()}`);
-    const json = await safeJson(res);
-    setMetrics(json ?? {
-      negociosGerados: 0,
-      disciplinasInovacao: 0,
-      pisCriadas: 0,
-      fomentoCaptado: 0,
-      eventosInovacao: 0,
-      alunosParticipantes: 0,
-    });
-  }
-
-  async function loadSeries() {
-    if (!showCharts) return;
-    const p = new URLSearchParams();
-    if (filters.from) p.set("from", filters.from);
-    if (filters.to) p.set("to", filters.to);
-    if (filters.agent) p.set("agent", filters.agent);
-    if (searchValue.trim()) p.set("q", searchValue.trim());
-
-    const res = await fetch(`/api/visitantes/series?${p.toString()}`);
-    const json = await safeJson(res);
-    setSeries(json ?? { monthly: [], impactos: [] });
-  }
 
   useEffect(() => {
-    const t = setTimeout(() => {
-      load();       // busca cards se necessário
-      loadSeries(); // busca gráficos se necessário
-    }, 300);
-    return () => clearTimeout(t);
-  }, [filters.from, filters.to, filters.agent, filters.view, searchValue]);
+    fetch("/api/visitantes/metrics")
+      .then(r => r.json())
+      .then(setMetrics)
+      .catch(() => setMetrics({
+        negociosGerados: 0,
+        disciplinasInovacao: 0,
+        pisCriadas: 0,
+        fomentoCaptado: 0,
+        eventosInovacao: 0,
+        alunosParticipantes: 0,
+      }));
+  }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F7F7F7]">
+      {/* Navbar fixa */}
       <LocalNavBar
-        onToggleSB={() => setCollapsed(v => !v)}
-        onSearchChange={setSearchValue}
+        onToggleSB={() => setCollapsed((v) => !v)}
+        onSearchChange={(v) => setSearchValue(v)}
         searchValue={searchValue}
       />
+      <div className="h-14" />
 
-      <div className="flex flex-1 pt-14">
-        <LocalSideBar
-          collapsed={collapsed}
-          filters={filters}
-          onChange={(k, v) => setFilters(f => ({ ...f, [k]: v }))}
-          onApply={() => {}} // evitamos duplicidade
-        />
+      <main className="flex">
+        {/* remova o highlight — LocalSideBar agora ignora mudança de cor */}
+        <LocalSideBar collapsed={collapsed} />
 
-        <main className="flex-1 p-4 max-w-[1200px] mx-auto min-w-0">
-          {/* === LINHA DE CARDS (layout original) === */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
-            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
-              <div style={{ color: "#000", fontSize: 13, fontWeight: 500 }}>Negócios gerados:</div>
-              <div style={{ color: "#000", fontSize: 28, fontWeight: 700 }}>{metrics?.negociosGerados ?? 0}</div>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
-              <div style={{ color: "#000", fontSize: 13, fontWeight: 500 }}>Disciplinas de inovação:</div>
-              <div style={{ color: "#000", fontSize: 28, fontWeight: 700 }}>{metrics?.disciplinasInovacao ?? 0}</div>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
-              <div style={{ color: "#000", fontSize: 13, fontWeight: 500 }}>PIs criadas:</div>
-              <div style={{ color: "#000", fontSize: 28, fontWeight: 700 }}>{metrics?.pisCriadas ?? 0}</div>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
-              <div style={{ color: "#000", fontSize: 13, fontWeight: 500 }}>Fomento captado:</div>
-              <div style={{ color: "#000", fontSize: 28, fontWeight: 700 }}>{BRL(metrics?.fomentoCaptado ?? 0)}</div>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
-              <div style={{ color: "#000", fontSize: 13, fontWeight: 500 }}>Eventos realizados:</div>
-              <div style={{ color: "#000", fontSize: 28, fontWeight: 700 }}>{metrics?.eventosInovacao ?? 0}</div>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
-              <div style={{ color: "#000", fontSize: 13, fontWeight: 500 }}>Alunos envolvidos:</div>
-              <div style={{ color: "#000", fontSize: 28, fontWeight: 700 }}>{metrics?.alunosParticipantes ?? 0}</div>
+        <section className="flex-1">
+          <div className="mx-auto w-full max-w-[1280px] px-6 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              <Card
+                title="Negócios de inovação gerados (UFOPA)"
+                value={metrics?.negociosGerados ?? "—"}
+              />
+              <Card
+                title="Disciplinas de inovação do curso BCC"
+                value={metrics?.disciplinasInovacao ?? "—"}
+              />
+              <Card
+                title="Editais publicados (inovação)"
+                value={metrics?.pisCriadas ?? "—"}
+              />
+              <Card
+                title="Receita total de eventos de inovação"
+                value={metrics ? BRL(metrics.fomentoCaptado) : "—"}
+              />
+              <Card
+                title="Eventos de inovação cadastrados"
+                value={metrics?.eventosInovacao ?? "—"}
+              />
+              <Card
+                title="Alunos nas disciplinas de inovação (BCC)"
+                value={metrics?.alunosParticipantes ?? "—"}
+              />
             </div>
           </div>
 
@@ -318,6 +275,38 @@ export default function VisitantePage() {
               “Impactos ao longo do tempo” (com prop series) e a “Tabela de Detalhes” */}
         </main>
       </div>
+    </div>
+  );
+}
+
+function MonthlyChart({ data }: { data: { month: string; valor: number }[] }) {
+  return (
+    <div className="w-full min-w-0">
+      <ResponsiveContainer width="100%" height={320}>
+        <LineChart data={data}>
+          <CartesianGrid stroke="#ECECEC" strokeDasharray="4 4" />
+          <XAxis dataKey="month" />
+          <YAxis allowDecimals={false} />
+          <Tooltip />
+          <Line type="monotone" dataKey="valor" stroke="#4C7F16" strokeWidth={2} dot={false} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function ImpactChart({ data }: { data: { nome: string; alunos: number }[] }) {
+  return (
+    <div className="w-full min-w-0">
+      <ResponsiveContainer width="100%" height={320}>
+        <LineChart data={data}>
+          <CartesianGrid stroke="#ECECEC" strokeDasharray="4 4" />
+          <XAxis dataKey="nome" tick={{ fontSize: 11 }} />
+          <YAxis allowDecimals={false} />
+          <Tooltip />
+          <Line type="monotone" dataKey="alunos" stroke="#5C7AEA" strokeWidth={2} />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 }

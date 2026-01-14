@@ -1,11 +1,10 @@
 import prisma from "@/lib/prisma";
-import { dimensaoTipo } from "../route";
 import { NextResponse } from "next/server";
 import { toArray, toFloat } from "../route";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ dimensao: dimensaoTipo, id: string }> }
+  { params }: { params: Promise<{ dimensao: string; id: string }> }
 ) {
   const { id } = await params;
 
@@ -28,14 +27,13 @@ export async function GET(
     conteudo: rawQ.conteudo,
     tipo: rawQ.tipo,
   };
-  console.log(formattedQ)
 
   return NextResponse.json(formattedQ, { status: 200 });
 }
 
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ dimensao: dimensaoTipo, id: string }> }
+  { params }: { params: Promise<{ dimensao: string; id: string }> }
 ) {
   const { dimensao, id } = await params;
   const body = await request.json();
@@ -51,7 +49,7 @@ export async function PUT(
 
   switch (dimensao) {
     case "disciplinas":
-      await prisma.disciplina.update({
+      const disciplina = await prisma.disciplina.update({
         where: {
           dimensaoId: parseInt(id),
         },
@@ -60,15 +58,15 @@ export async function PUT(
           coordenador: body.coordenador,
           semestre: body.semestre,
           codigo: body.codigo,
-          alunos_matriculados: toArray(body.alunos_matriculados),
-          alunos_aprovados: toArray(body.alunos_aprovados),
+          alunos_matriculados: parseInt(body.alunos_matriculados) || 0,
+          alunos_aprovados: parseInt(body.alunos_aprovados) || 0,
         },
       });
 
-      return NextResponse.json({ message: "Sucesso ao atualizar Disciplina!" }, { status: 200 });
+      return NextResponse.json({ message: "Sucesso ao atualizar Disciplina!", id: disciplina.dimensaoId }, { status: 200 });
 
     case "eventos":
-      await prisma.evento.update({
+      const evento = await prisma.evento.update({
         where: {
           dimensaoId: parseInt(id),
         },
@@ -82,22 +80,22 @@ export async function PUT(
           publico_participante: toArray(body.publico_participante),
           qtd_publico: parseInt(body.qtd_publico),
           equipe: toArray(body.equipe),
-          coordenadores: toArray(body.coordenador),
+          coordenadores: toArray(body.coordenadores),
           parceiros: toArray(body.parceiros),
         },
       });
 
-      return NextResponse.json({ message: "Sucesso ao atualizar Evento!" }, { status: 200 });
+      return NextResponse.json({ message: "Sucesso ao atualizar Evento!", id: evento.dimensaoId }, { status: 200 });
 
     case "motores":
-      await prisma.motor.update({
+      const motor = await prisma.motor.update({
         where: {
           dimensaoId: parseInt(id),
         },
         data: {
           nome: body.nome,
           descricao: body.descricao,
-          projetos: toArray(body.projetos),
+          // projetos: body.projetos || [],
           motor_tipo: body.motor_tipo,
           data_criacao: new Date(body.data_criacao),
           lideres: toArray(body.lideres),
@@ -107,10 +105,10 @@ export async function PUT(
         }
       });
 
-      return NextResponse.json({ message: "Sucesso ao atualizar Motor!" }, { status: 200 });
+      return NextResponse.json({ message: "Sucesso ao atualizar Motor!", id: motor.dimensaoId }, { status: 200 });
 
     case "negocios":
-      await prisma.negocio.update({
+      const negocio = await prisma.negocio.update({
         where: {
           dimensaoId: parseInt(id),
         },
@@ -124,7 +122,7 @@ export async function PUT(
         }
       });
 
-      return NextResponse.json({ message: "Sucesso ao atualizar Negócio!" }, { status: 200 });
+      return NextResponse.json({ message: "Sucesso ao atualizar Negócio!", id: negocio.dimensaoId }, { status: 200 });
 
     default:
       return NextResponse.json({ error: "Dimensão ínvalida" }, { status: 400 });

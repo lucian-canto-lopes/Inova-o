@@ -56,8 +56,8 @@
         gap: 20px;
 
         & select::picker(select) {
-            transform: translate(-100%) !important;
-            background-color: blue;
+          transform: translate(-100%) !important;
+          background-color: blue;
         }
       }
 
@@ -127,8 +127,21 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-          }
 
+            & span {
+              background-color: var(--dark-green);
+              border: none;
+              border-radius: 10px;
+              font-size: 1.2rem;
+              color: white;
+              cursor: pointer;
+              max-width: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 100%;
+            }
+          }
         }
       }
     }
