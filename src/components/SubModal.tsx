@@ -6,6 +6,7 @@ import { useRef, useState } from 'react';
 import { LuImagePlus } from 'react-icons/lu';
 import { useRouter } from 'next/navigation';
 import "../css/SubModal.css"
+import { toArray } from '../app/api/dimensoes/[dimensao]/route';
 
 type SubModalTypes = "disciplinas" | "motores" | "cursos" | "eventos" | "negocios"
 
@@ -14,6 +15,13 @@ interface Props {
   closeSubModal: () => void,
   dimensao: SubModalTypes,
   data: any,
+}
+
+function toFloat(value: any): number {
+  if (!value) return 0.0;
+  if (Number(value)) return parseFloat(value);
+  value = value.replace(",", ".");
+  return parseFloat(value);
 }
 
 export default function SubModal({
@@ -31,7 +39,7 @@ export default function SubModal({
   let saveContent: () => void;
   let deleteInstance: () => void;
 
-  const [editais, setEditais] = useState(data.editais || data.projetos || []); // está nomeado como editais, mas cerve para Projetos tbm, fique a vontade para mudar o nome, desde que não quebre nada
+  const [editais, setEditais] = useState(data.editais || data.projetos || data.fomento || []); // está nomeado como editais, mas cerve para Projetos tbm, fique a vontade para mudar o nome, desde que não quebre nada
 
   const addEdital = () => {
     if (!formRef.current) return console.error("[ERRO] Não foi possível acessar o formulário");
@@ -76,8 +84,8 @@ export default function SubModal({
         </header>
         <div>
           <h1>Disciplinas {isAdd ? (<> → <span onClick={() => setIsAdd(false)}>Editais</span> → Adicionar</>) : (<>→ Editais</>)}</h1>
-          <section>
-            <div style={isAdd ? { width: "translateX(-100%)" } : {}}>
+          <section style={isAdd ? { transform: "translateX(-100%)" } : {}}>
+            <div>
               <button onClick={() => setIsAdd(true)}><span>Adicionar</span><FaPlus /></button>
               <table>
                 <tbody>
@@ -240,9 +248,10 @@ export default function SubModal({
 
         const formData = new FormData(formRef.current);
         const body = Object.fromEntries(formData.entries());
+        body.fomento = editais;
 
-        const response = await fetch("/api/dimensoes/disciplinas/cursos", {
-          method: "POST",
+        const response = await fetch("/api/dimensoes/disciplinas/cursos" + (data.id ? `/${data.id}` : ""), {
+          method: data.id ? "PUT" : "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -277,9 +286,12 @@ export default function SubModal({
       content = (<>
         <header>
           <FaRegSave onClick={() => {
-            saveContent();
-            closeSubModal();
-            router.refresh();
+            setIsAdd(false);
+            if (!isAdd) {
+              closeSubModal();
+              saveContent();
+              router.refresh();
+            }
           }} />
           <FaRegTrashAlt onClick={() => {
             deleteInstance();
@@ -289,27 +301,67 @@ export default function SubModal({
           <FaX onClick={closeSubModal} />
         </header>
         <div>
-          <h1>Modal de Cursos</h1>
-          <form ref={formRef}>
-            <div className="input-box">
-              <label htmlFor="nome">Nome</label>
-              <input type="text" id='nome' name='nome' autoComplete="off" defaultValue={data?.nome || ""} />
+          <h1>{isAdd ? (<><span onClick={() => setIsAdd(false)}>Modal de Cursos</span> → Editar Fomento</>) : 'Modal de Cursos'}</h1>
+          <section style={isAdd ? { transform: "translateX(-100%)" } : {}}>
+            <div>
+              <form ref={isAdd ? undefined : formRef}>
+                <div className="input-box">
+                  <label htmlFor="nome">Nome</label>
+                  <input type="text" id='nome' name='nome' autoComplete="off" defaultValue={data?.nome || ""} />
+                </div>
+                <div className='columns'>
+                  <div className="input-box">
+                    <label htmlFor="competicoes">Competições de Inovação</label>
+                    <input type="number" id='competicoes' name='competicoes' autoComplete="off" defaultValue={data?.competicoes} />
+                  </div>
+                  <div className="input-box">
+                    <label htmlFor="capital-captado">Capital Captado</label>
+                    <input type="text" id='capital-captado' name='capital_captado' autoComplete="off" onChange={(event) => formatCurrency(event.target)} defaultValue={data?.capital_captado || ""} />
+                  </div>
+                </div>
+                <div className="columns">
+                  <div className="input-box">
+                    <label htmlFor="fomento">Fomento Total</label>
+                    <input type="text" id='fomento' name='fomento' autoComplete="off" disabled value={
+                      editais.reduce((acc: number, d: any) => acc + toFloat(d.valor), 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || ""
+                    } />
+                  </div>
+                  <span onClick={() => setIsAdd(true)}>Editar Fomento</span>
+                </div>
+              </form>
             </div>
-            <div className="input-box">
-              <label htmlFor="competicoes">Competições de Inovação</label>
-              <input type="text" id='competicoes' name='competicoes' autoComplete="off" defaultValue={data?.competicoes?.join(", ")} />
+            <div>
+              <table>
+                <tbody>
+                  {editais.map((d: any, i: number) => {
+                    const dateArray = d.date.split('-');
+                    return <tr key={i}>
+                      <td><FaX onClick={() => {
+                        setEditais(editais.filter((_: any, index: number) => index !== i));
+                      }} /></td>
+                      <td>{d.valor}</td>
+                      <td>{`${dateArray[2]}/${dateArray[1]}/${dateArray[0]}`}</td>
+                    </tr>
+                  })}
+                </tbody>
+              </table>
+              <form ref={isAdd ? formRef : undefined}>
+                <div className="columns">
+                  <div className="input-box">
+                    <label htmlFor="valor">Valor</label>
+                    <input type="text" name="valor" id="valor" autoComplete="off" onChange={(event) => formatCurrency(event.target)} />
+                  </div>
+                  <div className="input-box">
+                    <label htmlFor="date">Data</label>
+                    <input type="date" name="date" id="date" />
+                  </div>
+                </div>
+              </form>
+              <button onClick={() => {
+                addEdital();
+              }}><span>Adicionar</span><FaPlus /></button>
             </div>
-            <div className="columns">
-              <div className="input-box">
-                <label htmlFor="fomento">Fomento</label>
-                <input type="text" id='fomento' name='fomento' autoComplete="off" onChange={(event) => formatCurrency(event.target)} defaultValue={data?.fomento || ""} />
-              </div>
-              <div className="input-box">
-                <label htmlFor="capital-captado">Capital Captado</label>
-                <input type="text" id='capital-captado' name='capital_captado' autoComplete="off" onChange={(event) => formatCurrency(event.target)} defaultValue={data?.capital_captado || ""} />
-              </div>
-            </div>
-          </form>
+          </section>
         </div>
       </>)
       break;

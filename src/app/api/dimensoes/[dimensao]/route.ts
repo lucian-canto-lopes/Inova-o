@@ -130,7 +130,7 @@ export async function POST(
           qtd_empresas_atendidas: parseInt(body.qtd_empresas_atendidas),
           equipe: toArray(body.equipe),
           lideres: toArray(body.lideres),
-          // projetos: toArray(body.projetos), // Aqui mudar para json
+          projetos: body.projetos || [],
           dimensao: {
             create: {
               tipo: "motores",

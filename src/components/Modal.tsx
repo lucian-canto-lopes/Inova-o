@@ -246,7 +246,8 @@ export function Modal({
                 </div>
               </div>
             </form>
-            <button onClick={() => handleSubModal(true)}><span>Projetos Executados</span><FaList /></button>
+            {modalData?.dimensaoId ? undefined : (<span style={{ color: "red" }}>Salve o Motor para cadastrar projetos</span>)}
+            <button disabled={modalData?.dimensaoId ? false : true} onClick={() => handleSubModal(true)}><span>Projetos Executados</span><FaList /></button>
           </>
         )
       default:
@@ -356,8 +357,8 @@ export function Modal({
       const result = await response.json();
       console.log("Sucesso: ", result);
       id = result.id;
-    } catch (error) {
-      console.log(`[ERROR]: ${error}`);
+    } catch (err) {
+      console.error(err);
     };
 
     cursosBlock: try { // Atualiza os cursos marcados no modal de Disciplinas
