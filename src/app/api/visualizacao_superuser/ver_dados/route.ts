@@ -11,6 +11,7 @@ export async function GET() {
           faturamento_anual: true,
           fundadores: true,
           porte: true,
+          data_criacao: true,
         },
       }),
       prisma.disciplina.findMany({

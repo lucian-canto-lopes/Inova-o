@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, AreaChart, Area } from "recharts";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
@@ -15,22 +16,99 @@ const alunosData = [
   { name: "2023", Alunos: 80 },
 ];
 
-const fomentoData = [
-  { name: "2021", Fomento: 20000 },
-  { name: "2022", Fomento: 35000 },
-  { name: "2023", Fomento: 50000 },
-];
+type ChartPoint = {
+  name: string;
+  [key: string]: number | string;
+};
 
-const eventosData = [
-  { name: "Eventos", value: 16 },
-  { name: "Projetos", value: 8 },
-  { name: "Motores", value: 8 },
-  { name: "PIs", value: 10 },
-];
+type ApiResponse = {
+  detalhes: {
+    negocios: Array<{
+      nome: string;
+      data_criacao: string;
+      faturamento_anual: number;
+    }>;
+    disciplinas: Array<{
+      semestre: string;
+      alunos_matriculados: number;
+    }>;
+    cursos: Array<{
+      nome: string;
+      fomento: number;
+    }>;
+  };
+};
 
 const COLORS = ["#5a8a2a", "#82ca9d", "#8884d8", "#ffc658"];
+const NEGOCIOS_KEY = Object.keys(negociosData[0] || {}).find((key) => key !== "name") || "Negocios";
+const ALUNOS_KEY = Object.keys(alunosData[0] || {}).find((key) => key !== "name") || "Alunos";
+const FOMENTO_KEY = "Fomento";
 
 export default function VisualizacaoGraficosPage() {
+  const [negociosChartData, setNegociosChartData] = useState<ChartPoint[]>([]);
+  const [alunosChartData, setAlunosChartData] = useState<ChartPoint[]>([]);
+  const [fomentoChartData, setFomentoChartData] = useState<ChartPoint[]>([]);
+  const [faturamentoChartData, setFaturamentoChartData] = useState<ChartPoint[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const carregarDados = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch("/api/visualizacao_superuser/ver_dados");
+        if (!response.ok) {
+          throw new Error("Falha ao carregar dados.");
+        }
+        const data: ApiResponse = await response.json();
+
+        const negociosPorAno = new Map<string, number>();
+        data.detalhes.negocios.forEach((negocio) => {
+          const dataCriacao = new Date(negocio.data_criacao);
+          if (isNaN(dataCriacao.getTime())) return;
+          const ano = String(dataCriacao.getFullYear());
+          negociosPorAno.set(ano, (negociosPorAno.get(ano) || 0) + 1);
+        });
+        const negociosSerie: ChartPoint[] = Array.from(negociosPorAno.entries())
+          .sort((a, b) => Number(a[0]) - Number(b[0]))
+          .map(([ano, total]) => ({ name: ano, [NEGOCIOS_KEY]: total }));
+        setNegociosChartData(negociosSerie);
+
+        const faturamentoSerie: ChartPoint[] = data.detalhes.negocios
+          .filter((negocio) => String(negocio.nome || "").trim() !== "")
+          .map((negocio) => ({ name: negocio.nome, value: Number(negocio.faturamento_anual) || 0 }))
+          .sort((a, b) => Number(b.value) - Number(a.value));
+        setFaturamentoChartData(faturamentoSerie);
+
+        const alunosPorAno = new Map<string, number>();
+        data.detalhes.disciplinas.forEach((disciplina) => {
+          const match = String(disciplina.semestre || "").match(/\d{4}/);
+          if (!match) return;
+          const ano = match[0];
+          alunosPorAno.set(ano, (alunosPorAno.get(ano) || 0) + (disciplina.alunos_matriculados || 0));
+        });
+        const alunosSerie: ChartPoint[] = Array.from(alunosPorAno.entries())
+          .sort((a, b) => Number(a[0]) - Number(b[0]))
+          .map(([ano, total]) => ({ name: ano, [ALUNOS_KEY]: total }));
+        setAlunosChartData(alunosSerie);
+
+        const fomentoSerie: ChartPoint[] = data.detalhes.cursos
+          .filter((curso) => String(curso.nome || "").trim() !== "")
+          .map((curso) => ({ name: curso.nome, [FOMENTO_KEY]: Number(curso.fomento) || 0 }))
+          .sort((a, b) => String(a.name).localeCompare(String(b.name), "pt-BR"));
+        setFomentoChartData(fomentoSerie);
+      } catch (error) {
+        setNegociosChartData([]);
+        setAlunosChartData([]);
+        setFomentoChartData([]);
+        setFaturamentoChartData([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    carregarDados();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-[#fafafa]">
       {/* Barra superior igual à de ver dados */}
@@ -47,7 +125,7 @@ export default function VisualizacaoGraficosPage() {
         <div className="bg-white rounded-xl shadow p-4">
           <h2 className="font-semibold mb-2 text-[#5a8a2a]">Negócios Gerados por Ano</h2>
           <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={negociosData}>
+            <BarChart data={isLoading ? [] : negociosChartData}>
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
@@ -61,7 +139,7 @@ export default function VisualizacaoGraficosPage() {
         <div className="bg-white rounded-xl shadow p-4">
           <h2 className="font-semibold mb-2 text-[#5a8a2a]">Alunos Envolvidos por Ano</h2>
           <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={alunosData}>
+            <LineChart data={isLoading ? [] : alunosChartData}>
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
@@ -73,25 +151,25 @@ export default function VisualizacaoGraficosPage() {
 
         {/* Gráfico de área - Fomento Captado */}
         <div className="bg-white rounded-xl shadow p-4">
-          <h2 className="font-semibold mb-2 text-[#5a8a2a]">Fomento Captado por Ano (R$)</h2>
+          <h2 className="font-semibold mb-2 text-[#5a8a2a]">Fomento Captado por Cursos (R$)</h2>
           <ResponsiveContainer width="100%" height={250}>
-            <AreaChart data={fomentoData}>
+            <AreaChart data={isLoading ? [] : fomentoChartData}>
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Area type="monotone" dataKey="Fomento" stroke="#ffc658" fill="#ffc658" />
+              <Area type="monotone" dataKey={FOMENTO_KEY} name={FOMENTO_KEY} stroke="#ffc658" fill="#ffc658" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
 
-        {/* Gráfico de pizza - Distribuição de Eventos/Projetos/Motores/PIs */}
+        {/* Gráfico de pizza - Faturamento por negocios */}
         <div className="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-          <h2 className="font-semibold mb-2 text-[#5a8a2a]">Distribuição de Tipos</h2>
+          <h2 className="font-semibold mb-2 text-[#5a8a2a]">Faturamento por negocios</h2>
           <ResponsiveContainer width="100%" height={250}>
             <PieChart>
               <Pie
-                data={eventosData}
+                data={isLoading ? [] : faturamentoChartData}
                 dataKey="value"
                 nameKey="name"
                 cx="50%"
@@ -99,7 +177,7 @@ export default function VisualizacaoGraficosPage() {
                 outerRadius={80}
                 label
               >
-                {eventosData.map((entry, index) => (
+                {(isLoading ? [] : faturamentoChartData).map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
