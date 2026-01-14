@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const [negocios, disciplinas, eventos, motores, cursos] = await Promise.all([
+    const [negocios, disciplinas, eventos, motores, cursosRaw, relacoesRaw] = await Promise.all([
       prisma.negocio.findMany({
         select: {
           nome: true,
@@ -29,6 +29,7 @@ export async function GET() {
           nome: true,
           data_inicio: true,
           duracao: true,
+          custo: true,
           receita: true,
           qtd_publico: true,
         },
@@ -39,16 +40,74 @@ export async function GET() {
           motor_tipo: true,
           qtd_empresas_atendidas: true,
           faturamento: true,
+          projetos: true,
+          data_criacao: true,
         },
       }),
       prisma.cursos.findMany({
         select: {
+          id: true,
           nome: true,
+          competicoes: true,
           fomento: true,
           capital_captado: true,
+          Disciplinas_Cursos: {
+            select: {
+              disciplina: {
+                select: {
+                  nome: true,
+                  semestre: true,
+                },
+              },
+            },
+          },
+        },
+      }),
+      prisma.dimensao_Dimensao.findMany({
+        include: {
+          dimensaoA: {
+            include: {
+              Disciplina: { select: { nome: true } },
+              Evento: { select: { nome: true } },
+              Motor: { select: { nome: true } },
+              Negocio: { select: { nome: true } },
+            },
+          },
+          dimensaoB: {
+            include: {
+              Disciplina: { select: { nome: true } },
+              Evento: { select: { nome: true } },
+              Motor: { select: { nome: true } },
+              Negocio: { select: { nome: true } },
+            },
+          },
         },
       }),
     ]);
+
+    const cursos = cursosRaw.map((curso) => ({
+      id: curso.id,
+      nome: curso.nome,
+      competicoes: curso.competicoes,
+      fomento: curso.fomento,
+      capital_captado: curso.capital_captado,
+      disciplinas: curso.Disciplinas_Cursos.map((relacao) => relacao.disciplina),
+    }));
+
+    const formatDimensao = (dimensao: any) => ({
+      id: dimensao.id,
+      tipo: dimensao.tipo,
+      nome: dimensao.Disciplina?.nome
+        ?? dimensao.Evento?.nome
+        ?? dimensao.Motor?.nome
+        ?? dimensao.Negocio?.nome
+        ?? null,
+    });
+
+    const relacoes_dimensoes = relacoesRaw.map((relacao) => ({
+      a: formatDimensao(relacao.dimensaoA),
+      b: formatDimensao(relacao.dimensaoB),
+    }));
 
     const fomentoCaptado = cursos.reduce((acc, c) => acc + (c.fomento || 0), 0);
     const capitalCaptado = cursos.reduce((acc, c) => acc + (c.capital_captado || 0), 0);
@@ -73,6 +132,7 @@ export async function GET() {
           eventos,
           motores,
           cursos,
+          relacoes_dimensoes,
         },
       },
       { status: 200 }

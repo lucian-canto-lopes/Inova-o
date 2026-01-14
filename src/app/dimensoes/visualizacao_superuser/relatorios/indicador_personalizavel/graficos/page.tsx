@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -9,6 +8,8 @@ type ChartOption = {
   type: "bar" | "line" | "pie" | "donut" | "progress" | "stat";
   preview: React.ReactNode;
 };
+
+const ALLOWED_CHARTS = new Set(["bar-chart", "line-chart", "area-chart", "pie-chart"]);
 
 export default function GraficosPage() {
   const router = useRouter();
@@ -254,12 +255,13 @@ export default function GraficosPage() {
       ),
     },
   ];
+  const availableChartOptions = chartOptions.filter((chart) => ALLOWED_CHARTS.has(chart.id));
 
   const handleSelectChart = (chartId: string) => {
+    if (!ALLOWED_CHARTS.has(chartId)) return;
     // Salvar no localStorage e voltar imediatamente
-    const savedCharts = JSON.parse(localStorage.getItem("selectedCharts") || "[]");
-    savedCharts.push(chartId);
-    localStorage.setItem("selectedCharts", JSON.stringify(savedCharts));
+    localStorage.setItem("selectedChart", chartId);
+    localStorage.removeItem("selectedCharts");
     router.push("/dimensoes/visualizacao_superuser/relatorios/indicador_personalizavel");
   };
 
@@ -280,7 +282,7 @@ export default function GraficosPage() {
         <h2 className="text-lg font-semibold text-gray-800 mb-6">Selecione o tipo de gráfico:</h2>
         
         <div className="grid grid-cols-4 gap-4 max-w-4xl">
-          {chartOptions.map((chart) => (
+          {availableChartOptions.map((chart) => (
             <div
               key={chart.id}
               onClick={() => handleSelectChart(chart.id)}

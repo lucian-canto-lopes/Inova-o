@@ -1,9 +1,38 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { FaCheck, FaPen, FaArrowRight, FaPlus, FaArrowLeft } from "react-icons/fa";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
+import { FaCheck, FaPen, FaArrowRight, FaArrowLeft, FaTrash } from "react-icons/fa";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  AreaChart,
+  Area,
+  PieChart,
+  Pie,
+  Cell,
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  RadialBarChart,
+  RadialBar,
+  ScatterChart,
+  Scatter,
+  Treemap,
+  ComposedChart,
+  Funnel,
+  FunnelChart,
+  LabelList,
+} from "recharts";
+import { buildChartData, ChartDatum, ChartFilters, ReportDetalhes } from "@/src/lib/reportCharts";
 import "../../../../css/NavBar.css";
 
 type FilterOption = {
@@ -13,21 +42,6 @@ type FilterOption = {
   editable?: boolean;
 };
 
-type ReportData = {
-  projetosAtivos: number;
-  alunosEnvolvidos: number;
-  negociosCriados: number;
-  faturamentoTotal: number;
-  postosTrabalho: string;
-  financiamentoCaptado: number;
-  produtosExportados: number;
-  taxaContinuidade: string;
-  disciplinas: { nome: string; professor: string }[];
-  negocios: { nome: string; area: string; faturamento: number; estagio: string }[];
-  motores: { nome: string; empresas: number; financiamento: number }[];
-  eventos: { total: number; participantes: number; receita: number; internos: number; externos: number };
-};
-
 type CustomChart = {
   id: string;
   chartType: string;
@@ -35,30 +49,27 @@ type CustomChart = {
   createdAt: string;
 };
 
-// Dados de exemplo para gráficos customizados
-const sampleChartData = [
-  { name: "Jan", value: 30 },
-  { name: "Fev", value: 45 },
-  { name: "Mar", value: 28 },
-  { name: "Abr", value: 80 },
-  { name: "Mai", value: 99 },
-  { name: "Jun", value: 43 },
-  { name: "Jul", value: 50 },
-  { name: "Ago", value: 35 },
-];
+type ApiResponse = {
+  detalhes: ReportDetalhes;
+};
+
+const CHART_COLORS = ["#6366f1", "#818cf8", "#a5b4fc", "#c7d2fe"];
 
 export default function RelatoriosPage() {
   const [showReport, setShowReport] = useState(false);
+  const [reportGeneratedAt, setReportGeneratedAt] = useState<Date | null>(null);
   const [customCharts, setCustomCharts] = useState<CustomChart[]>([]);
   const [filters, setFilters] = useState<FilterOption[]>([
-    { id: "projetos", label: "Número de projetos", checked: true },
-    { id: "alunos", label: "Alunos envolvidos", checked: true },
-    { id: "faturamento", label: "Faturamento total", checked: true },
-    { id: "empregos", label: "Empregos/bolsas criadas", checked: true },
-    { id: "custom", label: "Indicador personalizável", checked: true, editable: true },
+    { id: "disciplinas", label: "Disciplinas", checked: true },
+    { id: "eventos", label: "Eventos", checked: true },
+    { id: "motores", label: "Motores", checked: true },
+    { id: "negocios", label: "Negocios", checked: true },
+    { id: "cursos", label: "Cursos e fomento", checked: true },
+    { id: "relacoes", label: "Relacoes", checked: true },
+    { id: "custom", label: "Indicador personalizavel", checked: true, editable: true },
   ]);
 
-  const [reportData, setReportData] = useState<ReportData | null>(null);
+  const [sourceData, setSourceData] = useState<ReportDetalhes | null>(null);
 
   useEffect(() => {
     // Carregar gráficos customizados do localStorage
@@ -71,6 +82,7 @@ export default function RelatoriosPage() {
     const savedCustomCharts = JSON.parse(localStorage.getItem("customReportCharts") || "[]");
     setCustomCharts(savedCustomCharts);
     await fetchReportData();
+    setReportGeneratedAt(new Date());
     setShowReport(true);
   };
 
@@ -80,53 +92,13 @@ export default function RelatoriosPage() {
 
   const fetchReportData = async () => {
     try {
-      // Buscar métricas gerais
-      const [motores, disciplinas, negocios, eventos] = await Promise.all([
-        fetch("/api/visitantes/motores").then(r => r.json()).catch(() => []),
-        fetch("/api/dimensoes/disciplinas").then(r => r.json()).catch(() => []),
-        fetch("/api/dimensoes/negocios").then(r => r.json()).catch(() => []),
-        fetch("/api/dimensoes/eventos").then(r => r.json()).catch(() => []),
-      ]);
+      const response = await fetch("/api/visualizacao_superuser/ver_dados");
+      if (!response.ok) {
+        throw new Error("Falha ao carregar dados.");
+      }
 
-      // Calcular métricas
-      const faturamentoTotal = negocios.reduce((acc: number, n: any) => acc + (n.data?.faturamento_anual || 0), 0);
-      const financiamentoCaptado = motores.reduce((acc: number, m: any) => acc + (m.faturamento || 0), 0);
-      const totalEventos = eventos.length;
-      const receitaEventos = eventos.reduce((acc: number, e: any) => acc + (e.data?.receita || 0), 0);
-      const participantes = eventos.reduce((acc: number, e: any) => acc + (e.data?.qtd_publico || 0), 0);
-
-      setReportData({
-        projetosAtivos: 28,
-        alunosEnvolvidos: disciplinas.reduce((acc: number, d: any) => acc + (d.data?.alunos_matriculados?.length || 0), 0) || 238,
-        negociosCriados: negocios.length || 3,
-        faturamentoTotal: faturamentoTotal || 266700,
-        postosTrabalho: "18 empregos / 3 bolsas",
-        financiamentoCaptado: financiamentoCaptado || 620000,
-        produtosExportados: 9,
-        taxaContinuidade: "76%",
-        disciplinas: disciplinas.slice(0, 5).map((d: any) => ({
-          nome: d.data?.nome || "Disciplina",
-          professor: d.data?.coordenador || "Professor"
-        })),
-        negocios: negocios.slice(0, 4).map((n: any) => ({
-          nome: n.data?.nome || "Negócio",
-          area: n.data?.area_atuacao || "Área",
-          faturamento: n.data?.faturamento_anual || 0,
-          estagio: n.data?.porte || "Estágio"
-        })),
-        motores: motores.slice(0, 3).map((m: any) => ({
-          nome: m.nome || "Motor",
-          empresas: m.qtd_empresas_atendidas || 0,
-          financiamento: m.faturamento || 0
-        })),
-        eventos: {
-          total: totalEventos || 9,
-          participantes: participantes || 1340,
-          receita: receitaEventos || 43360,
-          internos: 6,
-          externos: 5
-        }
-      });
+      const data: ApiResponse = await response.json();
+      setSourceData(data.detalhes);
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
@@ -140,10 +112,317 @@ export default function RelatoriosPage() {
     return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
   };
 
+  const formatOptionalNumber = (value: number | null | undefined) => {
+    if (value === null || value === undefined) return "N/D";
+    return value;
+  };
+
+  const formatOptionalCurrency = (value: number | null | undefined) => {
+    if (value === null || value === undefined) return "N/D";
+    return formatCurrency(value);
+  };
+
+  const formatDate = (value?: string) => {
+    if (!value) return "-";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "-";
+    return date.toLocaleDateString("pt-BR");
+  };
+
+  const sumBy = (items: Array<Record<string, any>>, key: string) => {
+    return items.reduce((acc, item) => acc + (Number(item?.[key]) || 0), 0);
+  };
+
+  const formatPercent = (value: number) => {
+    return `${value.toFixed(1)}%`;
+  };
+
+  const handleExportPdf = () => {
+    if (typeof window !== "undefined") {
+      window.print();
+    }
+  };
+
+  const handleRemoveChart = (id: string) => {
+    setCustomCharts((prev) => {
+      const next = prev.filter((chart) => chart.id !== id);
+      localStorage.setItem("customReportCharts", JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const renderCustomChart = (chartType: string, data: ChartDatum[]) => {
+    const maxValue = data.length > 0 ? Math.max(...data.map((item) => item.value)) : 0;
+    const radarData = data.map((item) => ({
+      subject: item.name,
+      A: item.value,
+      fullMark: maxValue || 1,
+    }));
+    const radialData = data.map((item, index) => ({
+      name: item.name,
+      value: item.value,
+      fill: CHART_COLORS[index % CHART_COLORS.length],
+    }));
+    const treemapData = data.map((item, index) => ({
+      name: item.name,
+      size: item.value,
+      fill: CHART_COLORS[index % CHART_COLORS.length],
+    }));
+    const scatterData = data.map((item, index) => ({
+      x: index + 1,
+      y: item.value,
+      name: item.name,
+    }));
+    const funnelData = data.map((item, index) => ({
+      value: item.value,
+      name: item.name,
+      fill: CHART_COLORS[index % CHART_COLORS.length],
+    }));
+
+    switch (chartType) {
+      case "bar-chart":
+      case "stacked-bar":
+        return (
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+            <XAxis dataKey="name" tick={{ fontSize: 8 }} stroke="#999" />
+            <YAxis tick={{ fontSize: 8 }} stroke="#999" />
+            <Tooltip />
+            <Bar dataKey="value" fill="#6366f1" />
+          </BarChart>
+        );
+
+      case "line-chart":
+        return (
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+            <XAxis dataKey="name" tick={{ fontSize: 8 }} stroke="#999" />
+            <YAxis tick={{ fontSize: 8 }} stroke="#999" />
+            <Tooltip />
+            <Line
+              type="monotone"
+              dataKey="value"
+              stroke="#6366f1"
+              strokeWidth={2}
+              dot={{ fill: "#6366f1", r: 3 }}
+            />
+          </LineChart>
+        );
+
+      case "area-chart":
+        return (
+          <AreaChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+            <XAxis dataKey="name" tick={{ fontSize: 8 }} stroke="#999" />
+            <YAxis tick={{ fontSize: 8 }} stroke="#999" />
+            <Tooltip />
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="#6366f1"
+              fill="#6366f1"
+              fillOpacity={0.3}
+            />
+          </AreaChart>
+        );
+
+      case "pie-chart":
+        return (
+          <PieChart>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              outerRadius={60}
+              dataKey="value"
+              label
+            >
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+        );
+
+      case "donut-chart":
+        return (
+          <PieChart>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              innerRadius={40}
+              outerRadius={60}
+              dataKey="value"
+              label
+            >
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+        );
+
+      case "radar-chart":
+        return (
+          <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
+            <PolarGrid />
+            <PolarAngleAxis dataKey="subject" tick={{ fontSize: 8 }} />
+            <PolarRadiusAxis angle={30} domain={[0, maxValue || 1]} />
+            <Radar name="Dados" dataKey="A" stroke="#6366f1" fill="#6366f1" fillOpacity={0.5} />
+            <Tooltip />
+          </RadarChart>
+        );
+
+      case "radialbar-chart":
+        return (
+          <RadialBarChart
+            cx="50%"
+            cy="50%"
+            innerRadius="20%"
+            outerRadius="90%"
+            data={radialData}
+            startAngle={180}
+            endAngle={0}
+          >
+            <RadialBar
+              label={{ position: "insideStart", fill: "#fff", fontSize: 8 }}
+              background
+              dataKey="value"
+            />
+            <Tooltip />
+          </RadialBarChart>
+        );
+
+      case "scatter-chart":
+        return (
+          <ScatterChart>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis type="number" dataKey="x" name="X" tick={{ fontSize: 8 }} />
+            <YAxis type="number" dataKey="y" name="Y" tick={{ fontSize: 8 }} />
+            <Tooltip cursor={{ strokeDasharray: "3 3" }} />
+            <Scatter name="Dados" data={scatterData} fill="#6366f1" />
+          </ScatterChart>
+        );
+
+      case "composed-chart":
+        return (
+          <ComposedChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" tick={{ fontSize: 8 }} />
+            <YAxis tick={{ fontSize: 8 }} />
+            <Tooltip />
+            <Bar dataKey="value" fill="#6366f1" />
+            <Line type="monotone" dataKey="value" stroke="#ef4444" strokeWidth={2} />
+          </ComposedChart>
+        );
+
+      case "funnel-chart":
+        return (
+          <FunnelChart>
+            <Tooltip />
+            <Funnel dataKey="value" data={funnelData} isAnimationActive>
+              <LabelList position="center" fill="#fff" stroke="none" dataKey="name" fontSize={8} />
+            </Funnel>
+          </FunnelChart>
+        );
+
+      case "treemap-chart":
+        return (
+          <Treemap
+            data={treemapData}
+            dataKey="size"
+            aspectRatio={4 / 3}
+            stroke="#fff"
+            fill="#6366f1"
+          >
+            <Tooltip />
+          </Treemap>
+        );
+
+      default:
+        return (
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+            <XAxis dataKey="name" tick={{ fontSize: 8 }} stroke="#999" />
+            <YAxis tick={{ fontSize: 8 }} stroke="#999" />
+            <Tooltip />
+            <Line
+              type="monotone"
+              dataKey="value"
+              stroke="#6366f1"
+              strokeWidth={2}
+              dot={{ fill: "#6366f1", r: 3 }}
+            />
+          </LineChart>
+        );
+    }
+  };
+
+  const disciplinas = sourceData?.disciplinas ?? [];
+  const eventos = sourceData?.eventos ?? [];
+  const motores = sourceData?.motores ?? [];
+  const negocios = sourceData?.negocios ?? [];
+  const cursos = sourceData?.cursos ?? [];
+  const relacoesDimensoes = sourceData?.relacoes_dimensoes ?? [];
+
+  const alunosMatriculados = sumBy(disciplinas, "alunos_matriculados");
+  const alunosAprovados = sumBy(disciplinas, "alunos_aprovados");
+  const taxaAprovacao = alunosMatriculados > 0
+    ? formatPercent((alunosAprovados / alunosMatriculados) * 100)
+    : "N/D";
+
+  const eventosPublico = sumBy(eventos, "qtd_publico");
+  const eventosReceita = sumBy(eventos, "receita");
+  const eventosCusto = sumBy(eventos, "custo");
+  const receitaLiquida = eventosReceita - eventosCusto;
+
+  const empresasAtendidas = sumBy(motores, "qtd_empresas_atendidas");
+  const faturamentoMotores = sumBy(motores, "faturamento");
+  const projetosAtivos = motores.reduce((acc, motor) => {
+    const projetos = Array.isArray(motor.projetos) ? motor.projetos : [];
+    const ativos = projetos.filter((projeto) => {
+      const status = typeof projeto === "object" && projeto !== null
+        ? String((projeto as { status?: string }).status ?? "").toLowerCase()
+        : "";
+      return status !== "encerrado" && status !== "cancelado";
+    }).length;
+    return acc + ativos;
+  }, 0);
+
+  const faturamentoNegocios = sumBy(negocios, "faturamento_anual");
+  const areasCount = new Set(negocios.map((n) => n.area_atuacao).filter(Boolean)).size;
+  const portesCount = new Set(negocios.map((n) => n.porte).filter(Boolean)).size;
+
+  const fomentoTotal = sumBy(cursos, "fomento");
+  const capitalTotal = sumBy(cursos, "capital_captado");
+  const competicoesTotal = cursos.reduce((acc, curso) => acc + (curso.competicoes?.length || 0), 0);
+  const disciplinasPorCurso = cursos
+    .map((curso) => ({
+      nome: curso.nome,
+      total: curso.disciplinas?.length || 0,
+    }))
+    .sort((a, b) => b.total - a.total);
+  const disciplinasTotal = disciplinasPorCurso.reduce((acc, item) => acc + item.total, 0);
+
+  const relacoesFormatadas = relacoesDimensoes.map((relacao) => ({
+    a: relacao.a.nome ?? `${relacao.a.tipo} #${relacao.a.id}`,
+    b: relacao.b.nome ?? `${relacao.b.tipo} #${relacao.b.id}`,
+  }));
+  const dimensoesRelacionadas = new Set(
+    relacoesFormatadas.flatMap((relacao) => [relacao.a, relacao.b])
+  ).size;
+  const reportSemesterLabel = reportGeneratedAt
+    ? `${reportGeneratedAt.getMonth() < 6 ? "1" : "2"}o semestre de ${reportGeneratedAt.getFullYear()}`
+    : "-";
+  const reportDateLabel = reportGeneratedAt ? formatDate(reportGeneratedAt.toISOString()) : "-";
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#E8E8E8]">
+    <div className="min-h-screen flex flex-col bg-[#E8E8E8] print:bg-white">
       {/* NavBar */}
-      <nav className="bg-[#A3CE6F] h-20 flex items-center justify-between px-12 shrink-0">
+      <nav className="bg-[#A3CE6F] h-20 flex items-center justify-between px-12 shrink-0 print:hidden">
         <Link href="/dimensoes/visualizacao_superuser">
           <FaArrowLeft className="w-10 h-10 text-white cursor-pointer" />
         </Link>
@@ -156,7 +435,7 @@ export default function RelatoriosPage() {
       {/* Conteúdo */}
       <div className="flex flex-1">
         {/* Sidebar de filtros */}
-        <aside className="w-72 bg-[#4C7F16] text-white p-6 shrink-0">
+        <aside className="w-72 bg-[#4C7F16] text-white p-6 shrink-0 print:hidden">
           <h2 className="text-lg font-semibold mb-6">Selecione as informações</h2>
           
           <div className="space-y-3">
@@ -201,218 +480,438 @@ export default function RelatoriosPage() {
               <p className="text-gray-500 text-lg">Selecione as informações desejadas e clique em &quot;Gerar relatório&quot;</p>
             </div>
           ) : (
-          <div className="bg-white rounded-lg shadow-lg max-w-4xl mx-auto p-8">
+          <div className="bg-white rounded-lg shadow-lg max-w-4xl mx-auto p-8 print:shadow-none print:max-w-none print:rounded-none print:p-0">
             {/* Cabeçalho do relatório */}
             <div className="flex justify-between items-start mb-6 border-b pb-4">
               <div>
                 <p className="text-2xl font-bold text-[#2a5a0a]">UFOPA</p>
-                <p className="text-xs text-gray-500 mt-1">Relatório 2ª semestre de 2023</p>
-                <p className="text-xs text-gray-500">Emitido por Nucleo 17/07/2023</p>
+                <p className="text-xs text-gray-500 mt-1">Relatorio {reportSemesterLabel}</p>
+                <p className="text-xs text-gray-500">Emitido por Nucleo {reportDateLabel}</p>
               </div>
             </div>
 
-            <h2 className="text-xl font-bold text-gray-800 mb-1">Relatório Institucional</h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-1">Relatorio Institucional</h2>
             <p className="text-sm text-gray-600 mb-6">Inovação e Empreendedorismo empreendedorismo UFOPA</p>
 
-            {reportData && (
+            {sourceData ? (
               <>
-                {/* Visão Geral */}
-                <div className="mb-8">
-                  <h3 className="text-sm font-semibold text-gray-700 mb-3 border-b pb-1">Visão Geral</h3>
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-sm">
-                    {isFilterChecked("projetos") && (
+                {isFilterChecked("disciplinas") && (
+                  <section className="mb-8">
+                    <h3 className="text-sm font-semibold text-gray-700 mb-3 border-b pb-1">Disciplinas e alunos</h3>
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-sm">
                       <div className="flex justify-between py-1">
-                        <span className="text-gray-600">Projetos ativos de inovação</span>
-                        <span className="font-medium">{reportData.projetosAtivos}</span>
+                        <span className="text-gray-600">Disciplinas cadastradas</span>
+                        <span className="font-medium">{disciplinas.length}</span>
                       </div>
-                    )}
-                    {isFilterChecked("alunos") && (
                       <div className="flex justify-between py-1">
-                        <span className="text-gray-600">Alunos envolvidos</span>
-                        <span className="font-medium">{reportData.alunosEnvolvidos}</span>
+                        <span className="text-gray-600">Alunos matriculados</span>
+                        <span className="font-medium">{formatOptionalNumber(alunosMatriculados)}</span>
                       </div>
-                    )}
-                    {isFilterChecked("projetos") && (
                       <div className="flex justify-between py-1">
-                        <span className="text-gray-600">Negócios criados</span>
-                        <span className="font-medium">{reportData.negociosCriados}</span>
+                        <span className="text-gray-600">Alunos aprovados</span>
+                        <span className="font-medium">{formatOptionalNumber(alunosAprovados)}</span>
                       </div>
-                    )}
-                    {isFilterChecked("faturamento") && (
                       <div className="flex justify-between py-1">
-                        <span className="text-gray-600">Faturamento total dos negócios</span>
-                        <span className="font-medium">{formatCurrency(reportData.faturamentoTotal)}</span>
+                        <span className="text-gray-600">Taxa de aprovacao</span>
+                        <span className="font-medium">{taxaAprovacao}</span>
                       </div>
-                    )}
-                    {isFilterChecked("empregos") && (
-                      <div className="flex justify-between py-1">
-                        <span className="text-gray-600">Postos de trabalho gerados</span>
-                        <span className="font-medium">{reportData.postosTrabalho}</span>
-                      </div>
-                    )}
-                    {isFilterChecked("faturamento") && (
-                      <div className="flex justify-between py-1">
-                        <span className="text-gray-600">Financiamento captado (motores)</span>
-                        <span className="font-medium text-green-600">{formatCurrency(reportData.financiamentoCaptado)}</span>
-                      </div>
-                    )}
-                    {isFilterChecked("custom") && (
-                      <>
-                        <div className="flex justify-between py-1">
-                          <span className="text-gray-600">Produtos/Serviços exportados</span>
-                          <span className="font-medium">{reportData.produtosExportados}</span>
-                        </div>
-                        <div className="flex justify-between py-1">
-                          <span className="text-gray-600">Taxa de continuidade dos negócios</span>
-                          <span className="font-medium">{reportData.taxaContinuidade}</span>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                {/* Tabelas lado a lado */}
-                <div className="grid grid-cols-2 gap-8 mb-8">
-                  {/* Disciplinas */}
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-700 mb-2">Disciplinas cadastradas</h3>
-                    <table className="w-full text-xs">
-                      <thead>
-                        <tr className="border-b">
-                          <th className="text-left py-1 font-medium text-gray-600">Disciplina</th>
-                          <th className="text-left py-1 font-medium text-gray-600">Professor</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {reportData.disciplinas.map((d, i) => (
-                          <tr key={i} className="border-b border-gray-100">
-                            <td className="py-1 text-blue-600">{d.nome}</td>
-                            <td className="py-1">{d.professor}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  {/* Negócios */}
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-700 mb-2">Negócios Criados</h3>
-                    <table className="w-full text-xs">
-                      <thead>
-                        <tr className="border-b">
-                          <th className="text-left py-1 font-medium text-gray-600">Nome</th>
-                          <th className="text-left py-1 font-medium text-gray-600">Área</th>
-                          <th className="text-right py-1 font-medium text-gray-600">Faturamento</th>
-                          <th className="text-right py-1 font-medium text-gray-600">Estagiários</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {reportData.negocios.map((n, i) => (
-                          <tr key={i} className="border-b border-gray-100">
-                            <td className="py-1">{n.nome}</td>
-                            <td className="py-1">{n.area}</td>
-                            <td className="py-1 text-right">{formatCurrency(n.faturamento)}</td>
-                            <td className="py-1 text-right">{n.estagio}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* Motores e Eventos */}
-                <div className="grid grid-cols-2 gap-8">
-                  {/* Motores */}
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-700 mb-2">Motores de inovação</h3>
-                    <table className="w-full text-xs">
-                      <thead>
-                        <tr className="border-b">
-                          <th className="text-left py-1 font-medium text-gray-600"></th>
-                          <th className="text-right py-1 font-medium text-gray-600">Empresas</th>
-                          <th className="text-right py-1 font-medium text-gray-600">Financiamento</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {reportData.motores.map((m, i) => (
-                          <tr key={i} className="border-b border-gray-100">
-                            <td className="py-1">{m.nome}</td>
-                            <td className="py-1 text-right">{m.empresas}</td>
-                            <td className="py-1 text-right text-green-600">{formatCurrency(m.financiamento)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  {/* Eventos */}
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-700 mb-2">Eventos promovidos</h3>
-                    <div className="text-xs space-y-1">
-                      <p>• {reportData.eventos.total} eventos realizados</p>
-                      <p>• {reportData.eventos.participantes} público total</p>
-                      <p>• {formatCurrency(reportData.eventos.receita)}</p>
-                      <p>• {reportData.eventos.internos} internos / {reportData.eventos.externos} externos</p>
                     </div>
-                  </div>
-                </div>
+                    <div className="mt-3 overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left py-1 font-medium text-gray-600">Disciplina</th>
+                            <th className="text-left py-1 font-medium text-gray-600">Coordenador</th>
+                            <th className="text-left py-1 font-medium text-gray-600">Semestre</th>
+                            <th className="text-right py-1 font-medium text-gray-600">Matriculados</th>
+                            <th className="text-right py-1 font-medium text-gray-600">Aprovados</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {disciplinas.length === 0 ? (
+                            <tr>
+                              <td colSpan={5} className="py-2 text-center text-gray-400">
+                                Sem dados
+                              </td>
+                            </tr>
+                          ) : (
+                            disciplinas.map((d, i) => (
+                              <tr key={`${d.nome}-${i}`} className="border-b border-gray-100">
+                                <td className="py-1 text-blue-600">{d.nome}</td>
+                                <td className="py-1">{d.coordenador || "-"}</td>
+                                <td className="py-1">{d.semestre || "-"}</td>
+                                <td className="py-1 text-right">{formatOptionalNumber(d.alunos_matriculados)}</td>
+                                <td className="py-1 text-right">{formatOptionalNumber(d.alunos_aprovados)}</td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                )}
 
-                {/* Gráficos Personalizados */}
+                {isFilterChecked("eventos") && (
+                  <section className="mb-8">
+                    <h3 className="text-sm font-semibold text-gray-700 mb-3 border-b pb-1">Eventos e publico</h3>
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-sm">
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Eventos realizados</span>
+                        <span className="font-medium">{eventos.length}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Publico total</span>
+                        <span className="font-medium">{formatOptionalNumber(eventosPublico)}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Receita total</span>
+                        <span className="font-medium">{formatCurrency(eventosReceita)}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Custo total</span>
+                        <span className="font-medium">{formatCurrency(eventosCusto)}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Receita liquida</span>
+                        <span className="font-medium">{formatCurrency(receitaLiquida)}</span>
+                      </div>
+                    </div>
+                    <div className="mt-3 overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left py-1 font-medium text-gray-600">Evento</th>
+                            <th className="text-left py-1 font-medium text-gray-600">Inicio</th>
+                            <th className="text-left py-1 font-medium text-gray-600">Duracao</th>
+                            <th className="text-right py-1 font-medium text-gray-600">Publico</th>
+                            <th className="text-right py-1 font-medium text-gray-600">Receita</th>
+                            <th className="text-right py-1 font-medium text-gray-600">Custo</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {eventos.length === 0 ? (
+                            <tr>
+                              <td colSpan={6} className="py-2 text-center text-gray-400">
+                                Sem dados
+                              </td>
+                            </tr>
+                          ) : (
+                            eventos.map((e, i) => (
+                              <tr key={`${e.nome}-${i}`} className="border-b border-gray-100">
+                                <td className="py-1 text-blue-600">{e.nome}</td>
+                                <td className="py-1">{formatDate(e.data_inicio)}</td>
+                                <td className="py-1">{e.duracao || "-"}</td>
+                                <td className="py-1 text-right">{formatOptionalNumber(e.qtd_publico)}</td>
+                                <td className="py-1 text-right">{formatOptionalCurrency(e.receita)}</td>
+                                <td className="py-1 text-right">{formatOptionalCurrency(e.custo)}</td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                )}
+
+                {isFilterChecked("motores") && (
+                  <section className="mb-8">
+                    <h3 className="text-sm font-semibold text-gray-700 mb-3 border-b pb-1">Motores de inovacao</h3>
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-sm">
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Motores cadastrados</span>
+                        <span className="font-medium">{motores.length}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Empresas atendidas</span>
+                        <span className="font-medium">{formatOptionalNumber(empresasAtendidas)}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Projetos ativos</span>
+                        <span className="font-medium">{formatOptionalNumber(projetosAtivos)}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Faturamento total</span>
+                        <span className="font-medium">{formatCurrency(faturamentoMotores)}</span>
+                      </div>
+                    </div>
+                    <div className="mt-3 overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left py-1 font-medium text-gray-600">Motor</th>
+                            <th className="text-left py-1 font-medium text-gray-600">Tipo</th>
+                            <th className="text-left py-1 font-medium text-gray-600">Criacao</th>
+                            <th className="text-right py-1 font-medium text-gray-600">Empresas</th>
+                            <th className="text-right py-1 font-medium text-gray-600">Projetos</th>
+                            <th className="text-right py-1 font-medium text-gray-600">Faturamento</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {motores.length === 0 ? (
+                            <tr>
+                              <td colSpan={6} className="py-2 text-center text-gray-400">
+                                Sem dados
+                              </td>
+                            </tr>
+                          ) : (
+                            motores.map((m, i) => {
+                              const projetosCount = Array.isArray(m.projetos) ? m.projetos.length : 0;
+                              return (
+                                <tr key={`${m.nome}-${i}`} className="border-b border-gray-100">
+                                  <td className="py-1 text-blue-600">{m.nome}</td>
+                                  <td className="py-1">{m.motor_tipo || "-"}</td>
+                                  <td className="py-1">{formatDate(m.data_criacao)}</td>
+                                  <td className="py-1 text-right">{formatOptionalNumber(m.qtd_empresas_atendidas)}</td>
+                                  <td className="py-1 text-right">{formatOptionalNumber(projetosCount)}</td>
+                                  <td className="py-1 text-right">{formatOptionalCurrency(m.faturamento)}</td>
+                                </tr>
+                              );
+                            })
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                )}
+
+                {isFilterChecked("negocios") && (
+                  <section className="mb-8">
+                    <h3 className="text-sm font-semibold text-gray-700 mb-3 border-b pb-1">Negocios e resultados</h3>
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-sm">
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Negocios cadastrados</span>
+                        <span className="font-medium">{negocios.length}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Faturamento total</span>
+                        <span className="font-medium">{formatCurrency(faturamentoNegocios)}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Areas atendidas</span>
+                        <span className="font-medium">{areasCount}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Portes distintos</span>
+                        <span className="font-medium">{portesCount}</span>
+                      </div>
+                    </div>
+                    <div className="mt-3 overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left py-1 font-medium text-gray-600">Negocio</th>
+                            <th className="text-left py-1 font-medium text-gray-600">Area</th>
+                            <th className="text-left py-1 font-medium text-gray-600">Porte</th>
+                            <th className="text-left py-1 font-medium text-gray-600">Fundadores</th>
+                            <th className="text-left py-1 font-medium text-gray-600">Criacao</th>
+                            <th className="text-right py-1 font-medium text-gray-600">Faturamento</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {negocios.length === 0 ? (
+                            <tr>
+                              <td colSpan={6} className="py-2 text-center text-gray-400">
+                                Sem dados
+                              </td>
+                            </tr>
+                          ) : (
+                            negocios.map((n, i) => (
+                              <tr key={`${n.nome}-${i}`} className="border-b border-gray-100">
+                                <td className="py-1 text-blue-600">{n.nome}</td>
+                                <td className="py-1">{n.area_atuacao || "-"}</td>
+                                <td className="py-1">{n.porte || "-"}</td>
+                                <td className="py-1">{n.fundadores?.join(", ") || "-"}</td>
+                                <td className="py-1">{formatDate(n.data_criacao)}</td>
+                                <td className="py-1 text-right">{formatOptionalCurrency(n.faturamento_anual)}</td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                )}
+
+                {isFilterChecked("cursos") && (
+                  <section className="mb-8">
+                    <h3 className="text-sm font-semibold text-gray-700 mb-3 border-b pb-1">Cursos e fomento</h3>
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-sm">
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Cursos cadastrados</span>
+                        <span className="font-medium">{cursos.length}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Disciplinas nos cursos</span>
+                        <span className="font-medium">{disciplinasTotal}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Competicoes registradas</span>
+                        <span className="font-medium">{competicoesTotal}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Fomento total</span>
+                        <span className="font-medium">{formatCurrency(fomentoTotal)}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Capital captado</span>
+                        <span className="font-medium">{formatCurrency(capitalTotal)}</span>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-8 mt-3">
+                      <div>
+                        <h4 className="text-xs font-semibold text-gray-600 mb-2">Cursos</h4>
+                        <table className="w-full text-xs">
+                          <thead>
+                            <tr className="border-b">
+                              <th className="text-left py-1 font-medium text-gray-600">Curso</th>
+                              <th className="text-right py-1 font-medium text-gray-600">Disciplinas</th>
+                              <th className="text-right py-1 font-medium text-gray-600">Competicoes</th>
+                              <th className="text-right py-1 font-medium text-gray-600">Fomento</th>
+                              <th className="text-right py-1 font-medium text-gray-600">Capital</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {cursos.length === 0 ? (
+                              <tr>
+                                <td colSpan={5} className="py-2 text-center text-gray-400">
+                                  Sem dados
+                                </td>
+                              </tr>
+                            ) : (
+                              cursos.map((c, i) => (
+                                <tr key={`${c.nome}-${i}`} className="border-b border-gray-100">
+                                  <td className="py-1 text-blue-600">{c.nome}</td>
+                                  <td className="py-1 text-right">{c.disciplinas?.length || 0}</td>
+                                  <td className="py-1 text-right">{c.competicoes?.length || 0}</td>
+                                  <td className="py-1 text-right">{formatOptionalCurrency(c.fomento)}</td>
+                                  <td className="py-1 text-right">{formatOptionalCurrency(c.capital_captado)}</td>
+                                </tr>
+                              ))
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-semibold text-gray-600 mb-2">Disciplinas por curso</h4>
+                        <table className="w-full text-xs">
+                          <thead>
+                            <tr className="border-b">
+                              <th className="text-left py-1 font-medium text-gray-600">Curso</th>
+                              <th className="text-right py-1 font-medium text-gray-600">Disciplinas</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {disciplinasPorCurso.length === 0 ? (
+                              <tr>
+                                <td colSpan={2} className="py-2 text-center text-gray-400">
+                                  Sem dados
+                                </td>
+                              </tr>
+                            ) : (
+                              disciplinasPorCurso.map((item, i) => (
+                                <tr key={`${item.nome}-${i}`} className="border-b border-gray-100">
+                                  <td className="py-1">{item.nome}</td>
+                                  <td className="py-1 text-right">{item.total}</td>
+                                </tr>
+                              ))
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </section>
+                )}
+
+                {isFilterChecked("relacoes") && (
+                  <section className="mb-8">
+                    <h3 className="text-sm font-semibold text-gray-700 mb-3 border-b pb-1">Relacoes entre dimensoes</h3>
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-sm">
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Relacoes cadastradas</span>
+                        <span className="font-medium">{relacoesFormatadas.length}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-600">Dimensoes conectadas</span>
+                        <span className="font-medium">{dimensoesRelacionadas}</span>
+                      </div>
+                    </div>
+                    <div className="mt-3 overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left py-1 font-medium text-gray-600">Dimensao A</th>
+                            <th className="text-left py-1 font-medium text-gray-600">Dimensao B</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {relacoesFormatadas.length === 0 ? (
+                            <tr>
+                              <td colSpan={2} className="py-2 text-center text-gray-400">
+                                Sem dados
+                              </td>
+                            </tr>
+                          ) : (
+                            relacoesFormatadas.map((relacao, i) => (
+                              <tr key={`${relacao.a}-${relacao.b}-${i}`} className="border-b border-gray-100">
+                                <td className="py-1">{relacao.a}</td>
+                                <td className="py-1">{relacao.b}</td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                )}
+
                 {isFilterChecked("custom") && customCharts.length > 0 && (
                   <div className="mt-8">
-                    <h3 className="text-sm font-semibold text-gray-700 mb-4 border-b pb-1">Indicadores Personalizados</h3>
+                    <h3 className="text-sm font-semibold text-gray-700 mb-4 border-b pb-1">Indicadores personalizados</h3>
                     <div className="grid grid-cols-2 gap-6">
-                      {customCharts.map((chart, index) => (
-                        <div key={chart.id} className="bg-gray-50 rounded-lg p-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="text-xs font-medium text-gray-600">
-                              {chart.filters.fonte || "Dados"} - {chart.filters.ano || "2024"}
-                            </span>
-                            <span className="text-xs text-gray-400">
-                              {chart.filters.semestre || "Anual"}
-                            </span>
+                      {customCharts.map((chart) => {
+                        const chartData = buildChartData(chart.filters as ChartFilters, sourceData);
+                        return (
+                          <div key={chart.id} className="bg-gray-50 rounded-lg p-4 relative">
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveChart(chart.id)}
+                              className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition print:hidden"
+                              aria-label="Remover grafico"
+                            >
+                              <FaTrash size={12} />
+                            </button>
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="text-xs font-medium text-gray-600">
+                                {chart.filters.fonte || "Dados"} - {chart.filters.ano || "2024"}
+                              </span>
+                              <span className="text-xs text-gray-400">
+                                {chart.filters.semestre || "Anual"}
+                              </span>
+                            </div>
+                            <ResponsiveContainer width="100%" height={150}>
+                              {renderCustomChart(chart.chartType, chartData)}
+                            </ResponsiveContainer>
                           </div>
-                          <ResponsiveContainer width="100%" height={150}>
-                            {chart.chartType?.includes("bar") ? (
-                              <BarChart data={sampleChartData}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                                <XAxis dataKey="name" tick={{ fontSize: 8 }} stroke="#999" />
-                                <YAxis tick={{ fontSize: 8 }} stroke="#999" />
-                                <Tooltip />
-                                <Bar dataKey="value" fill="#6366f1" />
-                              </BarChart>
-                            ) : (
-                              <LineChart data={sampleChartData}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                                <XAxis dataKey="name" tick={{ fontSize: 8 }} stroke="#999" />
-                                <YAxis tick={{ fontSize: 8 }} stroke="#999" />
-                                <Tooltip />
-                                <Line 
-                                  type="monotone" 
-                                  dataKey="value" 
-                                  stroke="#6366f1" 
-                                  strokeWidth={2}
-                                  dot={{ fill: "#6366f1", r: 3 }}
-                                />
-                              </LineChart>
-                            )}
-                          </ResponsiveContainer>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 )}
               </>
+            ) : (
+              <div className="text-sm text-gray-500">Dados indisponiveis.</div>
             )}
-
-            {/* Botão exportar */}
-            <div className="flex justify-end mt-8 pt-4 border-t items-center gap-4">
-              <span className="text-xs text-gray-500">☐ Exportar como</span>
-              <span className="text-xs text-gray-500">☐ BPDF</span>
-              <button className="bg-[#4C7F16] hover:bg-[#3d6812] text-white px-6 py-2 rounded flex items-center gap-2 transition">
-                Exportar <FaArrowRight size={12} />
+            {/* Botao exportar */}
+            <div className="flex justify-end mt-8 pt-4 border-t items-center gap-4 print:hidden">
+              <button
+                type="button"
+                onClick={handleExportPdf}
+                className="bg-[#4C7F16] hover:bg-[#3d6812] text-white px-6 py-2 rounded flex items-center gap-2 transition"
+              >
+                Exportar PDF <FaArrowRight size={12} />
               </button>
             </div>
+
           </div>
           )}
         </main>
