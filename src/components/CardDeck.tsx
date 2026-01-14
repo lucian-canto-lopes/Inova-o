@@ -82,8 +82,7 @@ function CardDeck({ title, hasFilter = false, data, onCardClick }: Props) {
       <div className="deck-cards">
         {filteredData.map((dimensao: any) => {
           const n = Math.round(Math.random() * 10);
-          return <Card key={`${n}-${dimensao.data.dimensaoId}`} data={dimensao} onClick={onCardClick} />
-
+          return <Card key={`${n}-${dimensao.data.nome}`} data={dimensao} onClick={onCardClick} />
         })}
       </div>
     </section>

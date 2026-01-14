@@ -54,6 +54,11 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
+
+        & select::picker(select) {
+            transform: translate(-100%) !important;
+            background-color: blue;
+        }
       }
 
       &>section {
@@ -112,8 +117,8 @@
               white-space: nowrap;
             }
 
-            & th:nth-child(1),
-            td:nth-child(1) {
+            & th:nth-child(2),
+            td:nth-child(2) {
               width: 100%;
             }
           }

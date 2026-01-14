@@ -1,13 +1,13 @@
 'use client'
 import { FaPlus, FaTrophy, FaX } from 'react-icons/fa6';
-import { FaFolderOpen, FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
+import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import { formatCurrency } from './Modal';
-import "../css/SubModal.css"
 import { useRef, useState } from 'react';
 import { LuImagePlus } from 'react-icons/lu';
 import { useRouter } from 'next/navigation';
+import "../css/SubModal.css"
 
-type SubModalTypes = "disciplinas" | "motores" | "cursos"
+type SubModalTypes = "disciplinas" | "motores" | "cursos" | "eventos" | "negocios"
 
 interface Props {
   // setValue: (value: any) => void,
@@ -29,35 +29,68 @@ export default function SubModal({
 
   let content;
   let saveContent: () => void;
+  let deleteInstance: () => void;
+
+  const [editais, setEditais] = useState(data.editais || data.projetos || []); // está nomeado como editais, mas cerve para Projetos tbm, fique a vontade para mudar o nome, desde que não quebre nada
+
+  const addEdital = () => {
+    if (!formRef.current) return console.error("[ERRO] Não foi possível acessar o formulário");
+
+    const formData = new FormData(formRef.current);
+    const ObjData = Object.fromEntries(formData.entries());
+
+    setEditais((prev: any) => ([
+      ...prev,
+      ObjData
+    ]));
+    formRef.current.reset();
+    return;
+  };
 
   switch (dimensao) {
     case "disciplinas":
-      saveContent = () => {
-        console.log("teste");
-      }
-      content = (
+      saveContent = async () => {
+        try {
+          const response = await fetch(`/api/dimensoes/disciplinas/${data.dimensaoId}/editais`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ editais: editais }),
+          });
+          if (!response.ok) {
+            const text = await response.text();
+            throw new Error(`[ERROR] ${response.status}: ${text}`);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      content = (<>
+        <header>
+          <FaRegSave onClick={() => {
+            saveContent();
+            closeSubModal();
+            router.refresh();
+          }} />
+          <FaX onClick={closeSubModal} />
+        </header>
         <div>
           <h1>Disciplinas {isAdd ? (<> → <span onClick={() => setIsAdd(false)}>Editais</span> → Adicionar</>) : (<>→ Editais</>)}</h1>
-          <section style={isAdd ? { transform: "translateX(-100%)" } : {}}>
-            <div>
+          <section>
+            <div style={isAdd ? { width: "translateX(-100%)" } : {}}>
               <button onClick={() => setIsAdd(true)}><span>Adicionar</span><FaPlus /></button>
               <table>
                 <tbody>
-                  <tr>
-                    <td>Edital 1</td>
-                    <td>R$ 1000,00</td>
-                    <td><FaTrophy /></td>
-                  </tr>
-                  <tr>
-                    <td>Edital 2</td>
-                    <td>R$ 2000,00</td>
-                    <td><FaTrophy /></td>
-                  </tr>
-                  <tr>
-                    <td>Edital 3</td>
-                    <td>R$ 3000,00</td>
-                    <td><FaTrophy /></td>
-                  </tr>
+                  {editais.map((d: any, i: number) => {
+                    return <tr key={i}>
+                      <td><FaX onClick={() => {
+                        setEditais(editais.filter((_: any, index: number) => index !== i));
+                      }} /></td>
+                      <td>{d.titulo}</td>
+                      <td>{d.valor}</td>
+                      <td>{d.e_vitoriosas > 0 ? <FaTrophy /> : ""}</td>
+                    </tr>
+                  })}
                 </tbody>
               </table>
             </div>
@@ -83,45 +116,64 @@ export default function SubModal({
                     <input placeholder="Total de equipes participantes" autoComplete="off" type="number" id='total-equipes' name='total-equipes' />
                   </div>
                   <div className="input-box">
-                    <label htmlFor="t-e-vitoriosas">Total de Equipes Vitoriosas</label>
-                    <input placeholder="Total de equipes vitoriosas" autoComplete="off" type="number" id='t-e-vitoriosas' name='t-e-vitoriosas' />
+                    <label htmlFor="e_vitoriosas">Total de Equipes Vitoriosas</label>
+                    <input placeholder="Total de equipes vitoriosas" autoComplete="off" type="number" id='e_vitoriosas' name='e_vitoriosas' />
                   </div>
                 </div>
               </form>
+              <button onClick={() => {
+                addEdital();
+                setIsAdd(false);
+              }}><span>Adicionar</span><FaPlus /></button>
             </div>
           </section>
         </div>
-      )
+      </>)
       break;
 
     case "motores":
-      saveContent = () => {
-        console.log("teste");
-      }
-      content = (
+      saveContent = async () => {
+        try {
+          const response = await fetch(`/api/dimensoes/motores/${data.dimensaoId}/projetos`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ projetos: editais }),
+          });
+          if (!response.ok) {
+            const text = await response.text();
+            throw new Error(`[ERROR] ${response.status}: ${text}`);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      content = (<>
+        <header>
+          <FaRegSave onClick={() => {
+            saveContent();
+            closeSubModal();
+            router.refresh();
+          }} />
+          <FaX onClick={closeSubModal} />
+        </header>
         <div>
           <h1>Motores {isAdd ? (<> → <span onClick={() => setIsAdd(false)}>Projetos</span> → Adicionar</>) : (<>→ Projetos</>)}</h1>
-          <section style={isAdd ? { transform: "translateX(-100%)" } : {}}>
-            <div>
+          <section>
+            <div style={isAdd ? { display: "none" } : {}}>
               <button onClick={() => setIsAdd(true)}><span>Adicionar</span><FaPlus /></button>
               <table>
                 <tbody>
-                  <tr>
-                    <td>Projeto 1</td>
-                    <td><FaFolderOpen /></td>
-                  </tr>
-                  <tr>
-                    <td>Projeto 2</td>
-                    <td><FaFolderOpen /></td>
-                  </tr>
-                  <tr>
-                    <td>Projeto 3</td>
-                    <td><FaFolderOpen /></td>
-                  </tr>
-                  <tr>
-                    <td>Projeto 4</td>
-                    <td><FaFolderOpen /></td>
-                  </tr>
+                  {editais.map((d: any, i: number) => {
+                    const dateArray = d.data_criacao.split('-');
+                    return <tr key={i}>
+                      <td><FaX onClick={() => {
+                        setEditais(editais.filter((_: any, index: number) => index !== i));
+                      }} /></td>
+                      <td>{d.titulo}</td>
+                      <td>R$ {d.valor_gerado}</td>
+                      <td>{`${dateArray[2]}/${dateArray[1]}/${dateArray[0]}`}</td>
+                    </tr>
+                  })}
                 </tbody>
               </table>
             </div>
@@ -141,26 +193,45 @@ export default function SubModal({
                     <input placeholder="Orçamento do projeto" autoComplete="off" type="text" id='orcamento' name='orcamento' onChange={(event) => formatCurrency(event.target)} />
                   </div>
                   <div className="input-box">
-                    <label htmlFor="valor-gerado">Valor</label>
-                    <input placeholder="Valor do projeto" autoComplete="off" type="text" id='valor-gerado' name='valor-gerado' onChange={(event) => formatCurrency(event.target)} />
+                    <label htmlFor="valor_gerado">Valor</label>
+                    <input placeholder="Valor do projeto" autoComplete="off" type="text" id='valor_gerado' name='valor_gerado' onChange={(event) => formatCurrency(event.target)} />
                   </div>
                 </div>
                 <div className="columns">
                   <div className="input-box">
-                    <label htmlFor="data-criacao">Data de criação</label>
-                    <input placeholder="Data de criação do projeto" autoComplete="off" type="date" id='data-criacao' name='data-criacao' />
+                    <label htmlFor="data_criacao">Data de criação</label>
+                    <input placeholder="Data de criação do projeto" autoComplete="off" type="date" id='data_criacao' name='data_criacao' />
                   </div>
                   <div className="input-box">
                     <label htmlFor="duracao">Duração</label>
                     <input placeholder="Duração do projeto" autoComplete="off" type="text" id='duracao' name='duracao' />
                   </div>
                 </div>
-                <button><span>Adicionar Imagem</span><LuImagePlus /></button>
+                <div className="columns">
+                  <div className="input-box">
+                    <label htmlFor="prazo">Prazo</label>
+                    <input placeholder="Data de criação do projeto" autoComplete="off" type="date" id='prazo' name='prazo' />
+                  </div>
+                  <div className="input-box">
+                    <label htmlFor="d-status">Carga Horaria</label>
+                    <select name="status" id="d-status">
+                      <option value="progresso">Em progresso</option>
+                      <option value="hiatos">Em hiato</option>
+                      <option value="encerrado">Encerrado</option>
+                      <option value="cancelado">Cancelado</option>
+                    </select>
+                  </div>
+                </div>
+                <button disabled><span>Adicionar Imagem</span><LuImagePlus /></button>
               </form>
+              <button onClick={() => {
+                addEdital();
+                setIsAdd(false);
+              }}><span>Adicionar</span><FaPlus /></button>
             </div>
           </section>
         </div>
-      )
+      </>)
       break;
 
     case "cursos":
@@ -169,7 +240,6 @@ export default function SubModal({
 
         const formData = new FormData(formRef.current);
         const body = Object.fromEntries(formData.entries());
-        console.log(body);
 
         const response = await fetch("/api/dimensoes/disciplinas/cursos", {
           method: "POST",
@@ -185,10 +255,39 @@ export default function SubModal({
         }
 
         const result = await response.json();
-        console.log(result);
       };
 
-      content = (
+      deleteInstance = async () => {
+        if (!data) return console.error("O modal atual não está salvo na DataBase");
+
+        try {
+          const response = await fetch(`/api/dimensoes/disciplinas/cursos/${data.id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+          });
+          if (!response.ok) {
+            const text = await response.text();
+            throw new Error(`Error [${response.status}]: ${text}`);
+          };
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      content = (<>
+        <header>
+          <FaRegSave onClick={() => {
+            saveContent();
+            closeSubModal();
+            router.refresh();
+          }} />
+          <FaRegTrashAlt onClick={() => {
+            deleteInstance();
+            closeSubModal();
+            router.refresh();
+          }} />
+          <FaX onClick={closeSubModal} />
+        </header>
         <div>
           <h1>Modal de Cursos</h1>
           <form ref={formRef}>
@@ -212,28 +311,16 @@ export default function SubModal({
             </div>
           </form>
         </div>
-      )
+      </>)
       break;
 
     default:
-      saveContent = () => {
-        console.log("Se vc está vendo essa mensagem no terminal, algo está errado")
-      }
       break;
   }
 
   return (
     <section className="submodal-bg">
       <div>
-        <header>
-          <FaRegSave onClick={() => {
-            saveContent();
-            closeSubModal();
-            router.refresh();
-          }} />
-          <FaRegTrashAlt />
-          <FaX onClick={closeSubModal} />
-        </header>
         {content}
       </div>
     </section>

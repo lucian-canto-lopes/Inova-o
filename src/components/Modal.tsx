@@ -71,10 +71,25 @@ export function Modal({
               <div className="columns">
                 <div className="input-box">
                   <label htmlFor="d-a-matriculados">Alunos Matriculados</label>
-                  <input autoComplete='off' type="text" id="d-a-matriculados" name='alunos_matriculados' defaultValue={modalData?.alunos_matriculados?.join(", ")} />
+                  <input autoComplete='off' type="number" id="d-a-matriculados" name='alunos_matriculados' defaultValue={modalData?.alunos_matriculados || ""} />
                 </div><div className="input-box">
                   <label htmlFor="d-a-aprovados">Alunos Aprovados</label>
-                  <input autoComplete='off' type="text" id="d-a-aprovados" name='alunos_aprovados' defaultValue={modalData?.alunos_aprovados?.join(", ")} />
+                  <input autoComplete='off' type="number" id="d-a-aprovados" name='alunos_aprovados' defaultValue={modalData?.alunos_aprovados || ""} />
+                </div>
+              </div>
+              <div className="columns">
+                <div className="input-box">
+                  <label htmlFor="d-carga-horaria">Carga Horaria</label>
+                  <input type="number" name="carga_horaria" id="d-carga-horaria" defaultValue={modalData?.carga_horaria || ""} />
+                </div>
+                <div className="input-box">
+                  <label htmlFor="d-status">Carga Horaria</label>
+                  <select name="status" id="d-status">
+                    <option value="progresso">Em progresso</option>
+                    <option value="hiatos">Em hiato</option>
+                    <option value="encerrado">Encerrado</option>
+                    <option value="cancelado">Cancelado</option>
+                  </select>
                 </div>
               </div>
             </form>
@@ -231,7 +246,7 @@ export function Modal({
                 </div>
               </div>
             </form>
-            <button onClick={() => setSubModalOpen(true)}><span>Projetos Executados</span><FaList /></button>
+            <button onClick={() => handleSubModal(true)}><span>Projetos Executados</span><FaList /></button>
           </>
         )
       default:
@@ -244,6 +259,17 @@ export function Modal({
 
   // useState - Submodal
   const [isSubModalOpen, setSubModalOpen] = useState<boolean>(false);
+  const [modalDataUS, setModalDataUS] = useState(modalData);
+
+  // Atualiza os dados dos submodais toda vez que eles são abertos
+  const handleSubModal = async (abrir: boolean) => {
+    const res = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${modalData.dimensaoId}`);
+    if (res.ok) {
+      const data = await res.json();
+      setModalDataUS(data.data);
+    }
+    setSubModalOpen(abrir);
+  }
 
   // Cursos - useStates & useMemos
   const [cursos, setCursos] = useState<any>([]);
@@ -262,7 +288,7 @@ export function Modal({
   const [isRelationCLOpen, setRelationCLOpen] = useState(false);
   const [searchRelations, setSearchRelations] = useState<string>("");
   const filteredRelations = useMemo(() => {
-    if (!searchRelations.trim()) return cursos;
+    if (!searchRelations.trim()) return relations;
     return relations.filter((r: any) => r.nome.toLowerCase().includes(searchRelations.toLowerCase()));
   }, [searchRelations, relations]);
   const toggleRelations = (id: number, checked: boolean) => {
@@ -311,6 +337,8 @@ export function Modal({
     const body = Object.fromEntries(formData.entries());
     body["conteudo"] = textValue;
 
+    let id;
+
     try {
       const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}` + (modalData.dimensaoId ? `/${modalData.dimensaoId}` : ''), {
         method: modalData.dimensaoId ? "PUT" : "POST",
@@ -327,15 +355,34 @@ export function Modal({
 
       const result = await response.json();
       console.log("Sucesso: ", result);
+      id = result.id;
     } catch (error) {
       console.log(`[ERROR]: ${error}`);
     };
 
-    relationsBlock: try {
-      if (!modalData.dimensaoId) break relationsBlock;
+    cursosBlock: try { // Atualiza os cursos marcados no modal de Disciplinas
+      if (!modalData.dimensaoId || modalType !== "disciplinas") break cursosBlock;
 
-      const relationsIds = relations.map((r: any) => parseInt(r.id));
-      const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${modalData.dimensaoId}/relations`, {
+      const cursosIds = cursos.flatMap((r: any) => r.related ? [r.id] : []);
+      const response = await fetch(`http://localhost:3000/api/dimensoes/disciplinas/${modalData.dimensaoId}/cursos`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cursosIds),
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Error ${response.status}: ${text}`);
+      };
+    } catch (error) {
+      console.error(error);
+    }
+
+    relationsBlock: try { // Atualiza as relações marcadas no modal
+      if (!id) break relationsBlock; // tenho que atualizar como a api salva novas dimensões para conseguir salvar as relações
+
+      const relationsIds = relations.flatMap((r: any) => r.related ? [r.id] : []);
+      const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${id}/relations`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -347,8 +394,6 @@ export function Modal({
         const text = await response.text();
         throw new Error(`Erro ${response.status}: ${text}`);
       }
-
-      const result = await response.json();
     } catch (error) {
       console.error(error);
     }
@@ -415,7 +460,7 @@ export function Modal({
                         <ul>
                           {filteredRelations.map((relation: any) => {
                             // Se há relações, o checkbox fica marcado
-                            return <li key={`li-${relation.id}`}><input type="checkbox" id={`cb-${relation.id}`} checked={relation.related} onChange={(e) => toggleRelations(relation.id, e.target.checked)} />
+                            return <li key={`li-${relation.id}`}><input type="checkbox" id={`cb-${relation.id}`} checked={relation.related ?? ''} onChange={(e) => toggleRelations(relation.id, e.target.checked)} />
                               <label htmlFor={`cb-${relation.id}`}>{relation.nome}</label>
                             </li>
                           })}
@@ -432,7 +477,11 @@ export function Modal({
       </div>
       {isSubModalOpen && (
         // setValue={(value: any) => setSubModalValue(value)}
-        <SubModal dimensao={modalType == "disciplinas" ? "disciplinas" : "motores"} closeSubModal={() => setSubModalOpen(false)} data={{}} />
+        <SubModal
+          dimensao={modalType}
+          closeSubModal={() => setSubModalOpen(false)}
+          data={modalDataUS}
+        />
       )}
     </section>
   )
