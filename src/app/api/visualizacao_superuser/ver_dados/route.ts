@@ -3,8 +3,17 @@ import prisma from "@/lib/prisma";
 
 export async function GET() {
   try {
+    const safe = async <T,>(label: string, fn: () => Promise<T>, fallback: T): Promise<T> => {
+      try {
+        return await fn();
+      } catch (error) {
+        console.error(`Erro ao buscar ${label}:`, error);
+        return fallback;
+      }
+    };
+
     const [negocios, disciplinas, eventos, motores, cursosRaw, relacoesRaw] = await Promise.all([
-      prisma.negocio.findMany({
+      safe("negocios", () => prisma.negocio.findMany({
         select: {
           nome: true,
           area_atuacao: true,
@@ -13,8 +22,8 @@ export async function GET() {
           porte: true,
           data_criacao: true,
         },
-      }),
-      prisma.disciplina.findMany({
+      }), []),
+      safe("disciplinas", () => prisma.disciplina.findMany({
         select: {
           nome: true,
           coordenador: true,
@@ -23,8 +32,8 @@ export async function GET() {
           alunos_matriculados: true,
           alunos_aprovados: true,
         },
-      }),
-      prisma.evento.findMany({
+      }), []),
+      safe("eventos", () => prisma.evento.findMany({
         select: {
           nome: true,
           data_inicio: true,
@@ -33,8 +42,8 @@ export async function GET() {
           receita: true,
           qtd_publico: true,
         },
-      }),
-      prisma.motor.findMany({
+      }), []),
+      safe("motores", () => prisma.motor.findMany({
         select: {
           nome: true,
           motor_tipo: true,
@@ -43,8 +52,8 @@ export async function GET() {
           projetos: true,
           data_criacao: true,
         },
-      }),
-      prisma.cursos.findMany({
+      }), []),
+      safe("cursos", () => prisma.cursos.findMany({
         select: {
           id: true,
           nome: true,
@@ -62,8 +71,8 @@ export async function GET() {
             },
           },
         },
-      }),
-      prisma.dimensao_Dimensao.findMany({
+      }), []),
+      safe("relacoes_dimensoes", () => prisma.dimensao_Dimensao.findMany({
         include: {
           dimensaoA: {
             include: {
@@ -82,7 +91,7 @@ export async function GET() {
             },
           },
         },
-      }),
+      }), []),
     ]);
 
     const cursos = cursosRaw.map((curso) => ({

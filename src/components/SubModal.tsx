@@ -323,7 +323,7 @@ export default function SubModal({
                 <div className='columns'>
                   <div className="input-box">
                     <label htmlFor="competicoes">Competições de Inovação</label>
-                    <input type="text" id='competicoes' name='competicoes' autoComplete="off" defaultValue={data?.competicoes || ""} />
+                    <input type="text" id='competicoes' name='competicoes' autoComplete="off" defaultValue={Array.isArray(data?.competicoes) ? data.competicoes.join(", ") : data?.competicoes || ""} />
                   </div>
                   <div className="input-box">
                     <label htmlFor="capital-captado">Capital Captado</label>

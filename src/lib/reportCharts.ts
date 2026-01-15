@@ -47,7 +47,7 @@ export type ReportDetalhes = {
     nome: string;
     fomento?: number | null;
     capital_captado?: number;
-    competicoes?: string | null;
+    competicoes?: string[] | string | null;
     disciplinas?: Array<{
       nome: string;
       semestre?: string;

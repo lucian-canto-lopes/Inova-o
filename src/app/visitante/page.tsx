@@ -1,6 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Card from "@/src/components/Card";
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 /* ===== NavBar (fixa e em largura total) ===== */
 function LocalNavBar({
@@ -201,19 +211,25 @@ export default function VisitantePage() {
   const [searchValue, setSearchValue] = useState("");
 
   const [metrics, setMetrics] = useState<Metrics | null>(null);
+  const [series, setSeries] = useState<SeriesPayload | null>(null);
 
   useEffect(() => {
     fetch("/api/visitantes/metrics")
-      .then(r => r.json())
+      .then(r => r.ok ? r.json() : Promise.reject(r))
       .then(setMetrics)
       .catch(() => setMetrics({
         negociosGerados: 0,
         disciplinasInovacao: 0,
-        pisCriadas: 0,
+        editaisPublicados: 0,
         fomentoCaptado: 0,
         eventosInovacao: 0,
         alunosParticipantes: 0,
       }));
+
+    fetch("/api/visitantes/series")
+      .then(r => r.ok ? r.json() : Promise.reject(r))
+      .then(setSeries)
+      .catch(() => setSeries({ monthly: [], impactos: [] }));
   }, []);
 
   return (
@@ -243,7 +259,7 @@ export default function VisitantePage() {
               />
               <Card
                 title="Editais publicados (inovação)"
-                value={metrics?.pisCriadas ?? "—"}
+                value={metrics?.editaisPublicados ?? "—"}
               />
               <Card
                 title="Receita total de eventos de inovação"
@@ -263,7 +279,7 @@ export default function VisitantePage() {
           {/* === GRÁFICOS (como no layout original) === */}
           <div className="bg-white rounded-2xl p-6 shadow-md mb-6">
             <h3 className="text-sm font-semibold text-zinc-700 mb-3">Evolução da inovação na UFOPA</h3>
-            <MonthlyLineChart data={series?.monthly ?? []} />
+            <MonthlyChart data={series?.monthly ?? []} />
           </div>
 
           <div className="bg-white rounded-2xl p-6 shadow-md">
@@ -273,8 +289,8 @@ export default function VisitantePage() {
 
           {/* Removidos: blocos “Resumo”, “Gráficos Mensais” (com prop series),
               “Impactos ao longo do tempo” (com prop series) e a “Tabela de Detalhes” */}
-        </main>
-      </div>
+        </section>
+      </main>
     </div>
   );
 }

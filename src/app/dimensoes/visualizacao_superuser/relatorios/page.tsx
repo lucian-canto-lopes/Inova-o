@@ -137,8 +137,9 @@ export default function RelatoriosPage() {
     return `${value.toFixed(1)}%`;
   };
 
-  const countCompeticoes = (value?: string | null) => {
+  const countCompeticoes = (value?: string[] | string | null) => {
     if (!value) return 0;
+    if (Array.isArray(value)) return value.filter(Boolean).length;
     const items = value
       .split(/[,;|]/)
       .map((item) => item.trim())
