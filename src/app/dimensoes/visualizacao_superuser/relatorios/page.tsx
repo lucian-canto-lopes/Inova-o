@@ -137,6 +137,15 @@ export default function RelatoriosPage() {
     return `${value.toFixed(1)}%`;
   };
 
+  const countCompeticoes = (value?: string | null) => {
+    if (!value) return 0;
+    const items = value
+      .split(/[,;|]/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+    return items.length;
+  };
+
   const handleExportPdf = () => {
     if (typeof window !== "undefined") {
       window.print();
@@ -398,7 +407,10 @@ export default function RelatoriosPage() {
 
   const fomentoTotal = sumBy(cursos, "fomento");
   const capitalTotal = sumBy(cursos, "capital_captado");
-  const competicoesTotal = cursos.reduce((acc, curso) => acc + (curso.competicoes?.length || 0), 0);
+  const competicoesTotal = cursos.reduce(
+    (acc, curso) => acc + countCompeticoes(curso.competicoes),
+    0
+  );
   const disciplinasPorCurso = cursos
     .map((curso) => ({
       nome: curso.nome,
@@ -782,7 +794,7 @@ export default function RelatoriosPage() {
                                 <tr key={`${c.nome}-${i}`} className="border-b border-gray-100">
                                   <td className="py-1 text-blue-600">{c.nome}</td>
                                   <td className="py-1 text-right">{c.disciplinas?.length || 0}</td>
-                                  <td className="py-1 text-right">{c.competicoes?.length || 0}</td>
+                                  <td className="py-1 text-right">{countCompeticoes(c.competicoes)}</td>
                                   <td className="py-1 text-right">{formatOptionalCurrency(c.fomento)}</td>
                                   <td className="py-1 text-right">{formatOptionalCurrency(c.capital_captado)}</td>
                                 </tr>

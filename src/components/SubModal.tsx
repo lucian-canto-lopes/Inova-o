@@ -39,7 +39,18 @@ export default function SubModal({
   let saveContent: () => void;
   let deleteInstance: () => void;
 
-  const [editais, setEditais] = useState(data.editais || data.projetos || data.fomento || []); // está nomeado como editais, mas cerve para Projetos tbm, fique a vontade para mudar o nome, desde que não quebre nada
+  const [editais, setEditais] = useState(
+    Array.isArray(data.editais)
+      ? data.editais
+      : Array.isArray(data.projetos)
+        ? data.projetos
+        : Array.isArray(data.fomento)
+          ? data.fomento
+          : []
+  ); // nomeado como editais, mas serve para projetos
+  const fomentoTotal = editais.length > 0
+    ? editais.reduce((acc: number, d: any) => acc + toFloat(d.valor), 0)
+    : toFloat(data?.fomento);
 
   const addEdital = () => {
     if (!formRef.current) return console.error("[ERRO] Não foi possível acessar o formulário");
@@ -248,7 +259,7 @@ export default function SubModal({
 
         const formData = new FormData(formRef.current);
         const body = Object.fromEntries(formData.entries());
-        body.fomento = editais;
+        body.fomento = fomentoTotal;
 
         const response = await fetch("/api/dimensoes/disciplinas/cursos" + (data.id ? `/${data.id}` : ""), {
           method: data.id ? "PUT" : "POST",
@@ -312,7 +323,7 @@ export default function SubModal({
                 <div className='columns'>
                   <div className="input-box">
                     <label htmlFor="competicoes">Competições de Inovação</label>
-                    <input type="number" id='competicoes' name='competicoes' autoComplete="off" defaultValue={data?.competicoes} />
+                    <input type="text" id='competicoes' name='competicoes' autoComplete="off" defaultValue={data?.competicoes || ""} />
                   </div>
                   <div className="input-box">
                     <label htmlFor="capital-captado">Capital Captado</label>
@@ -323,7 +334,7 @@ export default function SubModal({
                   <div className="input-box">
                     <label htmlFor="fomento">Fomento Total</label>
                     <input type="text" id='fomento' name='fomento' autoComplete="off" disabled value={
-                      editais.reduce((acc: number, d: any) => acc + toFloat(d.valor), 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || ""
+                      fomentoTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || ""
                     } />
                   </div>
                   <span onClick={() => setIsAdd(true)}>Editar Fomento</span>

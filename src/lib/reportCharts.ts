@@ -45,9 +45,9 @@ export type ReportDetalhes = {
   }>;
   cursos?: Array<{
     nome: string;
-    fomento?: number;
+    fomento?: number | null;
     capital_captado?: number;
-    competicoes?: string[];
+    competicoes?: string | null;
     disciplinas?: Array<{
       nome: string;
       semestre?: string;

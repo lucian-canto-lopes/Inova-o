@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { toFloat } from "../../route";
 
 export async function GET(
   request: Request,
@@ -70,9 +71,9 @@ export async function PUT(
       },
       data: {
         nome: body.nome,
-        competicoes: Number(body.competicoes),
-        capital_captado: Number(body.capital_captado),
-        fomento: body.fomento
+        competicoes: body.competicoes ? String(body.competicoes) : null,
+        capital_captado: toFloat(body.capital_captado),
+        fomento: toFloat(body.fomento)
       }
     })
 

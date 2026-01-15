@@ -16,8 +16,8 @@ export async function POST (
     await prisma.cursos.create({
       data: {
         nome: body.nome,
-        competicoes: Number(body.competicoes),
-        fomento: body.fomento,
+        competicoes: body.competicoes ? String(body.competicoes) : null,
+        fomento: toFloat(body.fomento),
         capital_captado: toFloat(body.capital_captado)
       }
     });
