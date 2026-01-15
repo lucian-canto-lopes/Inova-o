@@ -1,23 +1,15 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { CursosClientCardDeck, CursosClientSubModal } from "./CursosClient";
-import { getServerBaseUrl } from "@/src/lib/serverBaseUrl";
+import prisma from "@/lib/prisma";
+import { unstable_noStore as noStore } from "next/cache";
 
 async function getCursos() {
-  const baseUrl = getServerBaseUrl();
-  const response = await fetch(`${baseUrl}/api/dimensoes/disciplinas/cursos`, {
-    method: "GET",
-    cache: "no-cache",
+  noStore();
+  return prisma.cursos.findMany({
+    take: 8,
+    select: { nome: true, id: true },
   });
-
-  if (!response.ok) {
-    const text = await response.text();
-    console.error(`Error [${response.status}]: ${text}`);
-    return [];
-  }
-
-  const data = await response.json();
-  return data;
 }
 
 export default async function CursosPage({
