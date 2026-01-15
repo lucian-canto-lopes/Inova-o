@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DimensaoClientHeader, DimesaoClientCardDeck } from "./DimensaoClient";
+import { getServerBaseUrl } from "@/src/lib/serverBaseUrl";
 
 enum DimensaoEnum {
   disciplinas = "Disciplinas",
@@ -12,7 +13,8 @@ type DimensaoTipo = keyof typeof DimensaoEnum;
 const dimensoesTipos = Object.keys(DimensaoEnum) as DimensaoTipo[];
 
 async function getDimensaoData(dimensao: DimensaoTipo) {
-  const response = await fetch(`http://localhost:3000/api/dimensoes/${dimensao}`, {
+  const baseUrl = getServerBaseUrl();
+  const response = await fetch(`${baseUrl}/api/dimensoes/${dimensao}`, {
     cache: "no-store",
   });
   if (!response.ok) {

@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { CursosClientCardDeck, CursosClientSubModal } from "./CursosClient";
+import { getServerBaseUrl } from "@/src/lib/serverBaseUrl";
 
 async function getCursos() {
-  const response = await fetch("http://localhost:3000/api/dimensoes/disciplinas/cursos", {
+  const baseUrl = getServerBaseUrl();
+  const response = await fetch(`${baseUrl}/api/dimensoes/disciplinas/cursos`, {
     method: "GET",
     cache: "no-cache",
   });

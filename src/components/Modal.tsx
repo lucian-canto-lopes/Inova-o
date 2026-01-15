@@ -264,7 +264,7 @@ export function Modal({
 
   // Atualiza os dados dos submodais toda vez que eles são abertos
   const handleSubModal = async (abrir: boolean) => {
-    const res = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${modalData.dimensaoId}`);
+    const res = await fetch(`/api/dimensoes/${modalType}/${modalData.dimensaoId}`);
     if (res.ok) {
       const data = await res.json();
       setModalDataUS(data.data);
@@ -299,7 +299,7 @@ export function Modal({
   // Fetch Data
   const fetchCursos = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/dimensoes/disciplinas/${modalData.dimensaoId ? modalData.dimensaoId : -1}/cursos`, {
+      const res = await fetch(`/api/dimensoes/disciplinas/${modalData.dimensaoId ? modalData.dimensaoId : -1}/cursos`, {
         cache: "no-cache",
       });
       if (!res.ok) throw new Error("Erro ao buscar Cursos");
@@ -312,7 +312,7 @@ export function Modal({
 
   const fetchRelations = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${modalData.dimensaoId ? modalData.dimensaoId : -1}/relations`, {
+      const res = await fetch(`/api/dimensoes/${modalType}/${modalData.dimensaoId ? modalData.dimensaoId : -1}/relations`, {
         cache: "no-cache",
       });
       if (!res.ok) throw new Error("Erro ao buscar relações");
@@ -341,7 +341,7 @@ export function Modal({
     let id;
 
     try {
-      const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}` + (modalData.dimensaoId ? `/${modalData.dimensaoId}` : ''), {
+      const response = await fetch(`/api/dimensoes/${modalType}` + (modalData.dimensaoId ? `/${modalData.dimensaoId}` : ''), {
         method: modalData.dimensaoId ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
@@ -365,7 +365,7 @@ export function Modal({
       if (!modalData.dimensaoId || modalType !== "disciplinas") break cursosBlock;
 
       const cursosIds = cursos.flatMap((r: any) => r.related ? [r.id] : []);
-      const response = await fetch(`http://localhost:3000/api/dimensoes/disciplinas/${modalData.dimensaoId}/cursos`, {
+      const response = await fetch(`/api/dimensoes/disciplinas/${modalData.dimensaoId}/cursos`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(cursosIds),
@@ -383,7 +383,7 @@ export function Modal({
       if (!id) break relationsBlock; // tenho que atualizar como a api salva novas dimensões para conseguir salvar as relações
 
       const relationsIds = relations.flatMap((r: any) => r.related ? [r.id] : []);
-      const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}/${id}/relations`, {
+      const response = await fetch(`/api/dimensoes/${modalType}/${id}/relations`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -408,7 +408,7 @@ export function Modal({
     if (!modalData?.dimensaoId) return console.error("Não há uma dimensão relaciondada para apagar");
 
     try {
-      const response = await fetch(`http://localhost:3000/api/dimensoes/${modalType}`, {
+      const response = await fetch(`/api/dimensoes/${modalType}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
