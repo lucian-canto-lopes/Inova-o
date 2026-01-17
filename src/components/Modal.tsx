@@ -83,7 +83,7 @@ export function Modal({
                   <input type="number" name="carga_horaria" id="d-carga-horaria" defaultValue={modalData?.carga_horaria || ""} />
                 </div>
                 <div className="input-box">
-                  <label htmlFor="d-status">Carga Horaria</label>
+                  <label htmlFor="d-status">Status</label>
                   <select name="status" id="d-status">
                     <option value="progresso">Em progresso</option>
                     <option value="hiatos">Em hiato</option>
@@ -486,4 +486,5 @@ export function Modal({
       )}
     </section>
   )
+
 }
