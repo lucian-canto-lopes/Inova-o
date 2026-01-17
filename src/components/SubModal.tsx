@@ -232,7 +232,7 @@ export default function SubModal({
                     <input placeholder="Data de criação do projeto" autoComplete="off" type="date" id='prazo' name='prazo' />
                   </div>
                   <div className="input-box">
-                    <label htmlFor="d-status">Carga Horaria</label>
+                    <label htmlFor="d-status">Status</label>
                     <select name="status" id="d-status">
                       <option value="progresso">Em progresso</option>
                       <option value="hiatos">Em hiato</option>
