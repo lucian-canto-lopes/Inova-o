@@ -265,7 +265,17 @@ export default function VisitantePage() {
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [series, setSeries] = useState<SeriesPayload | null>(null);
   const [motores, setMotores] = useState<MotorOption[]>([]);
-  const [filters, setFilters] = useState<Filters>({
+  
+  // Estado dos filtros pendentes (selecionados mas não aplicados)
+  const [pendingFilters, setPendingFilters] = useState<Filters>({
+    ano: "",
+    semestre: "",
+    agente: "",
+    visualizacao: "both",
+  });
+  
+  // Estado dos filtros aplicados (usados nas queries)
+  const [appliedFilters, setAppliedFilters] = useState<Filters>({
     ano: "",
     semestre: "",
     agente: "",
@@ -273,17 +283,17 @@ export default function VisitantePage() {
   });
 
   // Função para construir query string dos filtros
-  const buildQueryString = () => {
+  const buildQueryString = (filtersToUse: Filters) => {
     const params = new URLSearchParams();
-    if (filters.agente) params.set("agent", filters.agente);
-    if (filters.ano) params.set("ano", filters.ano);
-    if (filters.semestre) params.set("semestre", filters.semestre);
+    if (filtersToUse.agente) params.set("agent", filtersToUse.agente);
+    if (filtersToUse.ano) params.set("ano", filtersToUse.ano);
+    if (filtersToUse.semestre) params.set("semestre", filtersToUse.semestre);
     return params.toString();
   };
 
-  // Função para carregar dados
-  const fetchData = () => {
-    const query = buildQueryString();
+  // Função para carregar dados com os filtros especificados
+  const fetchData = (filtersToUse: Filters) => {
+    const query = buildQueryString(filtersToUse);
     const queryPrefix = query ? `?${query}` : "";
 
     fetch(`/api/visitantes/metrics${queryPrefix}`)
@@ -312,17 +322,18 @@ export default function VisitantePage() {
       .then(setMotores)
       .catch(() => setMotores([]));
 
-    // Carrega dados iniciais
-    fetchData();
+    // Carrega dados iniciais (sem filtros)
+    fetchData(appliedFilters);
   }, []);
 
   // Handler para aplicar filtros
   const handleApplyFilters = () => {
-    fetchData();
+    setAppliedFilters({ ...pendingFilters });
+    fetchData(pendingFilters);
   };
 
-  const showCards = filters.visualizacao === "cards" || filters.visualizacao === "both";
-  const showCharts = filters.visualizacao === "charts" || filters.visualizacao === "both";
+  const showCards = appliedFilters.visualizacao === "cards" || appliedFilters.visualizacao === "both";
+  const showCharts = appliedFilters.visualizacao === "charts" || appliedFilters.visualizacao === "both";
 
   return (
     <div className="min-h-screen bg-[#F7F7F7]">
@@ -338,8 +349,8 @@ export default function VisitantePage() {
         {/* remova o highlight — LocalSideBar agora ignora mudança de cor */}
         <LocalSideBar
           collapsed={collapsed}
-          filters={filters}
-          setFilters={setFilters}
+          filters={pendingFilters}
+          setFilters={setPendingFilters}
           motores={motores}
           onApply={handleApplyFilters}
         />
