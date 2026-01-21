@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, FormEvent } from "react";
 import Link from "next/link";
 import Card from "@/src/components/Card";
 import {
@@ -11,6 +11,19 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+
+/* ===== Tipos para filtros ===== */
+type MotorOption = {
+  dimensaoId: number;
+  nome: string;
+};
+
+type Filters = {
+  ano: string;
+  semestre: string;
+  agente: string;
+  visualizacao: "cards" | "charts" | "both";
+};
 
 /* ===== NavBar (fixa e em largura total) ===== */
 function LocalNavBar({
@@ -78,7 +91,31 @@ function LocalNavBar({
 /* ===== SideBar (cola logo abaixo da navbar) ===== */
 /* substituído: agora exibe filtros em vez do menu */
 /* highlight controla a cor do título (branco/preto) */
-function LocalSideBar({ collapsed }: { collapsed: boolean }) {
+function LocalSideBar({
+  collapsed,
+  filters,
+  setFilters,
+  motores,
+  onApply,
+}: {
+  collapsed: boolean;
+  filters: Filters;
+  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  motores: MotorOption[];
+  onApply: () => void;
+}) {
+  const anos = ["Ano", "2024", "2025", "2026"];
+  const semestres = [
+    { value: "", label: "Semestre" },
+    { value: "1", label: "1º Semestre" },
+    { value: "2", label: "2º Semestre" },
+  ];
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    onApply();
+  };
+
   return (
     <aside
       className="bg-[#4C7F16] text-white transition-[width,padding] duration-200 shrink-0 sticky top-14"
@@ -92,33 +129,41 @@ function LocalSideBar({ collapsed }: { collapsed: boolean }) {
       <div className="flex flex-col h-full">
         <h2 className="text-3xl font-extrabold mb-4 text-white">Filtros</h2>
 
-        <form className="flex-1 flex flex-col justify-start">
+        <form className="flex-1 flex flex-col justify-start" onSubmit={handleSubmit}>
           <div>
             <div className="grid grid-cols-2 gap-3 mb-3">
-              <label className="sr-only" htmlFor="periodo1">Período</label>
+              <label className="sr-only" htmlFor="periodo1">Ano</label>
               <div className="relative">
                 <select
                   id="periodo1"
+                  value={filters.ano}
+                  onChange={(e) => setFilters((f) => ({ ...f, ano: e.target.value }))}
                   className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
                 >
-                  <option>Período</option>
-                  <option>2024</option>
-                  <option>2023</option>
+                  {anos.map((ano) => (
+                    <option key={ano} value={ano === "Ano" ? "" : ano}>
+                      {ano}
+                    </option>
+                  ))}
                 </select>
                 <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10] pointer-events-none" viewBox="0 0 20 20" fill="none" aria-hidden>
                   <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
 
-              <label className="sr-only" htmlFor="periodo2">Período</label>
+              <label className="sr-only" htmlFor="periodo2">Semestre</label>
               <div className="relative">
                 <select
                   id="periodo2"
+                  value={filters.semestre}
+                  onChange={(e) => setFilters((f) => ({ ...f, semestre: e.target.value }))}
                   className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
                 >
-                  <option>Período</option>
-                  <option>Janeiro</option>
-                  <option>Fevereiro</option>
+                  {semestres.map((s) => (
+                    <option key={s.value} value={s.value}>
+                      {s.label}
+                    </option>
+                  ))}
                 </select>
                 <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10] pointer-events-none" viewBox="0 0 20 20" fill="none" aria-hidden>
                   <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -131,11 +176,16 @@ function LocalSideBar({ collapsed }: { collapsed: boolean }) {
               <div className="relative">
                 <select
                   id="agente"
+                  value={filters.agente}
+                  onChange={(e) => setFilters((f) => ({ ...f, agente: e.target.value }))}
                   className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
                 >
-                  <option>Agente</option>
-                  <option>Agente A</option>
-                  <option>Agente B</option>
+                  <option value="">Todos os motores</option>
+                  {motores.map((motor) => (
+                    <option key={motor.dimensaoId} value={motor.dimensaoId.toString()}>
+                      {motor.nome}
+                    </option>
+                  ))}
                 </select>
                 <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10]" viewBox="0 0 20 20" fill="none" aria-hidden>
                   <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -148,11 +198,13 @@ function LocalSideBar({ collapsed }: { collapsed: boolean }) {
               <div className="relative">
                 <select
                   id="visualizacao"
+                  value={filters.visualizacao}
+                  onChange={(e) => setFilters((f) => ({ ...f, visualizacao: e.target.value as Filters["visualizacao"] }))}
                   className="w-full rounded-xl px-4 pr-10 py-2.5 bg-white text-black text-sm leading-normal border border-transparent focus:ring-2 focus:ring-[#91BB63]/40 appearance-none"
                 >
+                  <option value="both">Cards e gráficos</option>
                   <option value="cards">Somente cards</option>
                   <option value="charts">Somente gráficos</option>
-                  <option value="both">Cards e gráficos</option>
                 </select>
                 <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2C5C10]" viewBox="0 0 20 20" fill="none" aria-hidden>
                   <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -212,9 +264,29 @@ export default function VisitantePage() {
 
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [series, setSeries] = useState<SeriesPayload | null>(null);
+  const [motores, setMotores] = useState<MotorOption[]>([]);
+  const [filters, setFilters] = useState<Filters>({
+    ano: "",
+    semestre: "",
+    agente: "",
+    visualizacao: "both",
+  });
 
-  useEffect(() => {
-    fetch("/api/visitantes/metrics")
+  // Função para construir query string dos filtros
+  const buildQueryString = () => {
+    const params = new URLSearchParams();
+    if (filters.agente) params.set("agent", filters.agente);
+    if (filters.ano) params.set("ano", filters.ano);
+    if (filters.semestre) params.set("semestre", filters.semestre);
+    return params.toString();
+  };
+
+  // Função para carregar dados
+  const fetchData = () => {
+    const query = buildQueryString();
+    const queryPrefix = query ? `?${query}` : "";
+
+    fetch(`/api/visitantes/metrics${queryPrefix}`)
       .then(r => r.ok ? r.json() : Promise.reject(r))
       .then(setMetrics)
       .catch(() => setMetrics({
@@ -226,11 +298,31 @@ export default function VisitantePage() {
         alunosParticipantes: 0,
       }));
 
-    fetch("/api/visitantes/series")
+    fetch(`/api/visitantes/series${queryPrefix}`)
       .then(r => r.ok ? r.json() : Promise.reject(r))
       .then(setSeries)
       .catch(() => setSeries({ monthly: [], impactos: [] }));
+  };
+
+  // Carrega motores e dados iniciais
+  useEffect(() => {
+    // Carrega lista de motores para o filtro
+    fetch("/api/visitantes/motores")
+      .then(r => r.ok ? r.json() : Promise.reject(r))
+      .then(setMotores)
+      .catch(() => setMotores([]));
+
+    // Carrega dados iniciais
+    fetchData();
   }, []);
+
+  // Handler para aplicar filtros
+  const handleApplyFilters = () => {
+    fetchData();
+  };
+
+  const showCards = filters.visualizacao === "cards" || filters.visualizacao === "both";
+  const showCharts = filters.visualizacao === "charts" || filters.visualizacao === "both";
 
   return (
     <div className="min-h-screen bg-[#F7F7F7]">
@@ -244,48 +336,60 @@ export default function VisitantePage() {
 
       <main className="flex">
         {/* remova o highlight — LocalSideBar agora ignora mudança de cor */}
-        <LocalSideBar collapsed={collapsed} />
+        <LocalSideBar
+          collapsed={collapsed}
+          filters={filters}
+          setFilters={setFilters}
+          motores={motores}
+          onApply={handleApplyFilters}
+        />
 
         <section className="flex-1">
-          <div className="mx-auto w-full max-w-[1280px] px-6 mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              <Card
-                title="Negócios de inovação gerados (UFOPA)"
-                value={metrics?.negociosGerados ?? "—"}
-              />
-              <Card
-                title="Disciplinas de inovação do curso BCC"
-                value={metrics?.disciplinasInovacao ?? "—"}
-              />
-              <Card
-                title="Editais publicados (inovação)"
-                value={metrics?.editaisPublicados ?? "—"}
-              />
-              <Card
-                title="Receita total de eventos de inovação"
-                value={metrics ? BRL(metrics.fomentoCaptado) : "—"}
-              />
-              <Card
-                title="Eventos de inovação cadastrados"
-                value={metrics?.eventosInovacao ?? "—"}
-              />
-              <Card
-                title="Alunos nas disciplinas de inovação (BCC)"
-                value={metrics?.alunosParticipantes ?? "—"}
-              />
+          {showCards && (
+            <div className="mx-auto w-full max-w-[1280px] px-6 mt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <Card
+                  title="Negócios de inovação gerados (UFOPA)"
+                  value={metrics?.negociosGerados ?? "—"}
+                />
+                <Card
+                  title="Disciplinas de inovação do curso BCC"
+                  value={metrics?.disciplinasInovacao ?? "—"}
+                />
+                <Card
+                  title="Editais publicados (inovação)"
+                  value={metrics?.editaisPublicados ?? "—"}
+                />
+                <Card
+                  title="Receita total de eventos de inovação"
+                  value={metrics ? BRL(metrics.fomentoCaptado) : "—"}
+                />
+                <Card
+                  title="Eventos de inovação cadastrados"
+                  value={metrics?.eventosInovacao ?? "—"}
+                />
+                <Card
+                  title="Alunos nas disciplinas de inovação (BCC)"
+                  value={metrics?.alunosParticipantes ?? "—"}
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           {/* === GRÁFICOS (como no layout original) === */}
-          <div className="bg-white rounded-2xl p-6 shadow-md mb-6">
-            <h3 className="text-sm font-semibold text-zinc-700 mb-3">Evolução da inovação na UFOPA</h3>
-            <MonthlyChart data={series?.monthly ?? []} />
-          </div>
+          {showCharts && (
+            <>
+              <div className="bg-white rounded-2xl p-6 shadow-md mb-6 mx-6 mt-6">
+                <h3 className="text-sm font-semibold text-zinc-700 mb-3">Evolução da inovação na UFOPA</h3>
+                <MonthlyChart data={series?.monthly ?? []} />
+              </div>
 
-          <div className="bg-white rounded-2xl p-6 shadow-md">
-            <h3 className="text-sm font-semibold text-zinc-700 mb-3">Impactos gerados por disciplinas</h3>
-            <ImpactChart data={series?.impactos ?? []} />
-          </div>
+              <div className="bg-white rounded-2xl p-6 shadow-md mx-6">
+                <h3 className="text-sm font-semibold text-zinc-700 mb-3">Impactos gerados por disciplinas</h3>
+                <ImpactChart data={series?.impactos ?? []} />
+              </div>
+            </>
+          )}
 
           {/* Removidos: blocos “Resumo”, “Gráficos Mensais” (com prop series),
               “Impactos ao longo do tempo” (com prop series) e a “Tabela de Detalhes” */}

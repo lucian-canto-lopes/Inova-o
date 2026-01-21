@@ -24,10 +24,39 @@ async function getDimensoesRelacionadas(motorId: number): Promise<number[]> {
   return Array.from(ids);
 }
 
+// Constrói filtro de data para eventos baseado em ano e semestre
+function buildDateFilter(ano?: string | null, semestre?: string | null) {
+  if (!ano && !semestre) return {};
+  
+  const filters: { gte?: Date; lt?: Date } = {};
+  
+  if (ano && semestre) {
+    // Ano e semestre específicos
+    if (semestre === "1") {
+      filters.gte = new Date(`${ano}-01-01`);
+      filters.lt = new Date(`${ano}-07-01`);
+    } else {
+      filters.gte = new Date(`${ano}-07-01`);
+      filters.lt = new Date(`${parseInt(ano) + 1}-01-01`);
+    }
+  } else if (ano) {
+    // Apenas ano
+    filters.gte = new Date(`${ano}-01-01`);
+    filters.lt = new Date(`${parseInt(ano) + 1}-01-01`);
+  } else if (semestre) {
+    // Apenas semestre sem ano - não aplicamos filtro
+    return {};
+  }
+  
+  return { data_inicio: filters };
+}
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const agentParam = searchParams.get("agent");
+    const anoParam = searchParams.get("ano");
+    const semestreParam = searchParams.get("semestre");
     const motorId = agentParam ? parseInt(agentParam, 10) : null;
 
     // Se um motor foi selecionado, busca dimensões relacionadas
@@ -41,9 +70,12 @@ export async function GET(req: Request) {
       ? { dimensaoId: { in: dimensoesRelacionadas } } 
       : {};
 
+    // Filtro de data para eventos
+    const filtroData = buildDateFilter(anoParam, semestreParam);
+
     // Dados mensais - agrupa eventos por mês
     const eventos = await prisma.evento.findMany({
-      where: filtroRelacionado,
+      where: { ...filtroRelacionado, ...filtroData },
       select: {
         data_inicio: true,
         receita: true,
@@ -56,6 +88,14 @@ export async function GET(req: Request) {
     for (const evento of eventos) {
       const date = new Date(evento.data_inicio);
       const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      
+      // Se filtro de semestre específico sem ano, agrupa apenas pelo semestre desejado
+      if (semestreParam && !anoParam) {
+        const eventMonth = date.getMonth() + 1;
+        const eventSemestre = eventMonth <= 6 ? "1" : "2";
+        if (eventSemestre !== semestreParam) continue;
+      }
+      
       monthlyMap.set(key, (monthlyMap.get(key) ?? 0) + 1);
     }
 
@@ -63,9 +103,14 @@ export async function GET(req: Request) {
       .map(([month, valor]) => ({ month, valor }))
       .sort((a, b) => a.month.localeCompare(b.month));
 
+    // Filtro de semestre para disciplinas se houver ano e/ou semestre
+    const disciplinaSemestreFilter = (anoParam || semestreParam) ? {
+      semestre: { contains: anoParam && semestreParam ? `${anoParam}.${semestreParam}` : (anoParam || "") }
+    } : {};
+
     // Impactos por disciplina - conta alunos matriculados
     const disciplinas = await prisma.disciplina.findMany({
-      where: filtroRelacionado,
+      where: { ...filtroRelacionado, ...disciplinaSemestreFilter },
       select: {
         nome: true,
         alunos_matriculados: true,

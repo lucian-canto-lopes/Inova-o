@@ -30,9 +30,38 @@ async function getDimensoesRelacionadas(motorId: number): Promise<number[]> {
   return Array.from(ids);
 }
 
+// Constrói filtro de data para eventos baseado em ano e semestre
+function buildDateFilter(ano?: string | null, semestre?: string | null) {
+  if (!ano && !semestre) return {};
+  
+  const filters: { gte?: Date; lt?: Date } = {};
+  
+  if (ano && semestre) {
+    // Ano e semestre específicos
+    if (semestre === "1") {
+      filters.gte = new Date(`${ano}-01-01`);
+      filters.lt = new Date(`${ano}-07-01`);
+    } else {
+      filters.gte = new Date(`${ano}-07-01`);
+      filters.lt = new Date(`${parseInt(ano) + 1}-01-01`);
+    }
+  } else if (ano) {
+    // Apenas ano
+    filters.gte = new Date(`${ano}-01-01`);
+    filters.lt = new Date(`${parseInt(ano) + 1}-01-01`);
+  } else if (semestre) {
+    // Apenas semestre sem ano - não aplicamos filtro
+    return {};
+  }
+  
+  return { data_inicio: filters };
+}
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const agentParam = searchParams.get("agent");
+  const anoParam = searchParams.get("ano");
+  const semestreParam = searchParams.get("semestre");
   const motorId = agentParam ? parseInt(agentParam, 10) : null;
 
   // Se um motor foi selecionado, busca dimensões relacionadas
@@ -46,39 +75,49 @@ export async function GET(req: Request) {
     ? { dimensaoId: { in: dimensoesRelacionadas } } 
     : {};
 
-  // Negócios
+  // Filtro de data para eventos
+  const filtroData = buildDateFilter(anoParam, semestreParam);
+
+  // Negócios - filtra por data_criacao se houver filtro de período
+  const negocioDateFilter = anoParam || semestreParam ? {
+    data_criacao: filtroData.data_inicio
+  } : {};
   const negociosGerados = await safe(() => prisma.negocio.count({
-    where: filtroRelacionado
+    where: { ...filtroRelacionado, ...negocioDateFilter }
   }), 0);
 
-  // Disciplinas
+  // Disciplinas - filtra por semestre se houver ano e/ou semestre
+  const disciplinaSemestreFilter = (anoParam || semestreParam) ? {
+    semestre: { contains: anoParam && semestreParam ? `${anoParam}.${semestreParam}` : (anoParam || "") }
+  } : {};
   const disciplinasInovacao = await safe(() => prisma.disciplina.count({
-    where: filtroRelacionado
+    where: { ...filtroRelacionado, ...disciplinaSemestreFilter }
   }), 0);
 
   // Editais publicados - conta disciplinas que têm editais preenchidos
   const editaisPublicados = await safe(() => prisma.disciplina.count({
     where: { 
       ...filtroRelacionado,
+      ...disciplinaSemestreFilter,
       NOT: { editais: { equals: Prisma.DbNull } } 
     }
   }), 0);
 
   // Receita de eventos
   const eventoAgg = await safe(() => prisma.evento.aggregate({
-    where: filtroRelacionado,
+    where: { ...filtroRelacionado, ...filtroData },
     _sum: { receita: true }
   }), { _sum: { receita: 0 } });
   const fomentoCaptado = Number(eventoAgg._sum.receita ?? 0);
 
   // Eventos
   const eventosInovacao = await safe(() => prisma.evento.count({
-    where: filtroRelacionado
+    where: { ...filtroRelacionado, ...filtroData }
   }), 0);
 
   // Alunos participantes - soma de todos os alunos_matriculados em disciplinas
   const disciplinas = await safe(() => prisma.disciplina.findMany({
-    where: filtroRelacionado,
+    where: { ...filtroRelacionado, ...disciplinaSemestreFilter },
     select: { alunos_matriculados: true }
   }), []);
   const alunosParticipantes = disciplinas.reduce(
