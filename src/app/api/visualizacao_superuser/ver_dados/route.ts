@@ -113,10 +113,10 @@ export async function GET() {
         ?? null,
     });
 
-    const relacoes_dimensoes = relacoesRaw.map((relacao) => ({
-      a: formatDimensao(relacao.dimensaoA),
-      b: formatDimensao(relacao.dimensaoB),
-    }));
+    //const relacoes_dimensoes = relacoesRaw.map((relacao) => ({
+    //  a: formatDimensao(relacao.dimensaoA),
+    //  b: formatDimensao(relacao.dimensaoB),
+    //}));
 
     type FomentoItem = {
       date: string;
@@ -160,7 +160,10 @@ export async function GET() {
           eventos,
           motores,
           cursos,
-          relacoes_dimensoes,
+          relacoes_dimensoes: relacoesRaw.map((relacao) => ({
+            a: formatDimensao(relacao.dimensaoA),
+            b: formatDimensao(relacao.dimensaoB),
+          })),
         },
       },
       { status: 200 }
