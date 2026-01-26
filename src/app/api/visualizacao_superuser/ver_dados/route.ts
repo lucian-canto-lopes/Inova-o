@@ -118,7 +118,26 @@ export async function GET() {
       b: formatDimensao(relacao.dimensaoB),
     }));
 
-    const fomentoCaptado = cursos.reduce((acc, c) => acc + (c.fomento || 0), 0);
+    type FomentoItem = {
+      date: string;
+      valor: string | number;
+    };
+
+    const relacoes_dimensoes = relacoesRaw.map((relacao) => ({
+      a: formatDimensao(relacao.dimensaoA),
+      b: formatDimensao(relacao.dimensaoB),
+    }));
+
+    const fomentoCaptado = cursos.reduce((acc, c) => {
+      if (!Array.isArray(c.fomento)) return acc;
+
+      const somaCurso = (c.fomento as FomentoItem[]).reduce(
+        (s, f) => s + Number(String(f.valor).replace(",", ".")),
+        0
+      );
+
+      return acc + somaCurso;
+    }, 0);
     const capitalCaptado = cursos.reduce((acc, c) => acc + (c.capital_captado || 0), 0);
     const alunosEnvolvidos = disciplinas.reduce((acc, d) => acc + (d.alunos_matriculados || 0), 0);
     const publicoEventos = eventos.reduce((acc, e) => acc + (e.qtd_publico || 0), 0);
