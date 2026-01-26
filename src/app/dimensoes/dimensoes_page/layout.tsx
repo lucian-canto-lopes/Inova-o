@@ -1,5 +1,7 @@
-'use client'
+"use client";
 import { useState } from "react";
+import Link from "next/link";
+import { FaHouse } from "react-icons/fa6";
 import "../../../css/index.css";
 
 import NavBar from "../../../components/NavBar";
@@ -33,6 +35,16 @@ export default function DimensoesLayout({
         <NavBar toggleSideBar={handleIsSBCollapsed} />
         <main>
           <SideBar isCollapsed={isSBCollapsed}>
+            <Link
+              href="/dimensoes/visualizacao_superuser"
+              className="SB-HomeLink"
+              aria-label="Ir para visualizacao superuser"
+              title="Visualizacao superuser"
+            >
+              <span className="SB-HomeIcon">
+                <FaHouse />
+              </span>
+            </Link>
             {sBGroups.map((group, i) => {
               return <SBGroup key={group.title} title={group.title} items={group.items} isCollapsed={sBGroupCollapsed[i] ?? false} onClick={() => toggleSBCollapsed(i)} />
             })}
