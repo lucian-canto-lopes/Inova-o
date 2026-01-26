@@ -1,23 +1,5 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { toFloat } from "../../route";
-
-const parseCompeticoes = (value: unknown): string[] => {
-  if (!value) return [];
-  if (Array.isArray(value)) {
-    return value
-      .map((item) => String(item).trim())
-      .filter(Boolean);
-  }
-  if (typeof value === "string") {
-    return value
-      .split(/[,;|]/)
-      .map((item) => item.trim())
-      .filter(Boolean);
-  }
-  const text = String(value).trim();
-  return text ? [text] : [];
-};
 
 export async function GET(
   request: Request,
@@ -88,9 +70,9 @@ export async function PUT(
       },
       data: {
         nome: body.nome,
-        competicoes: parseCompeticoes(body.competicoes),
-        capital_captado: toFloat(body.capital_captado),
-        fomento: toFloat(body.fomento)
+        competicoes: Number(body.competicoes),
+        capital_captado: Number(body.capital_captado),
+        fomento: body.fomento
       }
     })
 
