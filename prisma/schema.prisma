@@ -92,8 +92,8 @@ model Negocio {
 model Cursos {
   id                 Int                  @id @default(autoincrement())
   nome               String
-  competicoes        String[]
-  fomento            Float?
+  competicoes        Int
+  fomento            Json?
   capital_captado    Float
   Disciplinas_Cursos Disciplinas_Cursos[]
 }
