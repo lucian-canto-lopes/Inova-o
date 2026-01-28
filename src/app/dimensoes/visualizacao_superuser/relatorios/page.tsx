@@ -406,7 +406,15 @@ export default function RelatoriosPage() {
   const areasCount = new Set(negocios.map((n) => n.area_atuacao).filter(Boolean)).size;
   const portesCount = new Set(negocios.map((n) => n.porte).filter(Boolean)).size;
 
-  const fomentoTotal = sumBy(cursos, "fomento");
+  // fomento é um array JSON de { date, valor }, precisa somar os valores
+  const fomentoTotal = cursos.reduce((acc, curso) => {
+    if (!curso.fomento || !Array.isArray(curso.fomento)) return acc;
+    const somaFomento = (curso.fomento as Array<{ date?: string; valor?: string | number }>).reduce(
+      (s, f) => s + Number(String(f.valor ?? 0).replace(",", ".")),
+      0
+    );
+    return acc + somaFomento;
+  }, 0);
   const capitalTotal = sumBy(cursos, "capital_captado");
   const competicoesTotal = cursos.reduce(
     (acc, curso) => acc + countCompeticoes(curso.competicoes),
@@ -419,6 +427,21 @@ export default function RelatoriosPage() {
     }))
     .sort((a, b) => b.total - a.total);
   const disciplinasTotal = disciplinasPorCurso.reduce((acc, item) => acc + item.total, 0);
+
+  // Dados para gráfico de barras: fomento por curso
+  const fomentoPorCurso = cursos.map((curso) => {
+    let fomento = 0;
+    if (curso.fomento && Array.isArray(curso.fomento)) {
+      fomento = (curso.fomento as Array<{ date?: string; valor?: string | number }>).reduce(
+        (s, f) => s + Number(String(f.valor ?? 0).replace(",", ".")),
+        0
+      );
+    }
+    return {
+      nome: curso.nome.length > 15 ? curso.nome.substring(0, 15) + "..." : curso.nome,
+      fomento,
+    };
+  }).filter(item => item.fomento > 0).sort((a, b) => b.fomento - a.fomento);
 
   const relacoesFormatadas = relacoesDimensoes.map((relacao) => ({
     a: relacao.a.nome ?? `${relacao.a.tipo} #${relacao.a.id}`,
@@ -770,6 +793,31 @@ export default function RelatoriosPage() {
                         <span className="font-medium">{formatCurrency(capitalTotal)}</span>
                       </div>
                     </div>
+                    {/* Gráfico de Barras - Fomento por Curso */}
+                    {fomentoPorCurso.length > 0 && (
+                      <div className="mt-4 mb-6">
+                        <h4 className="text-xs font-semibold text-gray-600 mb-2">Fomento captado por curso</h4>
+                        <ResponsiveContainer width="100%" height={250}>
+                          <BarChart data={fomentoPorCurso} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+                            <XAxis 
+                              dataKey="nome" 
+                              tick={{ fontSize: 9, angle: -45, textAnchor: 'end' }} 
+                              height={60}
+                              interval={0}
+                            />
+                            <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `R$ ${(v/1000).toFixed(0)}k`} />
+                            <Tooltip formatter={(value: number) => [formatCurrency(value), 'Fomento']} />
+                            <Bar dataKey="fomento" radius={[4, 4, 0, 0]}>
+                              {fomentoPorCurso.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                              ))}
+                            </Bar>
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-2 gap-8 mt-3">
                       <div>
                         <h4 className="text-xs font-semibold text-gray-600 mb-2">Cursos</h4>

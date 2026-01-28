@@ -10,6 +10,10 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
 } from "recharts";
 
 /* ===== Tipos para filtros ===== */
@@ -426,17 +430,37 @@ function MonthlyChart({ data }: { data: { month: string; valor: number }[] }) {
   );
 }
 
+const COLORS = [
+  "#4C7F16", "#5C7AEA", "#F59E0B", "#EF4444", "#8B5CF6",
+  "#EC4899", "#06B6D4", "#84CC16", "#F97316", "#6366F1",
+  "#14B8A6", "#A855F7", "#D946EF", "#0EA5E9", "#22C55E"
+];
+
 function ImpactChart({ data }: { data: { nome: string; alunos: number }[] }) {
+  // Filtra dados com alunos > 0 para o gráfico de pizza
+  const filteredData = data.filter(item => item.alunos > 0);
+  
   return (
     <div className="w-full min-w-0">
       <ResponsiveContainer width="100%" height={320}>
-        <LineChart data={data}>
-          <CartesianGrid stroke="#ECECEC" strokeDasharray="4 4" />
-          <XAxis dataKey="nome" tick={{ fontSize: 11 }} />
-          <YAxis allowDecimals={false} />
-          <Tooltip />
-          <Line type="monotone" dataKey="alunos" stroke="#5C7AEA" strokeWidth={2} />
-        </LineChart>
+        <PieChart>
+          <Pie
+            data={filteredData}
+            cx="50%"
+            cy="50%"
+            labelLine={false}
+            label={({ name, percent }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
+            outerRadius={100}
+            dataKey="alunos"
+            nameKey="nome"
+          >
+            {filteredData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip formatter={(value: number) => [`${value} alunos`, 'Matriculados']} />
+          <Legend />
+        </PieChart>
       </ResponsiveContainer>
     </div>
   );

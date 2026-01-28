@@ -34,7 +34,7 @@ type ApiResponse = {
     }>;
     cursos: Array<{
       nome: string;
-      fomento: number;
+      fomento: Array<{ date?: string; valor?: string | number }> | null;
     }>;
   };
 };
@@ -93,8 +93,19 @@ export default function VisualizacaoGraficosPage() {
 
         const fomentoSerie: ChartPoint[] = data.detalhes.cursos
           .filter((curso) => String(curso.nome || "").trim() !== "")
-          .map((curso) => ({ name: curso.nome, [FOMENTO_KEY]: Number(curso.fomento) || 0 }))
-          .sort((a, b) => String(a.name).localeCompare(String(b.name), "pt-BR"));
+          .map((curso) => {
+            // fomento é um array JSON de { date, valor }
+            let fomentoTotal = 0;
+            if (curso.fomento && Array.isArray(curso.fomento)) {
+              fomentoTotal = curso.fomento.reduce(
+                (s, f) => s + Number(String(f.valor ?? 0).replace(",", ".")),
+                0
+              );
+            }
+            return { name: curso.nome, [FOMENTO_KEY]: fomentoTotal };
+          })
+          .filter((item) => Number(item[FOMENTO_KEY]) > 0)
+          .sort((a, b) => Number(b[FOMENTO_KEY]) - Number(a[FOMENTO_KEY]));
         setFomentoChartData(fomentoSerie);
       } catch (error) {
         setNegociosChartData([]);
@@ -149,17 +160,26 @@ export default function VisualizacaoGraficosPage() {
           </ResponsiveContainer>
         </div>
 
-        {/* Gráfico de área - Fomento Captado */}
+        {/* Gráfico de barras - Fomento Captado */}
         <div className="bg-white rounded-xl shadow p-4">
           <h2 className="font-semibold mb-2 text-[#5a8a2a]">Fomento Captado por Cursos (R$)</h2>
           <ResponsiveContainer width="100%" height={250}>
-            <AreaChart data={isLoading ? [] : fomentoChartData}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
+            <BarChart data={isLoading ? [] : fomentoChartData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+              <XAxis 
+                dataKey="name" 
+                tick={{ fontSize: 9, angle: -45, textAnchor: 'end' }} 
+                height={60}
+                interval={0}
+              />
+              <YAxis tickFormatter={(v) => `R$ ${(v/1000).toFixed(0)}k`} />
+              <Tooltip formatter={(value: number) => [`R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, 'Fomento']} />
               <Legend />
-              <Area type="monotone" dataKey={FOMENTO_KEY} name={FOMENTO_KEY} stroke="#ffc658" fill="#ffc658" />
-            </AreaChart>
+              <Bar dataKey={FOMENTO_KEY} name={FOMENTO_KEY} radius={[4, 4, 0, 0]}>
+                {(isLoading ? [] : fomentoChartData).map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Bar>
+            </BarChart>
           </ResponsiveContainer>
         </div>
 
