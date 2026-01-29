@@ -73,8 +73,6 @@ type ApiResponse = {
 };
 
 const FILTROS_INICIAIS = {
-  tipo: "",
-  fonte: "",
   ano: "",
   semestre: "",
   disciplina: "",
@@ -84,14 +82,14 @@ const FILTROS_INICIAIS = {
 type FiltroKey = keyof typeof FILTROS_INICIAIS;
 
 const FILTROS_POR_CARD: Record<Exclude<CardType, null>, FiltroKey[]> = {
-  negocios: ["tipo", "fonte"],
-  disciplinas: ["disciplina", "semestre", "ano", "fonte"],
-  alunos: ["disciplina", "semestre", "ano", "fonte"],
-  fomento: ["curso", "fonte"],
-  eventos: ["tipo", "ano", "fonte"],
-  capital: ["curso", "fonte"],
-  motores: ["tipo", "fonte"],
-  publico_eventos: ["tipo", "ano", "fonte"],
+  negocios: [],
+  disciplinas: ["disciplina", "semestre", "ano"],
+  alunos: ["disciplina", "semestre", "ano"],
+  fomento: ["curso"],
+  eventos: ["ano"],
+  capital: ["curso"],
+  motores: [],
+  publico_eventos: ["ano"],
 };
 
 export default function VerDadosPage() {
@@ -341,21 +339,6 @@ export default function VerDadosPage() {
           const anoSemestre = extrairAnoSemestre(linha.semestre);
           if (anoSemestre && anoSemestre !== filtrosBase.ano) return false;
         }
-      }
-      if (filtrosBase.tipo) {
-        if (cardTipo === "motores") {
-          if (!matchTexto(linha.motor_tipo, filtrosBase.tipo)) return false;
-        } else if (cardTipo === "negocios") {
-          if (!matchTexto(linha.porte, filtrosBase.tipo)) return false;
-        } else if (cardTipo === "eventos" || cardTipo === "publico_eventos") {
-          if (!matchTexto(linha.duracao, filtrosBase.tipo)) return false;
-        }
-      }
-      if (filtrosBase.fonte) {
-        const textoLinha = Object.values(linha)
-          .map((valor) => (Array.isArray(valor) ? valor.join(" ") : String(valor ?? "")))
-          .join(" ");
-        if (!matchTexto(textoLinha, filtrosBase.fonte)) return false;
       }
       return true;
     });
@@ -666,20 +649,6 @@ export default function VerDadosPage() {
         <aside className="w-72 bg-[#4C7F16] text-white p-6 shrink-0 flex flex-col">
           <h2 className="text-lg font-semibold mb-6">Personalizar</h2>
           <div className="space-y-3">
-            <input
-              type="text"
-              placeholder="Tipo"
-              value={filtros.tipo}
-              onChange={(e) => handleFiltroChange("tipo", e.target.value)}
-              className="w-full bg-white text-gray-800 px-3 py-2 rounded text-sm"
-            />
-            <input
-              type="text"
-              placeholder="Fonte"
-              value={filtros.fonte}
-              onChange={(e) => handleFiltroChange("fonte", e.target.value)}
-              className="w-full bg-white text-gray-800 px-3 py-2 rounded text-sm"
-            />
             <select
               value={filtros.ano}
               onChange={(e) => handleFiltroChange("ano", e.target.value)}

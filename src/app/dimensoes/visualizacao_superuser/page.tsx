@@ -1,13 +1,10 @@
 "use client";
-import { useState } from "react";
 import Link from "next/link";
-import { FaBars, FaMagnifyingGlass } from "react-icons/fa6";
-import { FaClipboard } from "react-icons/fa";
+import { FaCog, FaClipboard } from "react-icons/fa";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 import "../../../css/NavBar.css";
 
 export default function SuperUserPage() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const menuItems = [
     { title: "Editar\ndados", href: "/dimensoes/dimensoes_page", icon: <FaClipboard /> },
     { title: "Visualizar\ndados", href: "/dimensoes/visualizacao_superuser/ver_dados", icon: <FaClipboard /> },
@@ -18,7 +15,9 @@ export default function SuperUserPage() {
     <div className="h-screen flex flex-col bg-[#E8E8E8]">
       {/* NavBar igual à de dimensões */}
       <div className="NavBar">
-        <FaBars onClick={() => setSidebarOpen(!sidebarOpen)} />
+        <Link href="/dimensoes/visualizacao_superuser/gerenciar_usuario" title="Gerenciar Usuários">
+          <FaCog className="cursor-pointer hover:rotate-90 transition-transform duration-300 text-white" size={32} />
+        </Link>
         <div className="search-bar">
           <input type="text" name="search-bar" id="search-bar" placeholder="Procurar..." />
           <FaMagnifyingGlass />

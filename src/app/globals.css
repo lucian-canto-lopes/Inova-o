@@ -40,3 +40,10 @@ input[type="password"]::-webkit-textfield-decoration-container {
   display: none !important;
   pointer-events: none !important;
 }
+
+/* força texto preto nos cards (mesmo com estilos herdados) */
+.card-force-black,
+.card-force-black * {
+  color: #000 !important;
+  opacity: 1 !important;
+}

@@ -2,6 +2,10 @@ import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+// Força uso do Node.js runtime para nodemailer funcionar
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function POST(
   request: Request,
 ) {
