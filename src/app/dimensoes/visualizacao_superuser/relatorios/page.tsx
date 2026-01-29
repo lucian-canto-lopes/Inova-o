@@ -802,7 +802,18 @@ export default function RelatoriosPage() {
                             <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
                             <XAxis 
                               dataKey="nome" 
-                              tick={{ fontSize: 9, angle: -45, textAnchor: 'end' }} 
+                              tick={(props: { x: number; y: number; payload: { value: string } }) => (
+                                <text
+                                  x={props.x}
+                                  y={props.y}
+                                  dy={10}
+                                  fontSize={9}
+                                  textAnchor="end"
+                                  transform={`rotate(-45, ${props.x}, ${props.y})`}
+                                >
+                                  {props.payload.value}
+                                </text>
+                              )} 
                               height={60}
                               interval={0}
                             />
