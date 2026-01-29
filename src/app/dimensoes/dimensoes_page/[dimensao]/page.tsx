@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DimensaoClientHeader, DimesaoClientCardDeck } from "./DimensaoClient";
+import prisma from "@/lib/prisma";
+import { unstable_noStore as noStore } from "next/cache";
 
 enum DimensaoEnum {
   disciplinas = "Disciplinas",
@@ -12,15 +14,19 @@ type DimensaoTipo = keyof typeof DimensaoEnum;
 const dimensoesTipos = Object.keys(DimensaoEnum) as DimensaoTipo[];
 
 async function getDimensaoData(dimensao: DimensaoTipo) {
-  const response = await fetch(`http://localhost:3000/api/dimensoes/${dimensao}`, {
-    cache: "no-store",
-  });
-  if (!response.ok) {
-    console.log("Erro ao buscar dimensões");
-    return [];
-  };
-  const data = await response.json();
-  return data
+  noStore();
+  switch (dimensao) {
+    case "disciplinas":
+      return prisma.disciplina.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
+    case "eventos":
+      return prisma.evento.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
+    case "motores":
+      return prisma.motor.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
+    case "negocios":
+      return prisma.negocio.findMany({ take: 8, select: { dimensaoId: true, nome: true } });
+    default:
+      return [];
+  }
 }
 
 export default async function DimensaoPage({

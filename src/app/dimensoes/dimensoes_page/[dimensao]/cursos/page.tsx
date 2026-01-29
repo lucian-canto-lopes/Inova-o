@@ -1,21 +1,15 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { CursosClientCardDeck, CursosClientSubModal } from "./CursosClient";
+import prisma from "@/lib/prisma";
+import { unstable_noStore as noStore } from "next/cache";
 
 async function getCursos() {
-  const response = await fetch("http://localhost:3000/api/dimensoes/disciplinas/cursos", {
-    method: "GET",
-    cache: "no-cache",
+  noStore();
+  return prisma.cursos.findMany({
+    take: 8,
+    select: { nome: true, id: true },
   });
-
-  if (!response.ok) {
-    const text = await response.text();
-    console.error(`Error [${response.status}]: ${text}`);
-    return [];
-  }
-
-  const data = await response.json();
-  return data;
 }
 
 export default async function CursosPage({
@@ -31,13 +25,13 @@ export default async function CursosPage({
   return (
     <>
       <span>
-        <Link href={"/dimensoes"}>Dimensões</Link> → <Link href={"/dimensoes/disciplinas"}>Disciplinas</Link> → Cursos
+        <Link href={"/dimensoes/dimensoes_page"}>Dimensões</Link> → <Link href={"/dimensoes/dimensoes_page/disciplinas"}>Disciplinas</Link> → Cursos
       </span>
       <header>
         <div>Cursos</div>
         <CursosClientSubModal />
       </header>
-      <CursosClientCardDeck title="Todos" data={data} />
+      <CursosClientCardDeck title="Recentes" data={data} />
     </>
   )
 }
