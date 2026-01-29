@@ -195,9 +195,14 @@ export default function VerDadosPage() {
             labelKey: "nome",
             colunas: [
               { key: "nome", label: "Curso" },
-              { key: "fomento", label: "Fomento", format: "currency", chart: true },
+              { key: "fomentoTotal", label: "Fomento", format: "currency", chart: true },
             ],
-            dados: data.detalhes.cursos,
+            dados: data.detalhes.cursos.map((curso: any) => ({
+              ...curso,
+              fomentoTotal: Array.isArray(curso.fomento)
+                ? curso.fomento.reduce((acc: number, f: any) => acc + Number(String(f.valor).replace(",", ".")), 0)
+                : 0,
+            })),
           },
           eventos: {
             titulo: "Eventos Realizados",
@@ -370,7 +375,7 @@ export default function VerDadosPage() {
     return {
       negociosGerados: negocios.length,
       disciplinasInovacao: disciplinas.length,
-      fomentoCaptado: somarCampo(fomento, "fomento"),
+      fomentoCaptado: somarCampo(fomento, "fomentoTotal"),
       eventosRealizados: eventos.length,
       alunosEnvolvidos: somarCampo(alunos, "alunos_matriculados"),
       capitalCaptado: somarCampo(capital, "capital_captado"),

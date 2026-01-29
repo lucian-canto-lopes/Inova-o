@@ -37,7 +37,7 @@ export function CursosClientCardDeck({
       <CardDeck title={title} data={data.map((item: any) => {
         return { id: item.id, tipo: "cursos", data: item }
       })} onCardClick={handleCardClick} />
-      {isModalOpen && (
+      {isModalOpen && modalData && (
         <SubModal closeSubModal={() => setModalOpen(false)} dimensao="cursos" data={modalData}/>
       )}
     </>

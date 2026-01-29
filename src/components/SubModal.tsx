@@ -345,13 +345,13 @@ export default function SubModal({
               <table>
                 <tbody>
                   {editais.map((d: any, i: number) => {
-                    const dateArray = d.date.split('-');
+                    const dateArray = (d.date || '').split('-');
                     return <tr key={i}>
                       <td><FaX onClick={() => {
                         setEditais(editais.filter((_: any, index: number) => index !== i));
                       }} /></td>
                       <td>{d.valor}</td>
-                      <td>{`${dateArray[2]}/${dateArray[1]}/${dateArray[0]}`}</td>
+                      <td>{dateArray.length >= 3 ? `${dateArray[2]}/${dateArray[1]}/${dateArray[0]}` : '-'}</td>
                     </tr>
                   })}
                 </tbody>
