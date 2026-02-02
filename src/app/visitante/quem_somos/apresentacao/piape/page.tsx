@@ -99,7 +99,9 @@ export default function PiapePage() {
       <main className="ml-44 mt-14 h-[calc(100vh-56px)] flex items-center justify-center">
         <div className="px-6 w-full text-center">
           <h1 className="text-4xl md:text-5xl font-medium text-zinc-900">PIAPE</h1>
-          <p className="mt-4 text-zinc-700">Conteúdo da apresentação PIAPE.</p>
+          <p className="mt-4 text-zinc-700">
+            No contexto da inovação da UFOPA, o PIAPE é uma plataforma ou programa de apoio a projetos de inovação. Ele se destaca por atrair financiamento, suportar o desenvolvimento de diversas iniciativas, e facilitar a geração de produtos e serviços que são colocados em uso. Além disso, o PIAPE desempenha um papel crucial na transferência e exportação de resultados para outras organizações, ampliando o impacto da inovação universitária.
+          </p>
         </div>
       </main>
     </div>

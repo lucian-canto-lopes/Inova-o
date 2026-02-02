@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianG
 export function ImpactChart({ data }: { data: { nome: string; alunos: number }[] }) {
   return (
     <div className="bg-white rounded-xl border border-zinc-200 p-4 min-w-0" style={{ minWidth: 0 }}>
-      <h3 className="font-semibold mb-3 text-sm text-zinc-700">Impacto por disciplinas (Alunos)</h3>
+      <h3 className="font-semibold mb-3 text-sm text-zinc-700">Alunos em disciplinas de inovação</h3>
       <div className="w-full min-w-0">
         <ResponsiveContainer width="100%" height={320}>
           <LineChart data={data}>

@@ -82,7 +82,9 @@ export default function EmbrapiiPage() {
       <main className="ml-44 mt-14 h-[calc(100vh-56px)] flex items-center justify-center">
         <div className="px-6 w-full text-center">
           <h1 className="text-4xl md:text-5xl font-medium text-zinc-900">Embrapii</h1>
-          <p className="mt-4 text-zinc-700">Conteúdo da apresentação Embrapii.</p>
+          <p className="mt-4 text-zinc-700">
+            Este motor representa um projeto de pesquisa e desenvolvimento focado em bioeconomia e recursos florestais, realizado em parceria estratégica com a EMBRAPII. Atua como um catalisador para a inovação industrial, transformando o conhecimento científico em soluções práticas e sustentáveis para o mercado, com o objetivo de gerar valor econômico e social a partir da biodiversidade.
+          </p>
         </div>
       </main>
     </div>

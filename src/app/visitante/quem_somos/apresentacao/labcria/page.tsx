@@ -99,7 +99,9 @@ export default function LabcriaPage() {
       <main className="ml-44 mt-14 h-[calc(100vh-56px)] flex items-center justify-center">
         <div className="px-6 w-full text-center">
           <h1 className="text-4xl md:text-5xl font-medium text-zinc-900">LabCria</h1>
-          <p className="mt-4 text-zinc-700">Conteúdo da apresentação LabCria.</p>
+          <p className="mt-4 text-zinc-700">
+            O LabCria é um laboratório ou ambiente de inovação que estimula a criatividade e o desenvolvimento de projetos, com foco na colaboração e na geração de soluções. Assim como o ToyLab, organiza eventos, engaja participantes (pessoas e organizações) e oferece serviços de apoio à comunidade interna e externa, integrando-se a diversos projetos para impulsionar a inovação.
+          </p>
         </div>
       </main>
     </div>

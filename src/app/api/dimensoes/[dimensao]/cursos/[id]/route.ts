@@ -19,8 +19,9 @@ export async function GET(
       where: { id: parsedId },
     });
     return NextResponse.json(data, { status: 200 });
-  } catch (err) {
-    return NextResponse.json({ msg: "Erro ao buscar por curso", err }, { status: 500 });
+  } catch (err: any) {
+    console.error("Erro ao buscar curso:", err);
+    return NextResponse.json({ msg: "Erro ao buscar por curso", error: err?.message || String(err) }, { status: 500 });
   }
 }
 

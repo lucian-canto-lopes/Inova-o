@@ -73,7 +73,9 @@ export default function IntapPage() {
       <main className="ml-44 mt-14 h-[calc(100vh-56px)] flex items-center justify-center">
         <div className="px-6 w-full text-center">
           <h1 className="text-4xl md:text-5xl font-medium text-zinc-900">InTap</h1>
-          <p className="mt-4 text-zinc-700">Conteúdo da apresentação InTap.</p>
+          <p className="mt-4 text-zinc-700">
+            O InTap é um ambiente de apoio ao empreendedorismo e à criação de novas empresas (incubadora/aceleradora). Sua missão é nutrir e desenvolver startups e projetos inovadores, oferecendo suporte, infraestrutura e mentoria para que ideias com potencial se transformem em negócios viáveis, gerando faturamento, postos de trabalho e contribuindo para a continuidade empresarial no ecossistema de inovação.
+          </p>
         </div>
       </main>
     </div>

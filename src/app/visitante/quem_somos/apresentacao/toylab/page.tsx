@@ -73,7 +73,9 @@ export default function ToylabPage() {
       <main className="ml-44 mt-14 h-[calc(100vh-56px)] flex items-center justify-center">
         <div className="px-6 w-full text-center">
           <h1 className="text-4xl md:text-5xl font-medium text-zinc-900">ToyLab</h1>
-          <p className="mt-4 text-zinc-700">Conteúdo da apresentação ToyLab.</p>
+          <p className="mt-4 text-zinc-700">
+            O ToyLab é um laboratório ou espaço criativo dedicado à prototipagem, design e inovação com uma abordagem lúdica. Fomenta a experimentação e a criação de produtos e serviços, muitas vezes com foco em tecnologias e metodologias que utilizam o aprendizado divertido. Promove eventos, atrai investimentos e presta serviços tanto para a comunidade interna da UFOPA quanto para parceiros externos.
+          </p>
         </div>
       </main>
     </div>

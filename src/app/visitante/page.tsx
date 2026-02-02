@@ -395,12 +395,12 @@ export default function VisitantePage() {
           {showCharts && (
             <>
               <div className="bg-white rounded-2xl p-6 shadow-md mb-6 mx-6 mt-6">
-                <h3 className="text-sm font-semibold text-zinc-700 mb-3">Evolução da inovação na UFOPA</h3>
+                <h3 className="text-sm font-semibold text-zinc-700 mb-3">Evolução de eventos inovadores na UFOPA</h3>
                 <MonthlyChart data={series?.monthly ?? []} />
               </div>
 
               <div className="bg-white rounded-2xl p-6 shadow-md mx-6">
-                <h3 className="text-sm font-semibold text-zinc-700 mb-3">Impactos gerados por disciplinas</h3>
+                <h3 className="text-sm font-semibold text-zinc-700 mb-3">Alunos em disciplinas de inovação</h3>
                 <ImpactChart data={series?.impactos ?? []} />
               </div>
             </>
